@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>QuestLearn 6 — Học Toán & Tiếng Anh Lớp 6 (Bản Chạy Ngay Không Cần Cài Đặt)</title>
+  <title>QuestLearn 6 — Học Toán & Tiếng Anh Lớp 6 (Tích hợp AI & Lưu File GitHub)</title>
   <style>
     :root {
       --bg: #f1f5f9;
@@ -21,11 +21,7 @@
       --warning: #d97706;
       --warning-light: #fffbeb;
     }
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       background-color: var(--bg);
@@ -33,30 +29,14 @@
       line-height: 1.5;
       min-height: 100vh;
     }
-    button {
-      font-family: inherit;
-      cursor: pointer;
-      border: none;
-      background: none;
-      transition: all 0.18s ease;
-    }
-    button:disabled {
-      opacity: 0.45;
-      cursor: not-allowed;
-    }
-    input {
-      font-family: inherit;
-    }
+    button { font-family: inherit; cursor: pointer; border: none; background: none; transition: all 0.18s ease; }
+    button:disabled { opacity: 0.45; cursor: not-allowed; }
+    input, textarea, select { font-family: inherit; }
 
-    /* Layout */
-    .app-shell {
-      display: flex;
-      min-height: 100vh;
-      padding-bottom: 76px;
-    }
+    .app-shell { display: flex; min-height: 100vh; padding-bottom: 76px; }
     .sidebar {
       display: none;
-      width: 260px;
+      width: 265px;
       background: var(--card);
       border-right: 1px solid var(--border);
       padding: 22px 18px;
@@ -65,373 +45,134 @@
       flex-shrink: 0;
     }
     .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: var(--card);
-      border-top: 1px solid var(--border);
-      display: flex;
-      justify-content: space-around;
-      padding: 8px 6px;
-      z-index: 50;
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: var(--card); border-top: 1px solid var(--border);
+      display: flex; justify-content: space-around;
+      padding: 8px 4px; z-index: 50;
       box-shadow: 0 -2px 10px rgba(0,0,0,0.04);
     }
     @media (min-width: 768px) {
-      .app-shell {
-        padding-bottom: 0;
-      }
-      .sidebar {
-        display: flex;
-      }
-      .bottom-nav {
-        display: none;
-      }
+      .app-shell { padding-bottom: 0; }
+      .sidebar { display: flex; }
+      .bottom-nav { display: none; }
     }
     .main-area {
-      flex: 1;
-      max-width: 980px;
-      margin: 0 auto;
-      width: 100%;
+      flex: 1; max-width: 980px; margin: 0 auto; width: 100%;
       padding: 20px 16px 40px 16px;
     }
     @media (min-width: 640px) {
-      .main-area {
-        padding: 28px 28px 48px 28px;
-      }
+      .main-area { padding: 28px 28px 48px 28px; }
     }
 
-    /* Branding & Nav */
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 4px 8px 20px 8px;
-    }
+    .brand { display: flex; align-items: center; gap: 12px; padding: 4px 8px 20px 8px; }
     .brand-logo {
-      width: 44px;
-      height: 44px;
-      border-radius: 14px;
-      background: var(--primary);
-      color: #fff;
-      font-weight: 900;
-      font-size: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 44px; height: 44px; border-radius: 14px;
+      background: var(--primary); color: #fff; font-weight: 900; font-size: 18px;
+      display: flex; align-items: center; justify-content: center;
       box-shadow: 0 4px 10px rgba(79,70,229,0.25);
     }
     .nav-btn {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 13px 16px;
-      border-radius: 16px;
-      font-weight: 800;
-      font-size: 15px;
-      color: #475569;
-      margin-bottom: 6px;
-      text-align: left;
+      width: 100%; display: flex; align-items: center; gap: 12px;
+      padding: 12px 15px; border-radius: 16px; font-weight: 800; font-size: 14px;
+      color: #475569; margin-bottom: 6px; text-align: left;
     }
-    .nav-btn:hover {
-      background: #f8fafc;
-    }
-    .nav-btn.active {
-      background: var(--primary-light);
-      color: var(--primary);
-      border: 2px solid #c7d2fe;
-    }
+    .nav-btn:hover { background: #f8fafc; }
+    .nav-btn.active { background: var(--primary-light); color: var(--primary); border: 2px solid #c7d2fe; }
     .bnav-btn {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2px;
-      padding: 6px 12px;
-      border-radius: 12px;
-      font-size: 12px;
-      font-weight: 800;
-      color: #64748b;
+      display: flex; flex-direction: column; align-items: center; gap: 2px;
+      padding: 6px 8px; border-radius: 12px; font-size: 11px; font-weight: 800; color: #64748b;
     }
-    .bnav-btn.active {
-      color: var(--primary);
-      background: var(--primary-light);
-    }
+    .bnav-btn.active { color: var(--primary); background: var(--primary-light); }
 
-    /* Top Header */
     .top-bar {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      padding: 14px 20px;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      margin-bottom: 22px;
+      background: var(--card); border: 1px solid var(--border); border-radius: 22px;
+      padding: 14px 20px; display: flex; flex-wrap: wrap; align-items: center;
+      justify-content: space-between; gap: 14px; margin-bottom: 22px;
       box-shadow: 0 2px 6px rgba(15,23,42,0.03);
     }
-    .level-pill {
-      background: var(--primary);
-      color: #fff;
-      font-weight: 900;
-      padding: 7px 14px;
-      border-radius: 14px;
-      font-size: 14px;
-    }
-    .progress-track {
-      height: 10px;
-      background: #e2e8f0;
-      border-radius: 999px;
-      overflow: hidden;
-    }
-    .progress-fill {
-      height: 100%;
-      background: var(--primary);
-      border-radius: 999px;
-      transition: width 0.3s ease;
-    }
-    .progress-fill.green {
-      background: var(--success);
-    }
-    .stat-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 8px 14px;
-      border-radius: 14px;
-      font-weight: 800;
-      font-size: 14px;
-    }
-    .stat-streak {
-      background: #fff7ed;
-      border: 1px solid #fed7aa;
-      color: #c2410c;
-    }
-    .stat-hearts {
-      background: #fef2f2;
-      border: 1px solid #fecaca;
-      color: #dc2626;
-    }
+    .level-pill { background: var(--primary); color: #fff; font-weight: 900; padding: 7px 14px; border-radius: 14px; font-size: 14px; }
+    .progress-track { height: 10px; background: #e2e8f0; border-radius: 999px; overflow: hidden; }
+    .progress-fill { height: 100%; background: var(--primary); border-radius: 999px; transition: width 0.3s ease; }
+    .progress-fill.green { background: var(--success); }
+    .stat-badge { display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px; border-radius: 14px; font-weight: 800; font-size: 13px; }
+    .stat-streak { background: #fff7ed; border: 1px solid #fed7aa; color: #c2410c; }
+    .stat-hearts { background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; }
+    .stat-cloud { background: #f0f9ff; border: 1px solid #bae6fd; color: #0369a1; }
 
-    /* Cards & Grids */
     .card {
-      background: var(--card);
-      border: 2px solid var(--border);
-      border-radius: 24px;
-      padding: 22px;
-      margin-bottom: 18px;
-      box-shadow: 0 2px 8px rgba(15,23,42,0.03);
+      background: var(--card); border: 2px solid var(--border); border-radius: 24px;
+      padding: 22px; margin-bottom: 18px; box-shadow: 0 2px 8px rgba(15,23,42,0.03);
     }
     .hero-card {
       background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
-      color: #fff;
-      border: none;
-      border-radius: 24px;
-      padding: 26px;
+      color: #fff; border: none; border-radius: 24px; padding: 26px;
       box-shadow: 0 10px 25px rgba(79,70,229,0.22);
     }
-    .grid-2 {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 16px;
-    }
-    .grid-3 {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 16px;
-    }
-    .grid-4 {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
+    .grid-2 { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
     @media (min-width: 640px) {
-      .grid-2 {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      .grid-4 {
-        grid-template-columns: repeat(4, 1fr);
-      }
+      .grid-2 { grid-template-columns: repeat(2, 1fr); }
+      .grid-4 { grid-template-columns: repeat(4, 1fr); }
     }
     @media (min-width: 900px) {
-      .grid-3 {
-        grid-template-columns: 2fr 1fr;
-      }
+      .grid-3 { grid-template-columns: 2fr 1fr; }
     }
 
-    /* Buttons */
     .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 12px 22px;
-      border-radius: 16px;
-      font-weight: 800;
-      font-size: 15px;
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 12px 20px; border-radius: 16px; font-weight: 800; font-size: 14px;
     }
-    .btn-primary {
-      background: var(--primary);
-      color: #fff;
-      box-shadow: 0 4px 12px rgba(79,70,229,0.22);
-    }
-    .btn-primary:hover:not(:disabled) {
-      background: var(--primary-hover);
-      transform: translateY(-1px);
-    }
-    .btn-amber {
-      background: #fbbf24;
-      color: #0f172a;
-    }
-    .btn-amber:hover:not(:disabled) {
-      background: #f59e0b;
-    }
-    .btn-success {
-      background: var(--success);
-      color: #fff;
-    }
-    .btn-danger {
-      background: var(--danger);
-      color: #fff;
-    }
-    .btn-outline {
-      background: #fff;
-      border: 2px solid var(--border);
-      color: var(--text);
-    }
-    .btn-outline:hover:not(:disabled) {
-      border-color: var(--primary);
-      background: #f8fafc;
-    }
+    .btn-primary { background: var(--primary); color: #fff; box-shadow: 0 4px 12px rgba(79,70,229,0.22); }
+    .btn-primary:hover:not(:disabled) { background: var(--primary-hover); transform: translateY(-1px); }
+    .btn-amber { background: #fbbf24; color: #0f172a; }
+    .btn-amber:hover:not(:disabled) { background: #f59e0b; }
+    .btn-success { background: var(--success); color: #fff; }
+    .btn-danger { background: var(--danger); color: #fff; }
+    .btn-outline { background: #fff; border: 2px solid var(--border); color: var(--text); }
+    .btn-outline:hover:not(:disabled) { border-color: var(--primary); background: #f8fafc; }
 
-    /* Quiz Options & Inputs */
     .option-btn {
-      width: 100%;
-      padding: 16px 18px;
-      border-radius: 18px;
-      border: 2px solid var(--border);
-      background: #fff;
-      font-weight: 800;
-      font-size: 16px;
-      text-align: left;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      color: var(--text);
+      width: 100%; padding: 15px 18px; border-radius: 18px; border: 2px solid var(--border);
+      background: #fff; font-weight: 800; font-size: 15px; text-align: left;
+      display: flex; align-items: center; justify-content: space-between; color: var(--text);
     }
-    .option-btn:hover:not(:disabled) {
-      border-color: #818cf8;
-      background: #f8fafc;
-    }
-    .option-btn.selected {
-      border-color: var(--primary);
-      background: var(--primary-light);
-      color: #312e81;
-    }
+    .option-btn:hover:not(:disabled) { border-color: #818cf8; background: #f8fafc; }
+    .option-btn.selected { border-color: var(--primary); background: var(--primary-light); color: #312e81; }
     .input-box {
-      width: 100%;
-      padding: 14px 18px;
-      border-radius: 16px;
-      border: 2px solid #cbd5e1;
-      font-size: 18px;
-      font-weight: 800;
-      outline: none;
+      width: 100%; padding: 13px 16px; border-radius: 16px; border: 2px solid #cbd5e1;
+      font-size: 16px; font-weight: 700; outline: none; background: #fff;
     }
-    .input-box:focus {
-      border-color: var(--primary);
-    }
+    .input-box:focus { border-color: var(--primary); }
 
-    /* Node Item on Roadmap */
     .lesson-node {
-      padding: 18px;
-      border-radius: 20px;
-      border: 2px solid var(--border);
-      background: #fff;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      margin-bottom: 12px;
+      padding: 18px; border-radius: 20px; border: 2px solid var(--border); background: #fff;
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+      gap: 14px; margin-bottom: 12px;
     }
-    .lesson-node.available {
-      border-color: #a5b4fc;
-    }
-    .lesson-node.completed, .lesson-node.perfect {
-      border-color: #86efac;
-      background: #f0fdf4;
-    }
-    .lesson-node.locked {
-      background: #f8fafc;
-      opacity: 0.68;
-    }
+    .lesson-node.available { border-color: #a5b4fc; }
+    .lesson-node.completed, .lesson-node.perfect { border-color: #86efac; background: #f0fdf4; }
+    .lesson-node.locked { background: #f8fafc; opacity: 0.68; }
     .node-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 900;
-      font-size: 20px;
-      flex-shrink: 0;
+      width: 46px; height: 46px; border-radius: 15px; display: flex;
+      align-items: center; justify-content: center; font-weight: 900; font-size: 18px; flex-shrink: 0;
     }
 
-    /* Interactive Geometry */
     .drag-chip {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 10px 22px;
-      border-radius: 14px;
-      font-weight: 900;
-      font-size: 18px;
-      border: 2px solid var(--primary);
-      background: #fff;
-      color: var(--text);
-      cursor: pointer;
-      user-select: none;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 10px 22px; border-radius: 14px; font-weight: 900; font-size: 18px;
+      border: 2px solid var(--primary); background: #fff; color: var(--text);
+      cursor: pointer; user-select: none; box-shadow: 0 2px 6px rgba(0,0,0,0.06);
     }
-    .drag-chip.selected {
-      background: #f59e0b;
-      color: #fff;
-      border-color: #d97706;
-      transform: scale(1.06);
-    }
-    .drag-chip.done {
-      background: #dcfce7;
-      border-color: #22c55e;
-      color: #15803d;
-      opacity: 0.65;
-      cursor: default;
-    }
+    .drag-chip.selected { background: #f59e0b; color: #fff; border-color: #d97706; transform: scale(1.06); }
+    .drag-chip.done { background: #dcfce7; border-color: #22c55e; color: #15803d; opacity: 0.65; cursor: default; }
 
-    /* Flashcard */
     .flashcard-box {
-      background: #fff;
-      border: 3px solid #c7d2fe;
-      border-radius: 28px;
-      min-height: 270px;
-      padding: 32px 24px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      cursor: pointer;
-      user-select: none;
+      background: #fff; border: 3px solid #c7d2fe; border-radius: 28px; min-height: 260px;
+      padding: 30px 22px; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; text-align: center; cursor: pointer; user-select: none;
       box-shadow: 0 8px 20px rgba(79,70,229,0.08);
-      transition: transform 0.15s ease, border-color 0.15s ease;
     }
-    .flashcard-box:hover {
-      border-color: var(--primary);
-      transform: translateY(-2px);
-    }
-
-    /* Animations */
     @keyframes shakeAnim {
       0%, 100% { transform: translateX(0); }
       20% { transform: translateX(-8px); }
@@ -439,15 +180,17 @@
       60% { transform: translateX(-6px); }
       80% { transform: translateX(6px); }
     }
-    .shake {
-      animation: shakeAnim 0.4s ease-in-out;
+    .shake { animation: shakeAnim 0.4s ease-in-out; }
+    .pill-tag { display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 800; }
+
+    /* Login Gate Modal */
+    .login-gate {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      padding: 20px; background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
     }
-    .pill-tag {
-      display: inline-block;
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 800;
+    .login-card {
+      background: #fff; border-radius: 28px; max-width: 480px; width: 100%;
+      padding: 32px 28px; box-shadow: 0 20px 50px rgba(0,0,0,0.22);
     }
   </style>
 </head>
@@ -456,450 +199,428 @@
 
   <script>
     // ==========================================================================
-    // 1. NGÂN HÀNG DỮ LIỆU MẪU (TOÁN 6 & TIẾNG ANH 6 - BỘ KẾT NỐI TRI THỨC)
+    // 1. NGÂN HÀNG DỮ LIỆU MẶC ĐỊNH (TOÁN 6 CHƯƠNG I-IV & TIẾNG ANH 6 UNIT 1-6)
     // ==========================================================================
-    const CHAPTERS = [
+    const DEFAULT_CHAPTERS = [
+      // ---------------- MÔN TOÁN LỚP 6 (SGK KẾT NỐI TRI THỨC) ----------------
       {
         id: 'math-ch1',
         subject: 'math',
         title: 'Chương 1: Tập hợp các số tự nhiên',
         subtitle: 'Tập hợp, Hệ thập phân, Số La Mã, Luỹ thừa & Thứ tự thực hiện phép tính',
         lessons: [
-          { id: 'm-c1-l1', title: 'Bài 1: Tập hợp, Số tự nhiên & Số La Mã', type: 'lesson', description: 'Tập hợp, giá trị chữ số trong hệ thập phân và cách đọc viết số La Mã' },
-          { id: 'm-c1-l2', title: 'Bài 2: Luỹ thừa & Thứ tự thực hiện các phép tính', type: 'lesson', description: 'Nhân chia hai luỹ thừa cùng cơ số & Quy tắc dấu ngoặc ( ) → [ ] → { }' },
-          { id: 'm-c1-rev1', title: 'Revision 1: Ôn tập Chương 1', type: 'revision', description: 'Tổng hợp kiến thức Số tự nhiên, Tính nhẩm & Tìm x' }
+          { id: 'm-c1-l1', title: 'Bài 1: Tập hợp, Cách ghi số tự nhiên & Số La Mã', type: 'lesson', description: 'Nhận biết tập hợp, hàng và lớp trong hệ thập phân, đọc viết số La Mã từ 1 đến 30' },
+          { id: 'm-c1-l2', title: 'Bài 2: Thứ tự các số tự nhiên & Luỹ thừa', type: 'lesson', description: 'Tia số, quan hệ thứ tự ≤, ≥ và nhân chia hai luỹ thừa cùng cơ số' },
+          { id: 'm-c1-l3', title: 'Bài 3: Thứ tự thực hiện các phép tính', type: 'lesson', description: 'Quy tắc Luỹ thừa → Nhân chia → Cộng trừ và dấu ngoặc ( ) → [ ] → { }' },
+          { id: 'm-c1-rev1', title: 'Revision 1: Ôn tập Chương 1', type: 'revision', description: 'Tổng hợp kiến thức Số tự nhiên & Tính giá trị biểu thức' }
         ]
       },
       {
         id: 'math-ch2',
         subject: 'math',
-        title: 'Chương 2: Tính chia hết, Số nguyên & Hình học trực quan',
-        subtitle: 'Dấu hiệu chia hết, ƯCLN - BCNN, Hình chữ nhật - Hình thoi - Lục giác đều',
+        title: 'Chương 2: Tính chia hết trong tập hợp các số tự nhiên',
+        subtitle: 'Quan hệ chia hết, Số nguyên tố, Ước chung lớn nhất & Bội chung nhỏ nhất',
         lessons: [
-          { id: 'm-c2-l1', title: 'Bài 1: Quan hệ chia hết, ƯCLN & BCNN', type: 'lesson', description: 'Dấu hiệu chia hết cho 2, 3, 5, 9 và bài toán thực tế ƯCLN, BCNN' },
-          { id: 'm-c2-l2', title: 'Bài 2: Hình chữ nhật tương tác SVG, Hình thoi & Lục giác đều', type: 'lesson', description: 'Kéo thả trực tiếp trên cạnh hình học SVG, tính chu vi và diện tích' },
-          { id: 'm-c2-test', title: 'Chapter Test: Kiểm tra Tổng hợp Toán 6', type: 'test', description: 'Đánh giá toàn diện Số học & Hình học trực quan lớp 6' }
+          { id: 'm-c2-l1', title: 'Bài 1: Quan hệ chia hết, Tính chất & Dấu hiệu chia hết', type: 'lesson', description: 'Khái niệm ước và bội, tính chất chia hết của một tổng, dấu hiệu chia hết cho 2, 3, 5, 9' },
+          { id: 'm-c2-l2', title: 'Bài 2: ƯCLN, BCNN & Quy đồng mẫu các phân số', type: 'lesson', description: 'Tìm ƯCLN, BCNN và vận dụng BCNN để quy đồng mẫu các phân số' },
+          { id: 'm-c2-rev', title: 'Revision 2: Ôn tập Chương 2', type: 'revision', description: 'Giải bài toán thực tế vận dụng ƯCLN và BCNN' }
         ]
       },
+      {
+        id: 'math-ch3',
+        subject: 'math',
+        title: 'Chương 3: Số nguyên',
+        subtitle: 'Số nguyên âm, Tập hợp Z, Phép cộng trừ nhân chia số nguyên & Quy tắc dấu ngoặc',
+        lessons: [
+          { id: 'm-c3-l1', title: 'Bài 1: Tập hợp các số nguyên & Thứ tự trong Z', type: 'lesson', description: 'Làm quen với số nguyên âm, biểu diễn số nguyên trên trục số và so sánh hai số nguyên' },
+          { id: 'm-c3-l2', title: 'Bài 2: Phép cộng, trừ số nguyên & Quy tắc dấu ngoặc', type: 'lesson', description: 'Tính tổng các số nguyên đối nhau và tính hợp lí biểu thức có dấu ngoặc' }
+        ]
+      },
+      {
+        id: 'math-ch4',
+        subject: 'math',
+        title: 'Chương 4: Hình học trực quan & Thực hành GeoGebra',
+        subtitle: 'Hình chữ nhật tương tác SVG, Hình thoi, Lục giác đều & Vẽ hình trên GeoGebra',
+        lessons: [
+          { id: 'm-c4-l1', title: 'Bài 1: Hình chữ nhật tương tác SVG, Hình thoi & Lục giác đều', type: 'lesson', description: 'Kéo thả trực tiếp trên cạnh hình chữ nhật ABCD, tính diện tích S = a × b' },
+          { id: 'm-c4-l2', title: 'Bài 2: Thực hành phần mềm GeoGebra', type: 'lesson', description: 'Vẽ điểm, đoạn thẳng, đường tròn và xuất bản hình ảnh trên GeoGebra' }
+        ]
+      },
+
+      // ---------------- MÔN TIẾNG ANH LỚP 6 (GLOBAL SUCCESS) ----------------
       {
         id: 'eng-u1',
         subject: 'english',
         title: 'Unit 1: My New School',
-        subtitle: 'School things, Present simple & Adverbs of frequency',
+        subtitle: 'School things, Verbs (play, do, have, study), Present simple & Adverbs of frequency',
         lessons: [
-          { id: 'e-u1-vocab', title: 'Lesson 1: Vocabulary - School Things', type: 'lesson', description: 'Từ vựng đồ dùng học tập & Collocations (play, do, have, study)' },
-          { id: 'e-u1-gram', title: 'Lesson 2: Grammar & Sentence Building', type: 'lesson', description: 'Thì hiện tại đơn & Trạng từ chỉ tần suất (always, usually, rarely...)' },
-          { id: 'e-u1-read', title: 'Lesson 3: Reading & Word Form', type: 'lesson', description: 'Đọc hiểu về trường học và biến đổi từ loại (Noun, Verb, Adj, Adv)' },
-          { id: 'e-u1-rev', title: 'Revision 1: Ôn tập Unit 1', type: 'revision', description: 'Ôn tập tổng hợp từ vựng, ngữ pháp và cấu trúc câu Unit 1' }
+          { id: 'e-u1-vocab', title: 'Lesson 1: Vocabulary - School Things & Activities', type: 'lesson', description: 'Từ vựng đồ dùng học tập & Collocations (play football, do homework, have school lunch, study English)' },
+          { id: 'e-u1-gram', title: 'Lesson 2: Grammar - Present Simple & Adverbs of Frequency', type: 'lesson', description: 'Thì hiện tại đơn & vị trí trạng từ chỉ tần suất (always, usually, sometimes, rarely, never)' },
+          { id: 'e-u1-read', title: 'Lesson 3: Reading & Everyday English - Sunrise, An Son & Dream School', type: 'lesson', description: 'Giới thiệu làm quen (Nice to meet you) và đọc hiểu về 3 ngôi trường' }
         ]
       },
       {
         id: 'eng-u2',
         subject: 'english',
-        title: 'Unit 2: My House & My Neighbourhood',
-        subtitle: 'Rooms, Furniture, Possessive case & Giving directions/suggestions',
+        title: 'Unit 2: My House',
+        subtitle: 'Types of house, Rooms and furniture, Possessive case & Prepositions of place',
         lessons: [
-          { id: 'e-u2-vocab', title: 'Lesson 1: Vocabulary - Rooms & Neighbourhood', type: 'lesson', description: 'Các loại nhà, phòng trong nhà và địa điểm trong khu phố' },
-          { id: 'e-u2-gram', title: 'Lesson 2: Grammar - Possessive & Suggestions', type: 'lesson', description: "Sở hữu cách ('s) và cấu trúc gợi ý Let's + V / How about + V-ing" },
-          { id: 'e-u2-test', title: 'Unit 2 Test: Kiểm tra cuối Unit', type: 'test', description: 'Bài kiểm tra tổng hợp Tiếng Anh 6' }
+          { id: 'e-u2-vocab', title: 'Lesson 1: Vocabulary - Houses, Rooms & Furniture', type: 'lesson', description: 'Các loại nhà (town house, country house, flat), các phòng và đồ đạc (sink, fridge, chest of drawers)' },
+          { id: 'e-u2-gram', title: 'Lesson 2: Grammar - Possessive Case & Prepositions of Place', type: 'lesson', description: "Sở hữu cách ('s) sau tên riêng/danh từ số ít và giới từ chỉ vị trí (in, on, behind, under, next to)" }
+        ]
+      },
+      {
+        id: 'eng-u3',
+        subject: 'english',
+        title: 'Unit 3: My Friends & Review 1',
+        subtitle: 'Body parts, Personality adjectives, Present continuous & Superb Summer Camp',
+        lessons: [
+          { id: 'e-u3-vocab', title: 'Lesson 1: Vocabulary - Body Parts & Personality Adjectives', type: 'lesson', description: 'Bộ phận cơ thể và tính từ chỉ tính cách (hard-working, confident, funny, caring, active, creative)' },
+          { id: 'e-u3-gram', title: 'Lesson 2: Grammar & Reading - Present Continuous & Summer Camp', type: 'lesson', description: 'Phân biệt Hiện tại đơn và Hiện tại tiếp diễn (now, at the moment) & Đọc hiểu Superb Summer Camp' },
+          { id: 'e-rev-1', title: 'Review 1 (Units 1 - 2 - 3)', type: 'revision', description: 'Ôn tập tổng hợp từ vựng, phát âm và ngữ pháp Units 1, 2, 3' }
+        ]
+      },
+      {
+        id: 'eng-u4',
+        subject: 'english',
+        title: 'Unit 4: My Neighbourhood',
+        subtitle: 'Places in a neighbourhood, Comparative adjectives & Khang\'s Blog',
+        lessons: [
+          { id: 'e-u4-l1', title: 'Lesson 1: Vocabulary, Comparative & Khang\'s Blog', type: 'lesson', description: 'Miêu tả khu phố ngoại ô Đà Nẵng (suburbs, outdoor, busy, crowded) và so sánh hơn của tính từ' }
+        ]
+      },
+      {
+        id: 'eng-u5',
+        subject: 'english',
+        title: 'Unit 5: Natural Wonders of Viet Nam',
+        subtitle: 'Things in nature, Travel items, Countable/Uncountable nouns & Modal verb must/mustn\'t',
+        lessons: [
+          { id: 'e-u5-l1', title: 'Lesson 1: Natural Wonders & Modal Verb must / mustn\'t', type: 'lesson', description: 'Kì quan thiên nhiên (Ganh Da Dia, Ha Long Bay, Tuan Chau, Himalayas) và quy tắc must / mustn\'t' }
+        ]
+      },
+      {
+        id: 'eng-u6',
+        subject: 'english',
+        title: 'Unit 6: Our Tet Holiday',
+        subtitle: 'Things and activities at Tet, should / shouldn\'t for advice & some / any',
+        lessons: [
+          { id: 'e-u6-l1', title: 'Lesson 1: Tet Customs, should / shouldn\'t & New Year Practices', type: 'lesson', description: 'Phong tục đón năm mới ở Mỹ, Trung Quốc, Việt Nam (lucky money, fireworks, buy salt) và lời khuyên should/shouldn\'t' }
         ]
       }
     ];
 
-    const SEED_QUESTIONS = [
-      // TOÁN CHƯƠNG 1 - BÀI 1
+    const DEFAULT_QUESTIONS = [
+      // --- TOÁN CHƯƠNG 1 ---
       {
-        id: 'q-m-1',
-        subject: 'math',
-        lesson: 'm-c1-l1',
-        topicTag: 'Giá trị chữ số trong hệ thập phân',
-        type: 'multiple_choice',
+        id: 'q-m-1', subject: 'math', lesson: 'm-c1-l1', topicTag: 'Giá trị chữ số trong hệ thập phân', type: 'multiple_choice',
         prompt: 'Trong số tự nhiên 27 501 (Bài 1.6 SGK trang 12), chữ số 7 có giá trị bằng bao nhiêu?',
-        options: ['7', '700', '7 000', '70 000'],
-        correctAnswer: '7 000',
+        options: ['7', '700', '7 000', '70 000'], correctAnswer: '7 000',
         explanation: 'Trong số 27 501, chữ số 7 đứng ở hàng nghìn nên giá trị của nó là 7 × 1 000 = 7 000.',
-        hint: 'Đếm từ phải sang trái: hàng đơn vị (1), chục (0), trăm (5), nghìn (7).',
-        xp: 10
+        hint: 'Đếm từ phải sang trái: đơn vị, chục, trăm, nghìn.', xp: 10
       },
       {
-        id: 'q-m-2',
-        subject: 'math',
-        lesson: 'm-c1-l1',
-        topicTag: 'Số La Mã',
-        type: 'number_input',
-        prompt: 'Số La Mã XXIV biểu diễn số tự nhiên nào trong hệ thập phân?',
-        correctAnswer: 24,
-        explanation: 'Số XXIV gồm X (10) + X (10) + IV (4) = 24.',
-        hint: 'X = 10, cụm IV = 4.',
-        xp: 10
+        id: 'q-m-2', subject: 'math', lesson: 'm-c1-l1', topicTag: 'Hệ La Mã', type: 'number_input',
+        prompt: 'Số La Mã XXIII (Bài 1.8 SGK trang 12) biểu diễn số tự nhiên nào?',
+        correctAnswer: 23,
+        explanation: 'Số XXIII gồm X (10) + X (10) + I (1) + I (1) + I (1) = 23.',
+        hint: 'X = 10, III = 3.', xp: 10
       },
       {
-        id: 'q-m-3',
-        subject: 'math',
-        lesson: 'm-c1-l1',
-        topicTag: 'Toán thực tế hệ thập phân',
-        type: 'number_input',
-        prompt: 'Trong một cửa hàng bánh kẹo (Bài 1.12 SGK trang 12): mỗi gói có 10 cái kẹo, mỗi hộp có 10 gói, mỗi thùng có 10 hộp. Một người mua 9 thùng, 9 hộp và 9 gói kẹo. Hỏi người đó đã mua tất cả bao nhiêu cái kẹo?',
+        id: 'q-m-3', subject: 'math', lesson: 'm-c1-l1', topicTag: 'Toán thực tế hệ thập phân', type: 'number_input',
+        prompt: 'Trong cửa hàng bánh kẹo (Bài 1.12 SGK trang 12): mỗi gói có 10 cái kẹo, mỗi hộp có 10 gói, mỗi thùng có 10 hộp. Một người mua 9 thùng, 9 hộp và 9 gói kẹo. Hỏi người đó đã mua tất cả bao nhiêu cái kẹo?',
         correctAnswer: 9990,
-        explanation: '1 gói = 10 cái; 1 hộp = 100 cái; 1 thùng = 1 000 cái. Vậy 9 thùng + 9 hộp + 9 gói = 9 × 1 000 + 9 × 100 + 9 × 10 = 9 990 (cái kẹo).',
-        hint: 'Quy đổi số kẹo của 1 thùng, 1 hộp và 1 gói ra số tự nhiên.',
-        xp: 15
+        explanation: '1 gói = 10 cái; 1 hộp = 100 cái; 1 thùng = 1 000 cái. Tổng số kẹo: 9 × 1 000 + 9 × 100 + 9 × 10 = 9 990 (cái kẹo).',
+        hint: '1 thùng = 1 000 cái, 1 hộp = 100 cái, 1 gói = 10 cái.', xp: 15
       },
       {
-        id: 'q-m-4',
-        subject: 'math',
-        lesson: 'm-c1-l1',
-        topicTag: 'Tập hợp và phần tử',
-        type: 'multiple_choice',
-        prompt: 'Cho tập hợp M = {4; 1; 9; 8} (Hình 1.3 SGK trang 6). Khẳng định nào sau đây là ĐÚNG?',
-        options: ['4 ∈ M và 7 ∉ M', '7 ∈ M', '1 ∉ M', '9 ∉ M'],
-        correctAnswer: '4 ∈ M và 7 ∉ M',
-        explanation: 'Các số 4; 1; 9; 8 là phần tử của tập hợp M nên 4 ∈ M. Số 7 không nằm trong tập hợp M nên 7 ∉ M.',
-        hint: 'Kí hiệu ∈ đọc là "thuộc", ∉ đọc là "không thuộc".',
-        xp: 10
-      },
-      // TOÁN CHƯƠNG 1 - BÀI 2
-      {
-        id: 'q-m-5',
-        subject: 'math',
-        lesson: 'm-c1-l2',
-        topicTag: 'Thứ tự thực hiện các phép tính',
-        type: 'number_input',
-        prompt: 'Tính giá trị của biểu thức (Ví dụ 1 SGK trang 27): 120 + [55 - (11 - 3 × 2)²] + 2³',
-        correctAnswer: 158,
-        explanation: 'Trong ngoặc tròn trước: 11 - 3×2 = 11 - 6 = 5. Trong ngoặc vuông: 55 - 5² = 55 - 25 = 30. Cuối cùng: 120 + 30 + 2³ = 150 + 8 = 158.',
-        hint: 'Thực hiện ngoặc tròn ( ) → ngoặc vuông [ ] → luỹ thừa 2³ = 8.',
-        xp: 20
+        id: 'q-m-4', subject: 'math', lesson: 'm-c1-l2', topicTag: 'Thứ tự trong tập hợp số tự nhiên', type: 'multiple_choice',
+        prompt: 'Ba bạn An (cao 150 cm), Bắc (cao 153 cm), Cường (cao 148 cm) đánh dấu chiều cao lên cây sào thẳng đứng theo thứ tự từ dưới lên là A, B, C (Bài 1.16 SGK trang 14). Điểm A, B, C lần lượt ứng với chiều cao của ai?',
+        options: ['Cường, An, Bắc', 'An, Bắc, Cường', 'Cường, Bắc, An', 'Bắc, An, Cường'],
+        correctAnswer: 'Cường, An, Bắc',
+        explanation: 'Vì 148 < 150 < 153 nên theo thứ tự từ dưới lên (từ thấp đến cao), điểm A ứng với Cường (148 cm), B ứng với An (150 cm) và C ứng với Bắc (153 cm).',
+        hint: 'Sắp xếp chiều cao theo thứ tự từ bé đến lớn: 148 < 150 < 153.', xp: 15
       },
       {
-        id: 'q-m-6',
-        subject: 'math',
-        lesson: 'm-c1-l2',
-        topicTag: 'Chia hai luỹ thừa cùng cơ số',
-        type: 'multiple_choice',
-        prompt: 'Kết quả của phép chia hai luỹ thừa 7⁶ : 7⁴ (SGK trang 24) viết dưới dạng một luỹ thừa là:',
-        options: ['7²', '7¹⁰', '7²⁴', '1²'],
-        correctAnswer: '7²',
-        explanation: 'Khi chia hai luỹ thừa cùng cơ số (khác 0), ta giữ nguyên cơ số và lấy số mũ của số bị chia trừ đi số mũ của số chia: 7⁶ : 7⁴ = 7⁶⁻⁴ = 7².',
-        hint: 'Giữ nguyên cơ số 7, lấy 6 trừ 4.',
-        xp: 15
+        id: 'q-m-5', subject: 'math', lesson: 'm-c1-l3', topicTag: 'Thứ tự thực hiện các phép tính', type: 'number_input',
+        prompt: 'Theo quy ước thứ tự thực hiện các phép tính (SGK trang 25), giá trị của biểu thức 1 + 2 × 3² bằng bao nhiêu?',
+        correctAnswer: 19,
+        explanation: 'Thực hiện luỹ thừa trước, rồi đến nhân, cuối cùng là cộng: 1 + 2 × 3² = 1 + 2 × 9 = 1 + 18 = 19.',
+        hint: 'Luỹ thừa (3² = 9) → Nhân (2 × 9 = 18) → Cộng.', xp: 10
       },
       {
-        id: 'q-m-7',
-        subject: 'math',
-        lesson: 'm-c1-l2',
-        topicTag: 'Tìm x cơ bản',
-        type: 'number_input',
-        prompt: 'Tìm số tự nhiên x, biết: 3x + 7 = 28',
-        correctAnswer: 7,
-        explanation: 'Ta có 3x = 28 - 7 = 21. Suy ra x = 21 : 3 = 7.',
-        hint: 'Tìm 3x trước bằng cách lấy 28 trừ 7.',
-        xp: 15
+        id: 'q-m-6', subject: 'math', lesson: 'm-c1-l3', topicTag: 'Biểu thức có dấu ngoặc', type: 'number_input',
+        prompt: 'Tính giá trị biểu thức có dấu ngoặc (SGK trang 25): {15 + 2 × [8 - (5 - 3)]} : 9',
+        correctAnswer: 3,
+        explanation: 'Tính theo thứ tự ( ) → [ ] → { }: {15 + 2 × [8 - 2]} : 9 = {15 + 2 × 6} : 9 = {15 + 12} : 9 = 27 : 9 = 3.',
+        hint: 'Tính trong ngoặc tròn (5 - 3) trước.', xp: 20
+      },
+
+      // --- TOÁN CHƯƠNG 2 ---
+      {
+        id: 'q-m-7', subject: 'math', lesson: 'm-c2-l1', topicTag: 'Tính chất chia hết của một tổng', type: 'true_false',
+        prompt: 'Lớp 6A được thưởng 50 cái bút và thêm 4 hộp bút (số bút mỗi hộp như nhau) (Bài 8 SGK trang 29). Khẳng định: "Tổng số bút chia đều được cho 4 tổ" là Đúng hay Sai?',
+        options: ['Đúng', 'Sai'], correctAnswer: 'Sai',
+        explanation: 'Vì số bút trong 4 hộp luôn chia hết cho 4, nhưng 50 không chia hết cho 4 (50 : 4 = 12 dư 2) nên tổng số bút không chia đều được cho 4 tổ.',
+        hint: 'Kiểm tra xem 50 có chia hết cho 4 không.', xp: 15
       },
       {
-        id: 'q-m-8',
-        subject: 'math',
-        lesson: 'm-c1-l2',
-        topicTag: 'Tính nhanh phân phối',
-        type: 'number_input',
-        prompt: 'Tính nhẩm nhanh biểu thức: 25 × 16',
-        correctAnswer: 400,
-        explanation: 'Ta tách 16 = 4 × 4 để ghép với 25 tạo thành 100: 25 × 16 = (25 × 4) × 4 = 100 × 4 = 400.',
-        hint: 'Nhận xét: 25 × 4 = 100.',
-        xp: 15
-      },
-      // TOÁN CHƯƠNG 2 - CHIA HẾT & HÌNH HỌC
-      {
-        id: 'q-m-9',
-        subject: 'math',
-        lesson: 'm-c2-l1',
-        topicTag: 'Dấu hiệu chia hết cho 9 và 3',
-        type: 'number_input',
-        prompt: 'Thay dấu * bởi một chữ số thích hợp để số 12* chia hết cho 9 (Luyện tập 2 SGK trang 35).',
-        correctAnswer: 6,
-        explanation: 'Các số có tổng các chữ số chia hết cho 9 thì chia hết cho 9. Ta có 1 + 2 + * = 3 + *. Để chia hết cho 9 thì * = 6 (vì 3 + 6 = 9 chia hết cho 9).',
-        hint: 'Tính tổng 1 + 2 + * sao cho tổng đó chia hết cho 9.',
-        xp: 15
+        id: 'q-m-8', subject: 'math', lesson: 'm-c2-l2', topicTag: 'Bội chung nhỏ nhất & Quy đồng phân số', type: 'number_input',
+        prompt: 'Học sinh lớp 6A khi xếp thành hàng 2, hàng 3, hàng 7 đều vừa đủ hàng (Bài 2.51 SGK trang 55). Hỏi số học sinh lớp 6A là bao nhiêu, biết số học sinh nhỏ hơn 45?',
+        correctAnswer: 42,
+        explanation: 'Số học sinh lớp 6A là bội chung của 2, 3 và 7. Ta có BCNN(2, 3, 7) = 2 × 3 × 7 = 42. Vì số học sinh nhỏ hơn 45 nên lớp 6A có 42 học sinh.',
+        hint: 'Tìm BCNN(2, 3, 7) nhỏ hơn 45.', xp: 20
       },
       {
-        id: 'q-m-10',
-        subject: 'math',
-        lesson: 'm-c2-l1',
-        topicTag: 'Bội chung nhỏ nhất (BCNN)',
-        type: 'number_input',
-        prompt: 'Có hai chiếc máy A và B (Vận dụng SGK trang 50). Lịch bảo dưỡng định kì đối với máy A là 6 tháng và đối với máy B là 9 tháng. Hai máy vừa cùng được bảo dưỡng vào tháng 5. Hỏi sau ít nhất bao nhiêu tháng nữa thì hai máy lại được bảo dưỡng trong cùng một tháng?',
-        correctAnswer: 18,
-        explanation: 'Số tháng ít nhất để hai máy cùng bảo dưỡng trở lại là BCNN(6, 9). Ta có 6 = 2 × 3; 9 = 3² nên BCNN(6, 9) = 2 × 3² = 18 (tháng).',
-        hint: 'Tìm Bội chung nhỏ nhất của 6 và 9.',
-        xp: 20
+        id: 'q-m-9', subject: 'math', lesson: 'm-c2-l2', topicTag: 'Ước chung lớn nhất thực tế', type: 'number_input',
+        prompt: 'Từ ba tấm gỗ có độ dài 56 dm, 48 dm và 40 dm, bác thợ mộc muốn cắt thành các thanh gỗ có độ dài như nhau mà không để thừa mẫu gỗ nào (Bài 2.50 SGK trang 55). Độ dài lớn nhất có thể của mỗi thanh gỗ là bao nhiêu dm?',
+        correctAnswer: 8,
+        explanation: 'Độ dài lớn nhất của mỗi thanh gỗ là ƯCLN(56, 48, 40) = 8 (dm).',
+        hint: 'Tìm ƯCLN của 56, 48 và 40.', xp: 20
+      },
+
+      // --- TOÁN CHƯƠNG 3 (SỐ NGUYÊN) ---
+      {
+        id: 'q-m-10', subject: 'math', lesson: 'm-c3-l1', topicTag: 'Tập hợp các số nguyên', type: 'multiple_choice',
+        prompt: 'Theo Chú ý SGK Toán 6 trang 58, khẳng định nào sau đây về số 0 là ĐÚNG?',
+        options: [
+          'Số 0 không là số nguyên dương, cũng không là số nguyên âm',
+          'Số 0 là số nguyên dương nhỏ nhất',
+          'Số 0 là số nguyên âm lớn nhất',
+          'Số 0 không thuộc tập hợp số nguyên Z'
+        ],
+        correctAnswer: 'Số 0 không là số nguyên dương, cũng không là số nguyên âm',
+        explanation: 'Tập hợp Z gồm các số nguyên âm, số 0 và các số nguyên dương. Số 0 không là số nguyên dương, cũng không là số nguyên âm.',
+        hint: 'Xem mục Chú ý 1 trang 58 SGK.', xp: 10
       },
       {
-        id: 'q-m-11',
-        subject: 'math',
-        lesson: 'm-c2-l2',
-        topicTag: 'Diện tích hình chữ nhật',
-        type: 'geometry_interaction',
-        prompt: 'Tương tác trực tiếp trên hình chữ nhật ABCD để khám phá bản chất công thức diện tích S = a × b và tính diện tích khi a = 8 cm, b = 5 cm.',
+        id: 'q-m-11', subject: 'math', lesson: 'm-c3-l2', topicTag: 'Cộng trừ số nguyên & Quy tắc dấu ngoặc', type: 'number_input',
+        prompt: 'Tính giá trị của biểu thức số nguyên (Ví dụ 1 SGK trang 69): A = 25 - (-115) - [315 + (-105)]',
+        correctAnswer: -70,
+        explanation: 'Ta có A = 25 + 115 - [315 - 105] = 140 - 210 = -(210 - 140) = -70.',
+        hint: '25 - (-115) = 25 + 115 = 140; trong ngoặc vuông là 315 - 105 = 210.', xp: 20
+      },
+      {
+        id: 'q-m-12', subject: 'math', lesson: 'm-c3-l2', topicTag: 'Tổng các số nguyên đối nhau', type: 'number_input',
+        prompt: 'Hãy tính tổng của tất cả các số nguyên trong tập hợp {x ∈ Z | -25 ≤ x ≤ 25} (Bài 3.31 SGK trang 69).',
+        correctAnswer: 0,
+        explanation: 'Các số nguyên từ -25 đến 25 ghép thành từng cặp số đối nhau: (-25 + 25) + (-24 + 24) + ... + (-1 + 1) + 0 = 0.',
+        hint: 'Hai số nguyên đối nhau có tổng bằng 0.', xp: 15
+      },
+
+      // --- TOÁN CHƯƠNG 4 (HÌNH HỌC SVG & GEOGEBRA) ---
+      {
+        id: 'q-m-13', subject: 'math', lesson: 'm-c4-l1', topicTag: 'Diện tích hình chữ nhật', type: 'geometry_interaction',
+        prompt: 'Tương tác trực tiếp trên hình chữ nhật ABCD để khám phá công thức diện tích S = a × b và tính diện tích khi a = 8 cm, b = 5 cm.',
         correctAnswer: 40,
         explanation: 'Trong hình chữ nhật ABCD, hai cạnh đối AB = CD = a = 8 cm (chiều dài) và BC = DA = b = 5 cm (chiều rộng). Diện tích S = a × b = 8 × 5 = 40 cm².',
-        hint: 'Kéo hoặc chạm nhãn [a] vào cạnh dài ngang, nhãn [b] vào cạnh rộng dọc.',
-        xp: 30,
+        hint: 'Kéo hoặc chạm nhãn [a] vào cạnh dài ngang, nhãn [b] vào cạnh rộng dọc.', xp: 30,
         geometryConfig: {
-          shape: 'rectangle',
-          vertices: ['A', 'B', 'C', 'D'],
-          sides: { AB: 'a', BC: 'b', CD: 'a', DA: 'b' },
-          lengthA: 8,
-          widthB: 5
+          shape: 'rectangle', vertices: ['A', 'B', 'C', 'D'],
+          sides: { AB: 'a', BC: 'b', CD: 'a', DA: 'b' }, lengthA: 8, widthB: 5
         }
       },
       {
-        id: 'q-m-12',
-        subject: 'math',
-        lesson: 'm-c2-l2',
-        topicTag: 'Hình lục giác đều',
-        type: 'multiple_choice',
-        prompt: 'Theo Nhận xét SGK Toán 6 trang 80, mỗi góc của hình lục giác đều ABCDEF bằng bao nhiêu độ?',
-        options: ['60°', '90°', '120°', '180°'],
-        correctAnswer: '120°',
-        explanation: 'Hình lục giác đều được ghép từ 6 tam giác đều chung đỉnh ở tâm, có 6 cạnh bằng nhau và 6 góc bằng nhau, mỗi góc bằng 120°.',
-        hint: 'Tam giác đều có góc 60°, hai góc tam giác đều ghép lại ở đỉnh lục giác đều là 60° + 60°.',
-        xp: 10
-      },
-      {
-        id: 'q-m-13',
-        subject: 'math',
-        lesson: 'm-c2-l2',
-        topicTag: 'Diện tích hình thoi',
-        type: 'number_input',
-        prompt: 'Tính diện tích hình thoi ABCD có độ dài hai đường chéo AC = 8 cm và BD = 6 cm (Ví dụ 6 SGK trang 94, đơn vị: cm²).',
-        correctAnswer: 24,
-        explanation: 'Diện tích hình thoi bằng nửa tích độ dài hai đường chéo: S = (1/2) × AC × BD = (8 × 6) : 2 = 24 (cm²).',
-        hint: 'Áp dụng công thức S = (AC × BD) : 2.',
-        xp: 15
+        id: 'q-m-14', subject: 'math', lesson: 'm-c4-l2', topicTag: 'Thực hành phần mềm GeoGebra', type: 'multiple_choice',
+        prompt: 'Trong phần mềm GeoGebra (Bài tập 1 SGK trang 118): Vẽ đường tròn tâm A đi qua B và đường tròn tâm B đi qua A. Hai đường tròn cắt nhau tại C và D. Nối các đoạn thẳng AC, CB, BD, DA rồi ẩn hai đường tròn đi thì hình còn lại trên vùng làm việc là hình gì?',
+        options: ['Hình thoi ACBD', 'Hình chữ nhật', 'Hình thang cân', 'Hình lục giác đều'],
+        correctAnswer: 'Hình thoi ACBD',
+        explanation: 'Vì AC, AD, BC, BD đều bằng bán kính AB của hai đường tròn nên 4 cạnh AC = CB = BD = DA. Tứ giác có 4 cạnh bằng nhau là hình thoi.',
+        hint: 'So sánh độ dài 4 đoạn thẳng AC, CB, BD, DA với bán kính AB.', xp: 15
       },
 
-      // TIẾNG ANH UNIT 1 & 2
+      // --- TIẾNG ANH UNIT 1: MY NEW SCHOOL ---
       {
-        id: 'q-e-1',
-        subject: 'english',
-        lesson: 'e-u1-vocab',
-        topicTag: 'Vocabulary: School things',
-        type: 'multiple_choice',
-        prompt: 'Chọn dụng cụ học tập dùng để vẽ đường tròn: "We use a ______ to draw circles in Maths class."',
-        options: ['compass', 'calculator', 'pencil sharpener', 'rubber'],
-        correctAnswer: 'compass',
-        explanation: '"compass" là cái com-pa dùng để vẽ đường tròn. "calculator" là máy tính bỏ túi, "pencil sharpener" là gọt bút chì, "rubber" là cục tẩy.',
-        hint: 'Từ này bắt đầu bằng chữ "c".',
-        xp: 10
+        id: 'q-e-1', subject: 'english', lesson: 'e-u1-vocab', topicTag: 'Vocabulary: School things & Collocations', type: 'multiple_choice',
+        prompt: 'Complete the sentence (Unit 1 p.8): "Vy and I often do our ______ after school."',
+        options: ['homework', 'football', 'school lunch', 'music'], correctAnswer: 'homework',
+        explanation: 'Ta dùng cụm "do homework" (làm bài tập về nhà). Còn "play football", "have school lunch", "study music".',
+        hint: 'Động từ "do" đi với từ nào trong các lựa chọn?', xp: 10
       },
       {
-        id: 'q-e-2',
-        subject: 'english',
-        lesson: 'e-u1-vocab',
-        topicTag: 'Vocabulary: Collocations',
-        type: 'multiple_choice',
-        prompt: 'Chọn động từ đúng điền vào chỗ trống: "Students ______ their uniforms on Mondays."',
-        options: ['wear', 'study', 'play', 'do'],
-        correctAnswer: 'wear',
-        explanation: 'Cụm từ "wear uniforms" có nghĩa là mặc đồng phục.',
-        hint: 'Đồng phục (uniforms) đi với động từ chỉ việc mặc.',
-        xp: 10
+        id: 'q-e-2', subject: 'english', lesson: 'e-u1-gram', topicTag: 'Grammar: Adverbs of frequency', type: 'multiple_choice',
+        prompt: 'Choose the correct answer A or B (Unit 1 p.10): "My mum ______ to work late."',
+        options: ['rarely goes', 'goes rarely', 'rarely go', 'go rarely'], correctAnswer: 'rarely goes',
+        explanation: 'Trạng từ chỉ tần suất (always, usually, sometimes, rarely, never) đứng TRƯỚC động từ thường. Chủ ngữ "My mum" là số ít nên dùng "goes".',
+        hint: 'Adverb of frequency đứng trước động từ chính.', xp: 15
       },
       {
-        id: 'q-e-3',
-        subject: 'english',
-        lesson: 'e-u1-gram',
-        topicTag: 'Grammar: Adverbs of frequency',
-        type: 'multiple_choice',
-        prompt: 'Chọn đáp án đúng theo vị trí của trạng từ chỉ tần suất: "My mum ______ to work late."',
-        options: ['rarely goes', 'goes rarely', 'rarely go', 'is rarely go'],
-        correctAnswer: 'rarely goes',
-        explanation: 'Trạng từ chỉ tần suất (always, usually, often, sometimes, rarely, never) đứng TRƯỚC động từ thường. Chủ ngữ "My mum" là ngôi thứ 3 số ít nên động từ "go" thêm "-es" thành "goes".',
-        hint: 'Trạng từ tần suất đứng trước động từ chính.',
-        xp: 15
+        id: 'q-e-3', subject: 'english', lesson: 'e-u1-gram', topicTag: 'Sentence Building: Present Simple', type: 'ordering',
+        prompt: 'Sắp xếp các từ sau thành câu hỏi hoàn chỉnh (Unit 1 p.10):',
+        options: ['Do', 'you', 'often', 'travel', 'at', 'weekends?'],
+        correctAnswer: ['Do', 'you', 'often', 'travel', 'at', 'weekends?'],
+        explanation: 'Cấu trúc câu hỏi Hiện tại đơn với trạng từ tần suất: Do + you + often + V (travel) + at weekends?',
+        hint: 'Bắt đầu câu hỏi bằng trợ động từ "Do".', xp: 20
       },
       {
-        id: 'q-e-4',
-        subject: 'english',
-        lesson: 'e-u1-gram',
-        topicTag: 'Sentence Building: Adverbs of frequency',
-        type: 'ordering',
-        prompt: 'Sắp xếp các từ sau thành câu hoàn chỉnh:',
-        options: ['usually', 'I', 'school', 'walk', 'to'],
-        correctAnswer: ['I', 'usually', 'walk', 'to', 'school'],
-        explanation: 'Cấu trúc: Chủ ngữ (I) + Trạng từ tần suất (usually) + Động từ thường (walk) + Cụm chỉ hướng (to school).',
-        hint: 'Bắt đầu bằng chủ ngữ "I", theo sau là trạng từ "usually".',
-        xp: 20
+        id: 'q-e-4', subject: 'english', lesson: 'e-u1-read', topicTag: 'Reading: Sunrise, An Son & Dream School', type: 'multiple_choice',
+        prompt: 'According to Skills 1 (Unit 1 p.12), which school is an international school where students join clubs and do paintings in the art club?',
+        options: ['Dream School', 'Sunrise School', 'An Son School', 'Palmer School'], correctAnswer: 'Dream School',
+        explanation: 'Đoạn 3 trang 12 SGK nêu rõ: "Dream is an international school... Some students do paintings in the art club."',
+        hint: 'Sunrise là boarding school ở Sydney, An Son ở Bắc Ninh.', xp: 15
+      },
+
+      // --- TIẾNG ANH UNIT 2: MY HOUSE ---
+      {
+        id: 'q-e-5', subject: 'english', lesson: 'e-u2-vocab', topicTag: 'Vocabulary: Rooms & Furniture', type: 'multiple_choice',
+        prompt: 'Where did Mi and her mum buy two new lamps for her bedroom? (Unit 2 p.18)',
+        options: ['In the department store', 'In the bookshop', 'In the pharmacy', 'At the railway station'],
+        correctAnswer: 'In the department store',
+        explanation: 'Trong bài hội thoại trang 18 SGK, mẹ của Mi nói: "In the department store near our house. They have a lot of things for homes."',
+        hint: 'Cửa hàng bách hóa bán nhiều đồ gia dụng.', xp: 10
       },
       {
-        id: 'q-e-5',
-        subject: 'english',
-        lesson: 'e-u1-read',
-        topicTag: 'Reading: Boarding school',
-        type: 'multiple_choice',
-        prompt: 'Đọc câu sau: "Sunrise is a boarding school in Sydney. Students study and live there. They only go home at weekends." Hỏi: "boarding school" nghĩa là gì?',
-        options: ['Trường nội trú', 'Trường quốc tế', 'Trường tiểu học', 'Trường nghệ thuật'],
-        correctAnswer: 'Trường nội trú',
-        explanation: 'Vì học sinh học tập và sinh sống ngay tại trường ("study and live there") và chỉ về nhà vào cuối tuần nên "boarding school" là trường nội trú.',
-        hint: 'Chú ý cụm "study and live there".',
-        xp: 15
+        id: 'q-e-6', subject: 'english', lesson: 'e-u2-gram', topicTag: 'Grammar: Possessive case', type: 'multiple_choice',
+        prompt: 'Choose the correct possessive form (Unit 2 p.18 & Review 1 p.36): "A vase of flowers is on the ______ desk."',
+        options: ["teacher's", 'teachers', "teacher'", 'of teacher'], correctAnswer: "teacher's",
+        explanation: 'Ta dùng \'s sau danh từ số ít ("teacher") để chỉ sở hữu → "teacher\'s desk" (bàn của giáo viên).',
+        hint: 'Danh từ số ít + \'s.', xp: 15
+      },
+
+      // --- TIẾNG ANH UNIT 3 & REVIEW 1: MY FRIENDS ---
+      {
+        id: 'q-e-7', subject: 'english', lesson: 'e-u3-vocab', topicTag: 'Vocabulary: Personality adjectives', type: 'multiple_choice',
+        prompt: 'Complete the sentence (Unit 3 p.28): "Mina is very ______. She likes drawing pictures. She always has lots of new ideas."',
+        options: ['creative', 'shy', 'careful', 'friendly'], correctAnswer: 'creative',
+        explanation: 'Người thích vẽ tranh và luôn có nhiều ý tưởng mới ("lots of new ideas") là người sáng tạo ("creative").',
+        hint: 'Chú ý cụm "lots of new ideas".', xp: 15
       },
       {
-        id: 'q-e-6',
-        subject: 'english',
-        lesson: 'e-u1-read',
-        topicTag: 'Word Form: Adjective & Adverb',
-        type: 'text_input',
-        prompt: 'Điền dạng đúng của từ trong ngoặc (Word Form): "On New Year\'s Day, we dress ______ (beauty) and go to our grandparents\' houses."',
-        correctAnswer: 'beautifully',
-        explanation: 'Sau động từ thường "dress" (ăn mặc) cần một trạng từ (adverb) chỉ cách thức → "beautifully".',
-        hint: 'Biến đổi danh từ beauty → tính từ beautiful → trạng từ thêm đuôi -ly.',
-        xp: 15
+        id: 'q-e-8', subject: 'english', lesson: 'e-u3-gram', topicTag: 'Grammar: Present simple vs Present continuous', type: 'multiple_choice',
+        prompt: 'Put the verb in the correct tense (Unit 3 p.30 & Review 1 p.36): "We can\'t go out now. It ______."',
+        options: ['is raining', 'rains', 'rain', 'are raining'], correctAnswer: 'is raining',
+        explanation: 'Có trạng từ "now" chỉ sự việc đang diễn ra ngay lúc nói nên dùng thì Hiện tại tiếp diễn: It + is + V-ing (is raining).',
+        hint: 'Chú ý từ "now".', xp: 15
       },
       {
-        id: 'q-e-7',
-        subject: 'english',
-        lesson: 'e-u2-vocab',
-        topicTag: 'Vocabulary: Giving directions',
-        type: 'multiple_choice',
-        prompt: 'Khi chỉ đường trên bản đồ khu phố (Unit 4 SGK trang 39), cụm từ "go straight" có nghĩa là gì?',
-        options: ['Đi thẳng', 'Rẽ phải', 'Rẽ trái', 'Băng qua đường'],
-        correctAnswer: 'Đi thẳng',
-        explanation: '"go straight" nghĩa là đi thẳng; "turn right" là rẽ phải; "turn left" là rẽ trái; "cross the road" là băng qua đường.',
-        hint: 'Straight nghĩa là thẳng.',
-        xp: 10
+        id: 'q-e-9', subject: 'english', lesson: 'e-rev-1', topicTag: 'Everyday English: Asking about appearance & personality', type: 'multiple_choice',
+        prompt: 'To ask about your best friend\'s personality ("She\'s very kind and creative"), which question do you use? (Unit 3 p.31)',
+        options: ["What's she like?", 'What does she look like?', 'How old is she?', 'Where does she live?'],
+        correctAnswer: "What's she like?",
+        explanation: '"What does she look like?" dùng để hỏi về ngoại hình (appearance), còn "What\'s she like?" dùng để hỏi về tính cách (personality).',
+        hint: 'Phân biệt "look like" (ngoại hình) và "be like" (tính cách).', xp: 15
       },
+
+      // --- TIẾNG ANH UNIT 4: MY NEIGHBOURHOOD ---
       {
-        id: 'q-e-8',
-        subject: 'english',
-        lesson: 'e-u2-gram',
-        topicTag: 'Grammar: Possessive case',
-        type: 'multiple_choice',
-        prompt: 'Chọn đáp án đúng sử dụng sở hữu cách: "Elena is ______ sister."',
-        options: ["Nick's", 'Nicks', "Nick'", 'of Nick'],
-        correctAnswer: "Nick's",
-        explanation: 'Sở hữu cách với tên riêng/danh từ số ít ("Nick") được tạo bằng cách thêm dấu lược và chữ s (\'s) → "Nick\'s sister".',
-        hint: 'Tên riêng + \'s.',
-        xp: 15
+        id: 'q-e-10', subject: 'english', lesson: 'e-u4-l1', topicTag: 'Reading & Comparative: Khang\'s Blog', type: 'multiple_choice',
+        prompt: 'In Khang\'s Blog (Unit 4 p.44), why does Khang dislike two things about his neighbourhood in the suburbs of Da Nang City?',
+        options: [
+          'There are many modern buildings/offices and the streets are busy and crowded.',
+          'The weather is bad and there are no parks.',
+          'The people are unfriendly and the food is bad.',
+          'There are no shops or markets.'
+        ],
+        correctAnswer: 'There are many modern buildings/offices and the streets are busy and crowded.',
+        explanation: 'Cuối bài đọc trang 44 SGK, Khang viết: "However, there are two things I dislike about it: there are many modern buildings and offices; and the streets are busy and crowded."',
+        hint: 'Xem đoạn cuối của Khang\'s Blog trang 44.', xp: 15
       },
+
+      // --- TIẾNG ANH UNIT 5: NATURAL WONDERS OF VIET NAM ---
       {
-        id: 'q-e-9',
-        subject: 'english',
-        lesson: 'e-u2-gram',
-        topicTag: 'Grammar: Making suggestions',
-        type: 'multiple_choice',
-        prompt: 'Hoàn thành câu gợi ý (Unit 4 SGK trang 39): "______ go to Chua Cau in Hoi An!"',
-        options: ["Let's", 'How about', 'What about', 'Shall'],
-        correctAnswer: "Let's",
-        explanation: 'Theo mục Remember! SGK trang 39: Ta dùng "Let\'s + V nguyên thể" (hoặc "Shall we + V nguyên thể") để đưa ra lời đề nghị.',
-        hint: 'Example trong sách: Let\'s go to Chua Cau.',
-        xp: 15
+        id: 'q-e-11', subject: 'english', lesson: 'e-u5-l1', topicTag: 'Grammar: Modal verb must / mustn\'t', type: 'multiple_choice',
+        prompt: 'According to the Global Travel Guides for visiting the Himalayas (Unit 5 p.53), which rule is CORRECT?',
+        options: [
+          'You mustn\'t travel alone. Always go in a group.',
+          'You must wear shorts or T-shirts.',
+          'You can litter on the mountain.',
+          'You must bring a bicycle.'
+        ],
+        correctAnswer: 'You mustn\'t travel alone. Always go in a group.',
+        explanation: 'Quy tắc leo núi Himalayas ở trang 53 SGK nêu rõ: "You mustn\'t travel alone. Always go in a group. You mustn\'t litter."',
+        hint: 'must = phải làm; mustn\'t = cấm/không được làm.', xp: 15
+      },
+
+      // --- TIẾNG ANH UNIT 6: OUR TET HOLIDAY ---
+      {
+        id: 'q-e-12', subject: 'english', lesson: 'e-u6-l1', topicTag: 'Reading: New Year\'s practices', type: 'multiple_choice',
+        prompt: 'In Unit 6 Skills 1 (p.64), why do Vietnamese people buy salt at Tet?',
+        options: [
+          'To wish for good luck',
+          'To wish for enough food',
+          'To light up the sky at midnight',
+          'To give lucky money'
+        ],
+        correctAnswer: 'To wish for good luck',
+        explanation: 'Đoạn văn của Mai (Việt Nam) trang 64 SGK viết: "People give rice to wish for enough food and buy salt to wish for good luck."',
+        hint: 'Tặng gạo cầu đủ ăn (enough food), mua muối cầu may mắn (good luck).', xp: 15
       }
     ];
 
-    const VOCABULARY_CARDS = [
+    const DEFAULT_VOCABULARY = [
       { id: 'v-1', word: 'boarding school', phonetic: '/ˈbɔːdɪŋ skuːl/', pos: 'noun', meaningVi: 'trường nội trú', example: 'Sunrise is a boarding school in Sydney.' },
-      { id: 'v-2', word: 'compass', phonetic: '/ˈkʌmpəs/', pos: 'noun', meaningVi: 'com-pa, la bàn', example: 'Bring your compass to the maths class.' },
+      { id: 'v-2', word: 'compass', phonetic: '/ˈkʌmpəs/', pos: 'noun', meaningVi: 'com-pa, la bàn', example: 'My brother has a new compass.' },
       { id: 'v-3', word: 'calculator', phonetic: '/ˈkælkjuleɪtə(r)/', pos: 'noun', meaningVi: 'máy tính bỏ túi', example: 'I have a new calculator in my school bag.' },
       { id: 'v-4', word: 'pencil sharpener', phonetic: '/ˈpensl ˌʃɑːpnə(r)/', pos: 'noun', meaningVi: 'cái gọt bút chì', example: 'Can I borrow your pencil sharpener?' },
       { id: 'v-5', word: 'uniform', phonetic: '/ˈjuːnɪfɔːm/', pos: 'noun', meaningVi: 'đồng phục', example: 'We always look smart in our uniforms.' },
       { id: 'v-6', word: 'smart', phonetic: '/smɑːt/', pos: 'adjective', meaningVi: 'bảnh bao, gọn gàng, thông minh', example: 'You look smart in your new uniform!' },
-      { id: 'v-7', word: 'town house', phonetic: '/ˈtaʊn haʊs/', pos: 'noun', meaningVi: 'nhà phố', example: 'Nick lives in a town house with his family.' },
-      { id: 'v-8', word: 'country house', phonetic: '/ˌkʌntri ˈhaʊs/', pos: 'noun', meaningVi: 'nhà ở vùng quê', example: 'My grandparents live in a quiet country house.' },
-      { id: 'v-9', word: 'flat', phonetic: '/flæt/', pos: 'noun', meaningVi: 'căn hộ chung cư', example: 'Mi’s new flat has three bedrooms.' },
-      { id: 'v-10', word: 'living room', phonetic: '/ˈlɪvɪŋ ruːm/', pos: 'noun', meaningVi: 'phòng khách', example: 'My father is in the living room.' },
-      { id: 'v-11', word: 'confident', phonetic: '/ˈkɒnfɪdənt/', pos: 'adjective', meaningVi: 'tự tin', example: 'She is very confident when speaking English.' },
-      { id: 'v-12', word: 'hard-working', phonetic: '/ˌhɑːd ˈwɜːkɪŋ/', pos: 'adjective', meaningVi: 'chăm chỉ', example: 'Most students at my school are hard-working and kind.' },
-      { id: 'v-13', word: 'caring', phonetic: '/ˈkeərɪŋ/', pos: 'adjective', meaningVi: 'chu đáo, biết quan tâm', example: 'He is a caring person. He cares about everybody.' },
-      { id: 'v-14', word: 'creative', phonetic: '/kriˈeɪtɪv/', pos: 'adjective', meaningVi: 'sáng tạo', example: 'Mi likes drawing and writing stories. She is creative.' },
-      { id: 'v-15', word: 'go straight', phonetic: '/ɡəʊ streɪt/', pos: 'phrase', meaningVi: 'đi thẳng', example: 'Go straight. Take the second turning on the left.' },
-      { id: 'v-16', word: 'railway station', phonetic: '/ˈreɪlweɪ ˈsteɪʃn/', pos: 'noun', meaningVi: 'nhà ga tàu hỏa', example: 'Turn left to see the railway station.' },
+      { id: 'v-7', word: 'department store', phonetic: '/dɪˈpɑːtmənt stɔː(r)/', pos: 'noun', meaningVi: 'cửa hàng bách hóa', example: 'We bought two lamps in the department store.' },
+      { id: 'v-8', word: 'chest of drawers', phonetic: '/ˌtʃest əv ˈdrɔːz/', pos: 'noun', meaningVi: 'tủ có nhiều ngăn kéo', example: 'There is a chest of drawers in my bedroom.' },
+      { id: 'v-9', word: 'dishwasher', phonetic: '/ˈdɪʃwɒʃə(r)/', pos: 'noun', meaningVi: 'máy rửa bát', example: 'Put the bowls into the dishwasher.' },
+      { id: 'v-10', word: 'confident', phonetic: '/ˈkɒnfɪdənt/', pos: 'adjective', meaningVi: 'tự tin', example: 'She is very confident when speaking English.' },
+      { id: 'v-11', word: 'hard-working', phonetic: '/ˌhɑːd ˈwɜːkɪŋ/', pos: 'adjective', meaningVi: 'chăm chỉ', example: 'Most students at my school are hard-working and kind.' },
+      { id: 'v-12', word: 'caring', phonetic: '/ˈkeərɪŋ/', pos: 'adjective', meaningVi: 'chu đáo, biết quan tâm', example: 'Nam is caring. He likes helping his friends.' },
+      { id: 'v-13', word: 'creative', phonetic: '/kriˈeɪtɪv/', pos: 'adjective', meaningVi: 'sáng tạo', example: 'Mina is very creative. She always has lots of new ideas.' },
+      { id: 'v-14', word: 'clever', phonetic: '/ˈklevə(r)/', pos: 'adjective', meaningVi: 'thông minh, lanh lợi', example: 'Mai is clever. She learns things quickly and easily.' },
+      { id: 'v-15', word: 'suburbs', phonetic: '/ˈsʌbɜːbz/', pos: 'noun', meaningVi: 'khu vực ngoại ô', example: 'I live in the suburbs of Da Nang City.' },
+      { id: 'v-16', word: 'crowded', phonetic: '/ˈkraʊdɪd/', pos: 'adjective', meaningVi: 'đông đúc', example: 'The streets are busy and crowded.' },
       { id: 'v-17', word: 'natural wonder', phonetic: '/ˌnætʃrəl ˈwʌndə(r)/', pos: 'noun', meaningVi: 'kì quan thiên nhiên', example: 'Ha Long Bay is a famous natural wonder of Viet Nam.' },
-      { id: 'v-18', word: 'waterfall', phonetic: '/ˈwɔːtəfɔːl/', pos: 'noun', meaningVi: 'thác nước', example: 'We took photos near a beautiful waterfall.' },
+      { id: 'v-18', word: 'waterproof coat', phonetic: '/ˈwɔːtəpruːf kəʊt/', pos: 'noun', meaningVi: 'áo khoác chống thấm nước', example: 'You must bring a waterproof coat to the Himalayas.' },
       { id: 'v-19', word: 'fireworks', phonetic: '/ˈfaɪəwɜːks/', pos: 'noun', meaningVi: 'pháo hoa', example: 'Colourful fireworks light up the sky at midnight.' },
-      { id: 'v-20', word: 'lucky money', phonetic: '/ˈlʌki ˈmʌni/', pos: 'noun', meaningVi: 'tiền lì xì', example: 'Children get lucky money from their grandparents at Tet.' }
+      { id: 'v-20', word: 'lucky money', phonetic: '/ˈlʌki ˈmʌni/', pos: 'noun', meaningVi: 'tiền lì xì', example: 'We wish them Happy New Year and they give us lucky money.' }
     ];
 
     const WORD_FAMILIES = [
       {
-        rootWord: 'beauty',
-        noun: 'beauty',
-        verb: 'beautify',
-        adjective: 'beautiful',
-        adverb: 'beautifully',
+        rootWord: 'beauty', noun: 'beauty', verb: 'beautify', adjective: 'beautiful', adverb: 'beautifully',
         questions: [
-          {
-            sentence: 'Phu Quoc is a very ______ island in Viet Nam.',
-            targetPos: 'adjective (tính từ)',
-            answer: 'beautiful',
-            explanation: 'Trước danh từ "island" cần một tính từ (Adjective) bổ nghĩa → "beautiful".'
-          },
-          {
-            sentence: 'On New Year\'s Day, we dress ______ and go to our grandparents\' houses.',
-            targetPos: 'adverb (trạng từ)',
-            answer: 'beautifully',
-            explanation: 'Sau động từ thường "dress" (ăn mặc) cần một trạng từ (Adverb) chỉ cách thức → "beautifully".'
-          }
+          { sentence: 'Ha Long Bay has ______ islands and wonderful scenery.', targetPos: 'adjective (tính từ)', answer: 'beautiful', explanation: 'Trước danh từ "islands" cần một tính từ bổ nghĩa → "beautiful".' },
+          { sentence: 'On New Year\'s Day, we dress ______ and go to our grandparents\' houses (Unit 6 p.64).', targetPos: 'adverb (trạng từ)', answer: 'beautifully', explanation: 'Sau động từ thường "dress" cần trạng từ chỉ cách thức → "beautifully".' }
         ]
       },
       {
-        rootWord: 'care',
-        noun: 'care, carefulness',
-        verb: 'care',
-        adjective: 'careful, careless, caring',
-        adverb: 'carefully, carelessly',
+        rootWord: 'care', noun: 'care, carefulness', verb: 'care', adjective: 'careful, careless, caring', adverb: 'carefully, carelessly',
         questions: [
-          {
-            sentence: 'Please listen to the conversation ______ and fill the blanks.',
-            targetPos: 'adverb (trạng từ)',
-            answer: 'carefully',
-            explanation: 'Bổ nghĩa cho động từ "listen" cần trạng từ chỉ cách thức → "carefully" (một cách cẩn thận).'
-          },
-          {
-            sentence: 'My best friend is very ______; he always helps his classmates.',
-            targetPos: 'adjective (tính từ)',
-            answer: 'caring',
-            explanation: 'Sau động từ "is" và trạng từ "very" cần tính từ chỉ tính cách biết quan tâm → "caring".'
-          }
+          { sentence: 'Kim is very ______; she always pays attention to what she\'s doing (Unit 3 p.28).', targetPos: 'adjective (tính từ)', answer: 'careful', explanation: 'Sau "is very" cần tính từ chỉ sự cẩn thận ("pays attention to what she\'s doing") → "careful".' },
+          { sentence: 'Nam is ______; he likes helping his friends.', targetPos: 'adjective (tính từ)', answer: 'caring', explanation: 'Tính từ chỉ người biết quan tâm, hay giúp đỡ bạn bè là "caring".' }
         ]
       },
       {
-        rootWord: 'create',
-        noun: 'creation, creativity',
-        verb: 'create',
-        adjective: 'creative',
-        adverb: 'creatively',
+        rootWord: 'create', noun: 'creation, creativity', verb: 'create', adjective: 'creative', adverb: 'creatively',
         questions: [
-          {
-            sentence: 'Jimmy likes taking photos and drawing. He is clever and ______.',
-            targetPos: 'adjective (tính từ)',
-            answer: 'creative',
-            explanation: 'Đi song song với tính từ "clever" sau động từ to-be "is" cần một tính từ → "creative".'
-          }
+          { sentence: 'He\'s good at drawing. He\'s very ______ (Review 1 p.36).', targetPos: 'adjective (tính từ)', answer: 'creative', explanation: 'Sau "He\'s very" cần tính từ chỉ sự sáng tạo → "creative".' }
         ]
       },
       {
-        rootWord: 'quick',
-        noun: 'quickness',
-        verb: 'quicken',
-        adjective: 'quick',
-        adverb: 'quickly',
+        rootWord: 'quick', noun: 'quickness', verb: 'quicken', adjective: 'quick', adverb: 'quickly',
         questions: [
-          {
-            sentence: 'He runs very ______ in the school sports club.',
-            targetPos: 'adverb (trạng từ)',
-            answer: 'quickly',
-            explanation: 'Bổ nghĩa cho động từ thường "runs" cần một trạng từ (Adverb) → thêm đuôi "-ly" thành "quickly".'
-          }
+          { sentence: 'Mai is clever. She learns things ______ and easily (Unit 3 p.28).', targetPos: 'adverb (trạng từ)', answer: 'quickly', explanation: 'Bổ nghĩa cho động từ thường "learns" cần một trạng từ → "quickly".' }
         ]
       }
     ];
 
     // ==========================================================================
-    // 2. HÀM SINH CÂU HỎI ĐỘNG & TÍNH LEVEL
+    // 2. HÀM TIỆN ÍCH, SINH CÂU HỎI ĐỘNG & CHUẨN HÓA TÊN FILE HỌC SINH
     // ==========================================================================
     function randInt(min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function slugifyStudentName(name) {
+      return String(name || 'hoc-sinh')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/đ/g, 'd').replace(/Đ/g, 'D')
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '') || 'hoc-sinh';
+    }
+
+    function encodeBase64UTF8(str) {
+      return btoa(unescape(encodeURIComponent(str)));
+    }
+
+    function decodeBase64UTF8(b64) {
+      return decodeURIComponent(escape(atob(b64.replace(/\s/g, ''))));
     }
 
     function generateMentalMathQuestion(difficulty) {
@@ -914,11 +635,9 @@
           const ans = a + b;
           return {
             id, subject: 'math', topicTag: 'Cộng nhẩm tròn chục', type: 'number_input',
-            prompt: `${a} + ${b} = ?`,
-            correctAnswer: ans,
+            prompt: `${a} + ${b} = ?`, correctAnswer: ans,
             explanation: `Mẹo tính nhẩm: ${a} + ${b} = ${a} + ${roundB} - ${diff} = ${a + roundB} - ${diff} = ${ans}.`,
-            hint: `Làm tròn ${b} thành ${roundB} rồi trừ đi ${diff}.`,
-            xp: 10
+            hint: `Làm tròn ${b} thành ${roundB} rồi trừ đi ${diff}.`, xp: 10
           };
         }
         if (mode === 'sub') {
@@ -929,26 +648,22 @@
           const ans = a - b;
           return {
             id, subject: 'math', topicTag: 'Trừ nhẩm bù tròn chục', type: 'number_input',
-            prompt: `${a} - ${b} = ?`,
-            correctAnswer: ans,
+            prompt: `${a} - ${b} = ?`, correctAnswer: ans,
             explanation: `Mẹo tính nhẩm: ${a} - ${b} = ${a} - ${roundB} + ${diff} = ${a - roundB} + ${diff} = ${ans}.`,
-            hint: `Lấy ${a} trừ ${roundB} trước, sau đó cộng lại ${diff}.`,
-            xp: 10
+            hint: `Lấy ${a} trừ ${roundB} trước, sau đó cộng lại ${diff}.`, xp: 10
           };
         }
         const a = randInt(4, 12);
         const b = randInt(4, 12);
         return {
           id, subject: 'math', topicTag: 'Nhân nhẩm cơ bản', type: 'number_input',
-          prompt: `${a} × ${b} = ?`,
-          correctAnswer: a * b,
-          explanation: `Tích của ${a} × ${b} = ${a * b}.`,
-          xp: 10
+          prompt: `${a} × ${b} = ?`, correctAnswer: a * b,
+          explanation: `Tích của ${a} × ${b} = ${a * b}.`, xp: 10
         };
       }
 
       if (difficulty === 2) {
-        const mode = ['smart_mul', 'order_ops', 'div'][randInt(0, 2)];
+        const mode = ['smart_mul', 'order_ops', 'int_add'][randInt(0, 2)];
         if (mode === 'smart_mul') {
           const pairs = [
             { a: 25, b: 16, factor: 4, rest: 4, base: 100 },
@@ -960,11 +675,9 @@
           const ans = pick.a * pick.b;
           return {
             id, subject: 'math', topicTag: 'Tính nhanh tách thừa số', type: 'number_input',
-            prompt: `Tính nhanh: ${pick.a} × ${pick.b} = ?`,
-            correctAnswer: ans,
+            prompt: `Tính nhanh: ${pick.a} × ${pick.b} = ?`, correctAnswer: ans,
             explanation: `Nhận xét ${pick.a} × ${pick.factor} = ${pick.base}. Do đó: ${pick.a} × ${pick.b} = (${pick.a} × ${pick.factor}) × ${pick.rest} = ${pick.base} × ${pick.rest} = ${ans}.`,
-            hint: `Tách ${pick.b} = ${pick.factor} × ${pick.rest} để ghép với ${pick.a}.`,
-            xp: 15
+            hint: `Tách ${pick.b} = ${pick.factor} × ${pick.rest} để ghép với ${pick.a}.`, xp: 15
           };
         }
         if (mode === 'order_ops') {
@@ -974,22 +687,18 @@
           const ans = a + b * c;
           return {
             id, subject: 'math', topicTag: 'Thứ tự thực hiện các phép tính', type: 'number_input',
-            prompt: `${a} + ${b} × ${c} = ?`,
-            correctAnswer: ans,
+            prompt: `${a} + ${b} × ${c} = ?`, correctAnswer: ans,
             explanation: `Thực hiện phép nhân trước: ${b} × ${c} = ${b * c}. Sau đó cộng: ${a} + ${b * c} = ${ans}.`,
-            hint: 'Nhân chia trước, cộng trừ sau.',
-            xp: 15
+            hint: 'Nhân chia trước, cộng trừ sau.', xp: 15
           };
         }
-        const divisor = randInt(6, 15);
-        const quotient = randInt(7, 15);
-        const dividend = divisor * quotient;
+        const pos = randInt(10, 35);
+        const neg = randInt(15, 45);
+        const ans = pos - neg;
         return {
-          id, subject: 'math', topicTag: 'Chia nhẩm', type: 'number_input',
-          prompt: `${dividend} ÷ ${divisor} = ?`,
-          correctAnswer: quotient,
-          explanation: `Vì ${divisor} × ${quotient} = ${dividend} nên ${dividend} ÷ ${divisor} = ${quotient}.`,
-          xp: 15
+          id, subject: 'math', topicTag: 'Cộng trừ số nguyên', type: 'number_input',
+          prompt: `Tính số nguyên: ${pos} + (-${neg}) = ?`, correctAnswer: ans,
+          explanation: `Cộng hai số nguyên trái dấu: ${pos} + (-${neg}) = ${ans}.`, xp: 15
         };
       }
 
@@ -1000,11 +709,9 @@
       const ans = a - b * c + d;
       return {
         id, subject: 'math', topicTag: 'Biểu thức nhiều phép tính', type: 'number_input',
-        prompt: `${a} - ${b} × ${c} + ${d} = ?`,
-        correctAnswer: ans,
+        prompt: `${a} - ${b} × ${c} + ${d} = ?`, correctAnswer: ans,
         explanation: `Bước 1 (Nhân trước): ${b} × ${c} = ${b * c}. Bước 2 (Trái sang phải): ${a} - ${b * c} + ${d} = ${a - b * c} + ${d} = ${ans}.`,
-        hint: 'Tính tích trước, sau đó thực hiện trừ rồi cộng từ trái sang phải.',
-        xp: 20
+        hint: 'Tính tích trước, sau đó thực hiện trừ rồi cộng từ trái sang phải.', xp: 20
       };
     }
 
@@ -1012,21 +719,15 @@
       const lengthA = randInt(6, 15);
       const widthB = randInt(2, Math.min(10, lengthA - 1));
       return {
-        id: 'geo-rect-' + Date.now(),
-        subject: 'math',
-        lesson: 'm-c2-l2',
-        topicTag: 'Diện tích hình chữ nhật',
-        type: 'geometry_interaction',
+        id: 'geo-rect-' + Date.now(), subject: 'math', lesson: 'm-c4-l1',
+        topicTag: 'Diện tích hình chữ nhật', type: 'geometry_interaction',
         prompt: `Hình chữ nhật ABCD có chiều dài a = ${lengthA} cm và chiều rộng b = ${widthB} cm. Hãy tương tác trên hình và tính diện tích S.`,
         correctAnswer: lengthA * widthB,
         explanation: `Diện tích hình chữ nhật ABCD là S = a × b = ${lengthA} × ${widthB} = ${lengthA * widthB} cm².`,
         xp: 30,
         geometryConfig: {
-          shape: 'rectangle',
-          vertices: ['A', 'B', 'C', 'D'],
-          sides: { AB: 'a', BC: 'b', CD: 'a', DA: 'b' },
-          lengthA,
-          widthB
+          shape: 'rectangle', vertices: ['A', 'B', 'C', 'D'],
+          sides: { AB: 'a', BC: 'b', CD: 'a', DA: 'b' }, lengthA, widthB
         }
       };
     }
@@ -1040,13 +741,70 @@
     }
 
     // ==========================================================================
-    // 3. QUẢN LÝ TRẠNG THÁI (STATE STORE + LOCALSTORAGE AN TOÀN)
+    // 3. QUẢN LÝ HỒ SƠ HỌC SINH, KẾT NỐI GITHUB & AI CURRICULUM
     // ==========================================================================
-    const STORAGE_KEY = 'questlearn_grade6_pure_v2';
+    const CONFIG_STORAGE_KEY = 'questlearn_config_v3';
+    const CUSTOM_CURRICULUM_KEY = 'questlearn_custom_curriculum_v3';
+    const CURRENT_STUDENT_SLUG_KEY = 'questlearn_active_student_slug_v3';
 
-    function createDefaultState() {
+    function loadCloudConfig() {
+      try {
+        const raw = window.localStorage.getItem(CONFIG_STORAGE_KEY);
+        if (raw) return JSON.parse(raw);
+      } catch (e) {}
+      // Tự động nhận diện owner & repo nếu đang chạy trên *.github.io
+      let autoOwner = '';
+      let autoRepo = '';
+      if (window.location.hostname.endsWith('.github.io')) {
+        autoOwner = window.location.hostname.replace('.github.io', '');
+        const pathParts = window.location.pathname.split('/').filter(Boolean);
+        if (pathParts.length > 0) autoRepo = pathParts[0];
+      }
+      return {
+        githubOwner: autoOwner,
+        githubRepo: autoRepo,
+        githubBranch: 'main',
+        githubToken: '',
+        geminiApiKey: ''
+      };
+    }
+
+    function saveCloudConfig() {
+      try {
+        window.localStorage.setItem(CONFIG_STORAGE_KEY, JSON.stringify(APP.cloudConfig));
+      } catch (e) {}
+    }
+
+    function getMergedCurriculum() {
+      let custom = { chapters: [], questions: [], vocabulary: [] };
+      try {
+        const raw = window.localStorage.getItem(CUSTOM_CURRICULUM_KEY);
+        if (raw) custom = JSON.parse(raw);
+      } catch (e) {}
+
+      const chapters = JSON.parse(JSON.stringify(DEFAULT_CHAPTERS));
+      (custom.chapters || []).forEach((cCh) => {
+        const existing = chapters.find((x) => x.id === cCh.id);
+        if (existing) {
+          (cCh.lessons || []).forEach((l) => {
+            if (!existing.lessons.some((el) => el.id === l.id)) {
+              existing.lessons.push(l);
+            }
+          });
+        } else {
+          chapters.push(cCh);
+        }
+      });
+
+      const questions = [...DEFAULT_QUESTIONS, ...(custom.questions || [])];
+      const vocabulary = [...DEFAULT_VOCABULARY, ...(custom.vocabulary || [])];
+      return { chapters, questions, vocabulary, customRaw: custom };
+    }
+
+    function createDefaultStudentState(studentName) {
+      const curr = getMergedCurriculum();
       const progress = {};
-      CHAPTERS.forEach((ch) => {
+      curr.chapters.forEach((ch) => {
         ch.lessons.forEach((l, idx) => {
           progress[l.id] = {
             lessonId: l.id,
@@ -1058,91 +816,277 @@
       });
 
       const flashcardSRS = {};
-      VOCABULARY_CARDS.forEach((c) => {
+      curr.vocabulary.forEach((c) => {
         flashcardSRS[c.id] = { learned: false, repetitions: 0 };
       });
 
+      const cleanName = String(studentName || '').trim() || 'Học sinh Lớp 6';
+      const slug = slugifyStudentName(cleanName);
+
       return {
-        studentName: 'Học sinh Lớp 6',
+        studentName: cleanName,
+        studentSlug: slug,
+        filePathOnGithub: `students/${slug}.json`,
         selectedSubject: 'math',
-        xp: 140,
-        streak: 7,
-        bestStreak: 7,
+        xp: 0,
+        streak: 1,
+        bestStreak: 1,
         lastStudyDate: new Date().toISOString().slice(0, 10),
         hearts: 5,
         heartsEnabled: true,
         dailyGoalMinutes: 10,
-        minutesToday: 6,
+        minutesToday: 0,
         progress,
         mistakes: {},
         weakTopics: {},
         flashcardSRS,
-        achievements: ['First Lesson', '7 Day Streak'],
-        subjectAccuracy: { mathCorrect: 18, mathTotal: 21, englishCorrect: 15, englishTotal: 19 },
-        mentalMathStats: { bestScore: 140, avgResponseMs: 3800, bestStreak: 9 }
+        achievements: [],
+        subjectAccuracy: { mathCorrect: 0, mathTotal: 0, englishCorrect: 0, englishTotal: 0 },
+        mentalMathStats: { bestScore: 0, avgResponseMs: 0, bestStreak: 0 },
+        updatedAt: new Date().toISOString()
       };
     }
 
-    function loadState() {
-      try {
-        const raw = window.localStorage.getItem(STORAGE_KEY);
-        if (raw) {
-          const parsed = JSON.parse(raw);
-          return Object.assign(createDefaultState(), parsed);
-        }
-      } catch (e) {}
-      return createDefaultState();
+    function ensureProgressNodes(stateObj) {
+      const curr = getMergedCurriculum();
+      if (!stateObj.progress) stateObj.progress = {};
+      curr.chapters.forEach((ch) => {
+        ch.lessons.forEach((l, idx) => {
+          if (!stateObj.progress[l.id]) {
+            stateObj.progress[l.id] = {
+              lessonId: l.id,
+              status: idx === 0 ? 'available' : 'locked',
+              stars: 0,
+              highScore: 0
+            };
+          }
+        });
+      });
+      return stateObj;
     }
 
-    function saveState() {
+    function loadStudentFromLocal(slug, displayName) {
       try {
-        window.localStorage.setItem(STORAGE_KEY, JSON.stringify(APP.state));
+        const raw = window.localStorage.getItem('questlearn_student_' + slug);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          return ensureProgressNodes(Object.assign(createDefaultStudentState(displayName || parsed.studentName), parsed));
+        }
       } catch (e) {}
+      return createDefaultStudentState(displayName);
+    }
+
+    function saveStudentToLocal() {
+      if (!APP.state || !APP.state.studentSlug) return;
+      APP.state.updatedAt = new Date().toISOString();
+      try {
+        window.localStorage.setItem('questlearn_student_' + APP.state.studentSlug, JSON.stringify(APP.state));
+        window.localStorage.setItem(CURRENT_STUDENT_SLUG_KEY, APP.state.studentSlug);
+      } catch (e) {}
+    }
+
+    // Đồng bộ File riêng của Học sinh lên GitHub: students/<slug>.json
+    async function syncStudentFileToGitHub(silent = false) {
+      if (!APP.state) return;
+      saveStudentToLocal();
+      const cfg = APP.cloudConfig;
+      if (!cfg.githubOwner || !cfg.githubRepo || !cfg.githubToken) {
+        if (!silent) {
+          APP.syncStatusMsg = '⚠️ Đã lưu trên máy! Để tự động tạo file riêng trên GitHub, hãy nhập GitHub Token ở mục "🪄 AI & Giáo viên".';
+          renderApp();
+        }
+        return false;
+      }
+
+      const path = `students/${APP.state.studentSlug}.json`;
+      const apiUrl = `https://api.github.com/repos/${cfg.githubOwner}/${cfg.githubRepo}/contents/${path}`;
+      const headers = {
+        'Accept': 'application/vnd.github+json',
+        'Authorization': `Bearer ${cfg.githubToken}`
+      };
+
+      try {
+        APP.syncStatusMsg = `⏳ Đang lưu file ${path} lên GitHub...`;
+        if (!silent) renderApp();
+
+        let sha = null;
+        const getRes = await fetch(apiUrl + `?ref=${encodeURIComponent(cfg.githubBranch || 'main')}`, { headers });
+        if (getRes.ok) {
+          const existingData = await getRes.json();
+          sha = existingData.sha;
+        }
+
+        const contentStr = JSON.stringify(APP.state, null, 2);
+        const bodyPayload = {
+          message: `Cập nhật tiến độ học sinh: ${APP.state.studentName} (${APP.state.xp} XP)`,
+          content: encodeBase64UTF8(contentStr),
+          branch: cfg.githubBranch || 'main'
+        };
+        if (sha) bodyPayload.sha = sha;
+
+        const putRes = await fetch(apiUrl, {
+          method: 'PUT',
+          headers: Object.assign({ 'Content-Type': 'application/json' }, headers),
+          body: JSON.stringify(bodyPayload)
+        });
+
+        if (putRes.ok) {
+          APP.syncStatusMsg = `✅ Đã lưu thành công file "${path}" lên GitHub!`;
+          if (!silent) renderApp();
+          return true;
+        } else {
+          const errJson = await putRes.json().catch(() => ({}));
+          APP.syncStatusMsg = `❌ Lỗi lưu GitHub: ${errJson.message || putRes.statusText}`;
+          if (!silent) renderApp();
+          return false;
+        }
+      } catch (err) {
+        APP.syncStatusMsg = `❌ Không thể kết nối GitHub API: ${err.message}`;
+        if (!silent) renderApp();
+        return false;
+      }
+    }
+
+    // Tải hồ sơ Học sinh từ file students/<slug>.json trên GitHub (nếu đã có)
+    async function loadStudentFileFromGitHub(studentName) {
+      const slug = slugifyStudentName(studentName);
+      const localState = loadStudentFromLocal(slug, studentName);
+      const cfg = APP.cloudConfig;
+
+      if (!cfg.githubOwner || !cfg.githubRepo) {
+        return localState;
+      }
+
+      const path = `students/${slug}.json`;
+      const apiUrl = `https://api.github.com/repos/${cfg.githubOwner}/${cfg.githubRepo}/contents/${path}?ref=${encodeURIComponent(cfg.githubBranch || 'main')}`;
+      const headers = { 'Accept': 'application/vnd.github+json' };
+      if (cfg.githubToken) headers['Authorization'] = `Bearer ${cfg.githubToken}`;
+
+      try {
+        const res = await fetch(apiUrl, { headers });
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.content) {
+            const remoteState = JSON.parse(decodeBase64UTF8(data.content));
+            // Ưu tiên bản có XP cao hơn giữa máy hiện tại và trên GitHub
+            if ((remoteState.xp || 0) >= (localState.xp || 0)) {
+              return ensureProgressNodes(Object.assign(createDefaultStudentState(studentName), remoteState));
+            }
+          }
+        }
+      } catch (e) {}
+      return localState;
+    }
+
+    // Tự động tải Ngân hàng câu hỏi mở rộng (custom_curriculum.json) từ GitHub nếu giáo viên đã tạo thêm bài bằng AI
+    async function fetchRemoteCustomCurriculum() {
+      const cfg = APP.cloudConfig;
+      if (!cfg.githubOwner || !cfg.githubRepo) return;
+      const apiUrl = `https://api.github.com/repos/${cfg.githubOwner}/${cfg.githubRepo}/contents/custom_curriculum.json?ref=${encodeURIComponent(cfg.githubBranch || 'main')}`;
+      const headers = { 'Accept': 'application/vnd.github+json' };
+      if (cfg.githubToken) headers['Authorization'] = `Bearer ${cfg.githubToken}`;
+
+      try {
+        const res = await fetch(apiUrl, { headers });
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.content) {
+            const parsed = JSON.parse(decodeBase64UTF8(data.content));
+            window.localStorage.setItem(CUSTOM_CURRICULUM_KEY, JSON.stringify(parsed));
+            if (APP.state) ensureProgressNodes(APP.state);
+            renderApp();
+          }
+        }
+      } catch (e) {}
+    }
+
+    async function saveCustomCurriculumToGitHub(customObj) {
+      window.localStorage.setItem(CUSTOM_CURRICULUM_KEY, JSON.stringify(customObj));
+      const cfg = APP.cloudConfig;
+      if (!cfg.githubOwner || !cfg.githubRepo || !cfg.githubToken) {
+        return { ok: false, msg: 'Đã lưu chương mới trên trình duyệt máy này! (Nhập GitHub Token để đồng bộ lên GitHub cho toàn bộ học sinh).' };
+      }
+
+      const path = 'custom_curriculum.json';
+      const apiUrl = `https://api.github.com/repos/${cfg.githubOwner}/${cfg.githubRepo}/contents/${path}`;
+      const headers = {
+        'Accept': 'application/vnd.github+json',
+        'Authorization': `Bearer ${cfg.githubToken}`
+      };
+
+      try {
+        let sha = null;
+        const getRes = await fetch(apiUrl + `?ref=${encodeURIComponent(cfg.githubBranch || 'main')}`, { headers });
+        if (getRes.ok) {
+          const ex = await getRes.json();
+          sha = ex.sha;
+        }
+        const payload = {
+          message: 'AI Studio: Cập nhật ngân hàng câu hỏi mới từ SGK',
+          content: encodeBase64UTF8(JSON.stringify(customObj, null, 2)),
+          branch: cfg.githubBranch || 'main'
+        };
+        if (sha) payload.sha = sha;
+
+        const putRes = await fetch(apiUrl, {
+          method: 'PUT',
+          headers: Object.assign({ 'Content-Type': 'application/json' }, headers),
+          body: JSON.stringify(payload)
+        });
+        if (putRes.ok) {
+          return { ok: true, msg: '✅ Đã lưu vĩnh viễn bài học mới vào file custom_curriculum.json trên GitHub! Mọi học sinh mở link đều thấy ngay!' };
+        }
+        const err = await putRes.json().catch(() => ({}));
+        return { ok: false, msg: 'Lỗi lưu GitHub: ' + (err.message || putRes.statusText) };
+      } catch (e) {
+        return { ok: false, msg: 'Lỗi kết nối GitHub: ' + e.message };
+      }
     }
 
     const APP = {
-      state: loadState(),
-      activeTab: 'home',         // 'home' | 'learn' | 'practice' | 'flashcards' | 'profile'
+      cloudConfig: loadCloudConfig(),
+      state: null, // Sẽ hiển thị màn hình Nhập Tên Học Sinh nếu chưa đăng nhập
+      loginLoading: false,
+      syncStatusMsg: '',
+      activeTab: 'home',         // 'home' | 'learn' | 'practice' | 'flashcards' | 'ai-studio' | 'profile'
       practiceSubTab: 'mental',  // 'mental' | 'geometry' | 'wordform'
-      activeQuiz: null,          // null hoặc object quản lý phiên Quiz hiện tại
+      activeQuiz: null,
       mentalSession: {
-        started: false,
-        finished: false,
-        difficulty: 1,
-        mode: '10q',
+        started: false, finished: false, difficulty: 1, mode: '10q',
         question: generateMentalMathQuestion(1),
-        score: 0,
-        totalAnswered: 0,
-        correctCount: 0,
-        streak: 0,
-        bestStreak: 0,
-        timeLeft: 60,
-        questionStartMs: Date.now(),
-        totalResponseMs: 0,
-        feedback: null,
-        timerId: null
+        score: 0, totalAnswered: 0, correctCount: 0, streak: 0, bestStreak: 0,
+        timeLeft: 60, questionStartMs: Date.now(), totalResponseMs: 0, feedback: null, timerId: null
       },
-      flashcardSession: {
-        index: 0,
-        flipped: false
-      },
-      wordFormSession: {
-        familyIdx: 0,
-        questionIdx: 0,
-        inputVal: '',
-        result: null
+      flashcardSession: { index: 0, flipped: false },
+      wordFormSession: { familyIdx: 0, questionIdx: 0, inputVal: '', result: null },
+      aiStudio: {
+        subject: 'math',
+        chapterTitle: 'Chương 5: Phân số & Số thập phân',
+        lessonTitle: 'Bài 1: Mở rộng phân số và hai phân số bằng nhau',
+        questionCount: 5,
+        sourceText: '',
+        imageBase64: null,
+        imageMimeType: null,
+        imageFileName: '',
+        generating: false,
+        statusMsg: '',
+        statusType: 'info',
+        generatedPreview: null,
+        classRoster: []
       }
     };
 
     // ==========================================================================
-    // 4. LOGIC CẬP NHẬT ĐIỂM, TIẾN ĐỘ & QUIZ
+    // 4. LOGIC CẬP NHẬT ĐIỂM, TIẾN ĐỘ & AI GENERATOR (GEMINI API)
     // ==========================================================================
     function addXP(amount) {
+      if (!APP.state) return;
       APP.state.xp += amount;
-      saveState();
+      saveStudentToLocal();
     }
 
     function recordQuestionResult(question, isCorrect) {
+      if (!APP.state) return;
       const acc = APP.state.subjectAccuracy;
       if (question.subject === 'math') {
         acc.mathTotal += 1;
@@ -1176,10 +1120,12 @@
           APP.state.mistakes[question.id].mastered = true;
         }
       }
-      saveState();
+      saveStudentToLocal();
     }
 
     function completeLesson(lessonId, accuracy, earnedXP, durationSec) {
+      if (!APP.state) return;
+      const curr = getMergedCurriculum();
       const today = new Date().toISOString().slice(0, 10);
       if (APP.state.lastStudyDate !== today) {
         APP.state.streak += 1;
@@ -1199,8 +1145,7 @@
         highScore: Math.max(prevProg.highScore, accuracy)
       };
 
-      // Mở khóa bài học tiếp theo trong chương
-      CHAPTERS.forEach((ch) => {
+      curr.chapters.forEach((ch) => {
         const idx = ch.lessons.findIndex((l) => l.id === lessonId);
         if (idx !== -1 && idx + 1 < ch.lessons.length) {
           const nextId = ch.lessons[idx + 1].id;
@@ -1215,68 +1160,290 @@
         }
       });
 
+      if (!APP.state.achievements.includes('First Lesson')) {
+        APP.state.achievements.push('First Lesson');
+      }
       if (accuracy === 100 && !APP.state.achievements.includes('Perfect Chapter')) {
         APP.state.achievements.push('Perfect Chapter');
       }
       if (APP.state.xp >= 300 && !APP.state.achievements.includes('Math Master')) {
         APP.state.achievements.push('Math Master');
       }
-      saveState();
+      saveStudentToLocal();
+      // Tự động đẩy file students/<ten-hoc-sinh>.json lên GitHub sau khi hoàn thành bài học!
+      syncStudentFileToGitHub(true);
     }
 
-    function startQuizSession(title, questions, lessonId) {
-      APP.activeQuiz = {
-        title,
-        questions,
-        lessonId: lessonId || null,
-        currentIndex: 0,
-        selectedOption: '',
-        inputVal: '',
-        orderedWords: [],
-        showHint: false,
-        answered: false,
-        isCorrect: null,
-        correctCount: 0,
-        sessionStreak: 0,
-        bestSessionStreak: 0,
-        earnedXP: 0,
-        wrongQuestions: [],
-        startTime: Date.now(),
-        finished: false,
-        geoState: createInitialGeoState()
-      };
+    // Gọi Gemini API để tự động sinh câu hỏi & từ vựng từ văn bản/ảnh SGK
+    async function runGeminiCurriculumGenerator() {
+      const st = APP.aiStudio;
+      const apiKey = (APP.cloudConfig.geminiApiKey || '').trim();
+      if (!apiKey) {
+        st.statusType = 'error';
+        st.statusMsg = '❌ Vui lòng nhập Gemini API Key ở ô cấu hình phía trên trước khi tạo câu hỏi!';
+        renderApp();
+        return;
+      }
+      if (!st.sourceText.trim() && !st.imageBase64) {
+        st.statusType = 'error';
+        st.statusMsg = '❌ Vui lòng dán nội dung văn bản từ Sách Giáo Khoa hoặc chọn ảnh chụp trang sách!';
+        renderApp();
+        return;
+      }
+
+      st.generating = true;
+      st.statusType = 'info';
+      st.statusMsg = '⏳ Trí tuệ nhân tạo Gemini đang đọc nội dung Sách Giáo Khoa và thiết kế câu hỏi tương tác...';
+      renderApp();
+
+      const systemPrompt = `Bạn là chuyên gia thiết kế học liệu Toán và Tiếng Anh lớp 6 theo chương trình Sách Giáo Khoa Việt Nam.
+Hãy phân tích nội dung sách được cung cấp và tạo ra ${st.questionCount} câu hỏi tương tác chất lượng cao cho môn "${st.subject === 'math' ? 'Toán 6' : 'Tiếng Anh 6'}", thuộc chương "${st.chapterTitle}", bài "${st.lessonTitle}".
+BẮT BUỘC trả về đúng định dạng JSON thuần túy (không dùng markdown codeblock) theo cấu trúc sau:
+{
+  "questions": [
+    {
+      "topicTag": "Tên chủ đề kiến thức ngắn gọn",
+      "type": "multiple_choice | number_input | text_input | true_false",
+      "prompt": "Nội dung câu hỏi rõ ràng, hấp dẫn",
+      "options": ["Lựa chọn A", "Lựa chọn B", "Lựa chọn C", "Lựa chọn D"],
+      "correctAnswer": "Đáp án đúng (phải khớp chính xác với 1 phần tử trong options nếu là multiple_choice/true_false, hoặc là số nếu là number_input)",
+      "explanation": "Giải thích chi tiết cách làm để học sinh lớp 6 hiểu bản chất",
+      "hint": "Gợi ý ngắn",
+      "xp": 15
+    }
+  ],
+  "vocabulary": [
+    {
+      "word": "từ tiếng Anh (nếu môn Tiếng Anh)",
+      "phonetic": "/phiên âm IPA/",
+      "pos": "noun | verb | adjective | adverb",
+      "meaningVi": "nghĩa tiếng Việt",
+      "example": "Câu ví dụ trong sách"
+    }
+  ]
+}`;
+
+      const parts = [{ text: systemPrompt + '\n\nNỘI DUNG SÁCH GIÁO KHOA:\n' + st.sourceText }];
+      if (st.imageBase64 && st.imageMimeType) {
+        parts.push({
+          inline_data: {
+            mime_type: st.imageMimeType,
+            data: st.imageBase64
+          }
+        });
+      }
+
+      try {
+        const res = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(apiKey)}`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [{ parts }],
+              generationConfig: {
+                temperature: 0.3,
+                responseMimeType: 'application/json'
+              }
+            })
+          }
+        );
+
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          throw new Error(errData.error?.message || res.statusText);
+        }
+
+        const data = await res.json();
+        const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
+        const cleaned = rawText.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
+        const parsed = JSON.parse(cleaned);
+
+        if (!parsed.questions || !Array.isArray(parsed.questions) || parsed.questions.length === 0) {
+          throw new Error('AI không trả về danh sách câu hỏi hợp lệ.');
+        }
+
+        st.generatedPreview = parsed;
+        st.generating = false;
+        st.statusType = 'success';
+        st.statusMsg = `✅ AI đã tạo thành công ${parsed.questions.length} câu hỏi và ${(parsed.vocabulary || []).length} thẻ từ vựng! Hãy kiểm tra bên dưới và bấm "Lưu & Cập nhật vào Lộ trình học".`;
+        renderApp();
+      } catch (err) {
+        st.generating = false;
+        st.statusType = 'error';
+        st.statusMsg = '❌ Lỗi gọi Gemini AI: ' + err.message;
+        renderApp();
+      }
+    }
+
+    async function publishGeneratedPreviewToCurriculum() {
+      const st = APP.aiStudio;
+      if (!st.generatedPreview) return;
+
+      const curr = getMergedCurriculum();
+      const custom = curr.customRaw || { chapters: [], questions: [], vocabulary: [] };
+
+      const chapterId = 'ch-' + slugifyStudentName(st.subject + '-' + st.chapterTitle);
+      const lessonId = 'les-' + slugifyStudentName(st.lessonTitle) + '-' + Date.now().toString().slice(-4);
+
+      let targetChapter = custom.chapters.find((c) => c.id === chapterId || c.title.toLowerCase() === st.chapterTitle.trim().toLowerCase());
+      if (!targetChapter) {
+        targetChapter = {
+          id: chapterId,
+          subject: st.subject,
+          title: st.chapterTitle.trim(),
+          subtitle: 'Chương tạo tự động bằng Trợ lý AI từ Sách Giáo Khoa',
+          lessons: []
+        };
+        custom.chapters.push(targetChapter);
+      }
+
+      targetChapter.lessons.push({
+        id: lessonId,
+        title: st.lessonTitle.trim(),
+        type: 'lesson',
+        description: `Bộ ${st.generatedPreview.questions.length} câu hỏi tương tác do AI tạo từ SGK`
+      });
+
+      st.generatedPreview.questions.forEach((q, idx) => {
+        custom.questions.push({
+          id: `ai-q-${Date.now()}-${idx}`,
+          subject: st.subject,
+          lesson: lessonId,
+          topicTag: q.topicTag || st.lessonTitle,
+          type: q.type || 'multiple_choice',
+          prompt: q.prompt,
+          options: q.options || ['Đúng', 'Sai'],
+          correctAnswer: q.type === 'number_input' ? Number(q.correctAnswer) : q.correctAnswer,
+          explanation: q.explanation || '',
+          hint: q.hint || '',
+          xp: Number(q.xp) || 15
+        });
+      });
+
+      (st.generatedPreview.vocabulary || []).forEach((v, idx) => {
+        if (v.word && v.meaningVi) {
+          custom.vocabulary.push({
+            id: `ai-v-${Date.now()}-${idx}`,
+            word: v.word,
+            phonetic: v.phonetic || '',
+            pos: v.pos || 'noun',
+            meaningVi: v.meaningVi,
+            example: v.example || ''
+          });
+        }
+      });
+
+      const ghRes = await saveCustomCurriculumToGitHub(custom);
+      if (APP.state) {
+        ensureProgressNodes(APP.state);
+        APP.state.progress[lessonId] = { lessonId, status: 'available', stars: 0, highScore: 0 };
+        saveStudentToLocal();
+      }
+
+      st.generatedPreview = null;
+      st.statusType = ghRes.ok ? 'success' : 'info';
+      st.statusMsg = ghRes.msg;
       renderApp();
     }
 
-    function createInitialGeoState() {
-      return {
-        phase: 'drag_labels', // 'drag_labels' | 'click_sides_a' | 'click_sides_b' | 'calculate'
-        assignedA: false,
-        assignedB: false,
-        selectedTouchLabel: null,
-        clickedSidesA: [],
-        clickedSidesB: [],
-        feedbackType: 'info',
-        feedbackMsg: 'Bước 1/4: Trong công thức S = a × b, hãy KÉO THẢ ký hiệu [a] vào cạnh dài và [b] vào cạnh rộng (hoặc chạm nhãn rồi chạm cạnh).',
-        shake: false,
-        calcInput: ''
-      };
+    // Tải danh sách tất cả file học sinh trong thư mục students/ trên GitHub
+    async function loadClassRosterFromGitHub() {
+      const cfg = APP.cloudConfig;
+      if (!cfg.githubOwner || !cfg.githubRepo) {
+        APP.aiStudio.statusType = 'error';
+        APP.aiStudio.statusMsg = '❌ Vui lòng nhập GitHub Username và Repository Name trước!';
+        renderApp();
+        return;
+      }
+      const apiUrl = `https://api.github.com/repos/${cfg.githubOwner}/${cfg.githubRepo}/contents/students?ref=${encodeURIComponent(cfg.githubBranch || 'main')}`;
+      const headers = { 'Accept': 'application/vnd.github+json' };
+      if (cfg.githubToken) headers['Authorization'] = `Bearer ${cfg.githubToken}`;
+
+      try {
+        const res = await fetch(apiUrl, { headers });
+        if (!res.ok) {
+          APP.aiStudio.classRoster = [];
+          APP.aiStudio.statusType = 'info';
+          APP.aiStudio.statusMsg = 'ℹ️ Chưa có thư mục students/ trên GitHub. Khi học sinh đầu tiên lưu bài, thư mục sẽ tự động được tạo!';
+          renderApp();
+          return;
+        }
+        const files = await res.json();
+        APP.aiStudio.classRoster = Array.isArray(files) ? files.filter((f) => f.name.endsWith('.json')) : [];
+        APP.aiStudio.statusType = 'success';
+        APP.aiStudio.statusMsg = `✅ Tìm thấy ${APP.aiStudio.classRoster.length} file hồ sơ học sinh trên GitHub Repository!`;
+        renderApp();
+      } catch (e) {
+        APP.aiStudio.statusType = 'error';
+        APP.aiStudio.statusMsg = '❌ Lỗi tải danh sách học sinh: ' + e.message;
+        renderApp();
+      }
     }
 
     // ==========================================================================
-    // 5. HÀM RENDER GIAO DIỆN CHÍNH
+    // 5. GIAO DIỆN MÀN HÌNH ĐĂNG NHẬP HỌC SINH & GIAO DIỆN CHÍNH
     // ==========================================================================
     function escapeHtml(str) {
-      return String(str)
+      return String(str || '')
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;');
     }
 
+    function renderLoginGateView() {
+      const cfg = APP.cloudConfig;
+      const connectedRepo = cfg.githubOwner && cfg.githubRepo ? `${cfg.githubOwner}/${cfg.githubRepo}` : 'Lưu trên máy & Xuất file .json';
+
+      return `
+        <div class="login-gate">
+          <div class="login-card">
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom:18px">
+              <div class="brand-logo" style="width:52px; height:52px; font-size:22px">G6</div>
+              <div>
+                <h1 style="font-size:22px; font-weight:900; color:#0f172a">QuestLearn 6</h1>
+                <p style="font-size:13px; font-weight:700; color:#64748b">Hệ thống Học Toán & Tiếng Anh Lớp 6 Tương Tác</p>
+              </div>
+            </div>
+
+            <div style="padding:14px 16px; border-radius:18px; background:#f0f9ff; border:1px solid #bae6fd; font-size:13px; color:#0c4a6e; margin-bottom:18px">
+              <strong>👋 Chào mừng em!</strong> Hãy nhập <strong>Họ Tên và Lớp</strong> của em trước khi vào học. Hệ thống sẽ tự động tạo và lưu tiến độ của riêng em vào file:<br/>
+              <code style="font-weight:900; color:#0369a1">students/&lt;ten-cua-em&gt;.json</code> (${escapeHtml(connectedRepo)})
+            </div>
+
+            <div style="margin-bottom:16px">
+              <label style="display:block; font-size:13px; font-weight:800; color:#334155; margin-bottom:6px">
+                Nhập Họ và Tên + Lớp của em:
+              </label>
+              <input id="login-student-name" type="text" class="input-box" placeholder="Ví dụ: Nguyễn Minh Anh - 6A1" autofocus />
+            </div>
+
+            <button class="btn btn-primary" style="width:100%; padding:15px; font-size:16px; margin-bottom:12px" data-action="student-login" ${APP.loginLoading ? 'disabled' : ''}>
+              ${APP.loginLoading ? '⏳ Đang tải hồ sơ học tập...' : '🚀 Vào Học Ngay & Tạo File Tiến Độ Riêng'}
+            </button>
+
+            <div style="display:flex; align-items:center; justify-content:space-between; padding-top:12px; border-top:1px solid var(--border); font-size:12px; color:#64748b">
+              <span>Đã có file <code>.json</code> lưu trên máy?</span>
+              <label style="font-weight:800; color:var(--primary); cursor:pointer; text-decoration:underline">
+                📂 Nạp file tiến độ (.json)
+                <input id="import-student-json" type="file" accept=".json" style="display:none" />
+              </label>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
     function renderApp() {
       const root = document.getElementById('app');
       if (!root) return;
+
+      if (!APP.state) {
+        root.innerHTML = renderLoginGateView();
+        attachDynamicInputListeners();
+        return;
+      }
 
       const st = APP.state;
       const lvlInfo = calculateLevelFromXP(st.xp);
@@ -1284,17 +1451,18 @@
 
       const navItems = [
         { id: 'home', label: 'Home', icon: '🏠' },
-        { id: 'learn', label: 'Learn', icon: '🗺️' },
+        { id: 'learn', label: 'Learn (SGK)', icon: '🗺️' },
         { id: 'practice', label: 'Practice', icon: '⚡' },
         { id: 'flashcards', label: 'Flashcards', icon: '🗂️' },
-        { id: 'profile', label: 'Profile', icon: '👤' }
+        { id: 'ai-studio', label: 'AI & Giáo viên', icon: '🪄' },
+        { id: 'profile', label: 'Hồ sơ & File', icon: '👤' }
       ];
 
       const sidebarNavHtml = navItems
         .map(
           (item) => `
           <button class="nav-btn ${APP.activeTab === item.id && !APP.activeQuiz ? 'active' : ''}" data-action="nav" data-tab="${item.id}">
-            <span style="font-size:20px">${item.icon}</span>
+            <span style="font-size:19px">${item.icon}</span>
             <span>${item.label}</span>
           </button>`
         )
@@ -1304,7 +1472,7 @@
         .map(
           (item) => `
           <button class="bnav-btn ${APP.activeTab === item.id && !APP.activeQuiz ? 'active' : ''}" data-action="nav" data-tab="${item.id}">
-            <span style="font-size:18px">${item.icon}</span>
+            <span style="font-size:17px">${item.icon}</span>
             <span>${item.label}</span>
           </button>`
         )
@@ -1321,6 +1489,8 @@
         mainContentHtml = renderPracticeView();
       } else if (APP.activeTab === 'flashcards') {
         mainContentHtml = renderFlashcardsView();
+      } else if (APP.activeTab === 'ai-studio') {
+        mainContentHtml = renderAIStudioView();
       } else if (APP.activeTab === 'profile') {
         mainContentHtml = renderProfileView();
       }
@@ -1338,9 +1508,16 @@
               </div>
               <nav>${sidebarNavHtml}</nav>
             </div>
-            <div style="padding:14px; border-radius:16px; background:#f8fafc; border:1px solid #e2e8f0; font-size:12px; color:#64748b">
-              <div style="font-weight:800; color:#334155">Chương trình SGK Lớp 6</div>
-              <div>Tự động lưu tiến độ trên máy</div>
+
+            <div style="padding:14px; border-radius:16px; background:#f8fafc; border:1px solid #e2e8f0; font-size:12px; color:#475569">
+              <div style="font-weight:900; color:#0f172a; margin-bottom:2px">👤 ${escapeHtml(st.studentName)}</div>
+              <div style="font-size:11px; color:#0369a1; font-family:monospace; word-break:break-all; margin-bottom:8px">
+                📄 students/${escapeHtml(st.studentSlug)}.json
+              </div>
+              <div style="display:flex; gap:6px">
+                <button class="btn btn-outline" style="padding:6px 10px; font-size:11px; flex:1" data-action="sync-github-now">☁️ Lưu GitHub</button>
+                <button class="btn btn-outline" style="padding:6px 10px; font-size:11px" data-action="switch-student">Đổi tên</button>
+              </div>
             </div>
           </aside>
 
@@ -1352,7 +1529,7 @@
                 <div class="level-pill">Level ${lvlInfo.level}</div>
                 <div>
                   <div style="font-size:12px; font-weight:800; color:#64748b">
-                    ⭐ ${st.xp} Total XP (${lvlInfo.currentLevelXP}/${lvlInfo.nextLevelXP} XP lên cấp)
+                    ⭐ ${st.xp} XP • <strong>${escapeHtml(st.studentName)}</strong>
                   </div>
                   <div class="progress-track" style="width:150px; margin-top:4px">
                     <div class="progress-fill" style="width:${lvlPct}%"></div>
@@ -1360,15 +1537,18 @@
                 </div>
               </div>
 
-              <div style="display:flex; align-items:center; gap:10px">
-                <div class="stat-badge stat-streak">🔥 ${st.streak} day streak</div>
+              <div style="display:flex; flex-wrap:wrap; align-items:center; gap:8px">
+                <button class="stat-badge stat-cloud" data-action="sync-github-now" title="Lưu thành file students/${escapeHtml(st.studentSlug)}.json trên GitHub">
+                  ☁️ Lưu File GitHub
+                </button>
+                <div class="stat-badge stat-streak">🔥 ${st.streak} ngày</div>
                 ${
                   st.heartsEnabled
                     ? `<div class="stat-badge stat-hearts">
                         <span>❤️ ${st.hearts}</span>
                         ${
                           st.hearts < 5
-                            ? `<button data-action="refill-hearts" style="margin-left:6px; font-size:12px; font-weight:800; text-decoration:underline; color:#b91c1c">Hồi đầy</button>`
+                            ? `<button data-action="refill-hearts" style="margin-left:4px; font-size:11px; font-weight:800; text-decoration:underline; color:#b91c1c">Hồi</button>`
                             : ''
                         }
                       </div>`
@@ -1376,6 +1556,15 @@
                 }
               </div>
             </header>
+
+            ${
+              APP.syncStatusMsg
+                ? `<div style="margin-bottom:16px; padding:12px 16px; border-radius:16px; background:#f0f9ff; border:1px solid #bae6fd; color:#0c4a6e; font-size:13px; font-weight:800; display:flex; justify-content:space-between; align-items:center">
+                    <span>${escapeHtml(APP.syncStatusMsg)}</span>
+                    <button data-action="close-sync-msg" style="font-weight:900; color:#0369a1">✕</button>
+                  </div>`
+                : ''
+            }
 
             ${mainContentHtml}
           </main>
@@ -1386,16 +1575,17 @@
     }
 
     // ==========================================================================
-    // 6. CÁC MÀN HÌNH CHI TIẾT (HOME, LEARN, PRACTICE, FLASHCARDS, PROFILE, QUIZ)
+    // 6. CÁC MÀN HÌNH CHỨC NĂNG (HOME, LEARN, AI STUDIO, PRACTICE, FLASHCARDS)
     // ==========================================================================
     function renderHomeView() {
       const st = APP.state;
+      const curr = getMergedCurriculum();
       const mathAcc = st.subjectAccuracy.mathTotal > 0
         ? Math.round((st.subjectAccuracy.mathCorrect / st.subjectAccuracy.mathTotal) * 100)
-        : 86;
+        : 100;
       const engAcc = st.subjectAccuracy.englishTotal > 0
         ? Math.round((st.subjectAccuracy.englishCorrect / st.subjectAccuracy.englishTotal) * 100)
-        : 79;
+        : 100;
       const avgSec = (st.mentalMathStats.avgResponseMs / 1000).toFixed(1);
       const activeMistakes = Object.values(st.mistakes || {}).filter((m) => !m.mastered);
       const weakTopicList = Object.values(st.weakTopics || {});
@@ -1405,27 +1595,27 @@
           <div class="hero-card" style="display:flex; flex-direction:column; justify-content:space-between; gap:18px">
             <div>
               <span class="pill-tag" style="background:rgba(255,255,255,0.2); color:#fff; margin-bottom:10px">
-                Nhiệm vụ hằng ngày • Daily Goal: ${st.minutesToday}/${st.dailyGoalMinutes} phút
+                File Hồ Sơ: students/${escapeHtml(st.studentSlug)}.json • Daily Goal: ${st.minutesToday}/${st.dailyGoalMinutes} phút
               </span>
               <h1 style="font-size:24px; font-weight:900; margin-bottom:8px">
-                Chào ${escapeHtml(st.studentName)}! Sẵn sàng nối dài chuỗi 🔥 ${st.streak} ngày học?
+                Chào ${escapeHtml(st.studentName)}! Cùng chinh phục bài học hôm nay nhé!
               </h1>
               <p style="font-size:14px; opacity:0.92">
-                Hoàn thành bài Daily Practice tổng hợp Toán tư duy, Hình học tương tác SVG và Từ vựng Tiếng Anh 6 để nhận +50 Bonus XP!
+                Đã tích hợp trọn bộ Toán 6 (Chương 1–4) & Tiếng Anh 6 (Unit 1–6) cùng công cụ AI tự động tạo bài mới từ Sách Giáo Khoa.
               </p>
             </div>
             <div style="display:flex; flex-wrap:wrap; gap:10px">
               <button class="btn btn-amber" data-action="start-daily-practice">
                 ✨ DAILY PRACTICE (+50 XP)
               </button>
-              <button class="btn" style="background:rgba(255,255,255,0.18); color:#fff" data-action="nav" data-tab="learn">
-                Vào Lộ trình Học (Learning Path) →
+              <button class="btn" style="background:rgba(255,255,255,0.18); color:#fff" data-action="nav" data-tab="ai-studio">
+                🪄 Mở AI Tạo Bài Học Mới →
               </button>
             </div>
           </div>
 
           <div class="card" style="margin-bottom:0; display:flex; flex-direction:column; justify-content:space-between">
-            <h2 style="font-size:16px; font-weight:900; margin-bottom:12px">📊 Phân tích Học tập</h2>
+            <h2 style="font-size:16px; font-weight:900; margin-bottom:12px">📊 Thống kê của ${escapeHtml(st.studentName)}</h2>
             <div style="display:flex; flex-direction:column; gap:14px; font-size:14px">
               <div>
                 <div style="display:flex; justify-content:space-between; font-weight:800; margin-bottom:4px">
@@ -1442,8 +1632,8 @@
                 <div class="progress-track"><div class="progress-fill" style="width:${engAcc}%"></div></div>
               </div>
               <div style="padding-top:10px; border-top:1px solid var(--border); display:flex; justify-content:space-between; font-size:13px; font-weight:800; color:#475569">
-                <span>Mental Math Avg Time:</span>
-                <span style="color:var(--warning)">${avgSec} sec/question</span>
+                <span>Tổng câu hỏi trong kho:</span>
+                <span style="color:var(--primary)">${curr.questions.length} câu</span>
               </div>
             </div>
           </div>
@@ -1452,10 +1642,10 @@
         <div class="grid-2" style="margin-bottom:18px">
           <button class="card" style="margin-bottom:0; text-align:left; display:flex; align-items:center; justify-content:space-between; gap:14px" data-action="select-subject-learn" data-subject="math">
             <div>
-              <span class="pill-tag" style="background:#dcfce7; color:#166534; margin-bottom:8px">SGK Toán 6 + Toán Tư Duy</span>
+              <span class="pill-tag" style="background:#dcfce7; color:#166534; margin-bottom:8px">Chương I, II, III, IV + AI Mở rộng</span>
               <h3 style="font-size:20px; font-weight:900; color:#0f172a">📐 MÔN TOÁN LỚP 6</h3>
               <p style="font-size:13px; color:#64748b; margin-top:4px">
-                Số tự nhiên, Số La Mã, Thứ tự phép tính, ƯCLN-BCNN & Hình học SVG tương tác
+                Số tự nhiên, Chia hết & ƯCLN-BCNN, Số nguyên Z, Hình học tương tác SVG & GeoGebra
               </p>
             </div>
             <span style="font-size:38px">🧮</span>
@@ -1463,10 +1653,10 @@
 
           <button class="card" style="margin-bottom:0; text-align:left; display:flex; align-items:center; justify-content:space-between; gap:14px" data-action="select-subject-learn" data-subject="english">
             <div>
-              <span class="pill-tag" style="background:#e0e7ff; color:#3730a3; margin-bottom:8px">SGK Global Success 6</span>
+              <span class="pill-tag" style="background:#e0e7ff; color:#3730a3; margin-bottom:8px">Unit 1 → Unit 6 + AI Mở rộng</span>
               <h3 style="font-size:20px; font-weight:900; color:#0f172a">🇬🇧 TIẾNG ANH LỚP 6</h3>
               <p style="font-size:13px; color:#64748b; margin-top:4px">
-                Vocabulary, Grammar, Reading, Sentence Building, Word Form & Flashcards
+                My New School, My House, My Friends, My Neighbourhood, Natural Wonders & Tet Holiday
               </p>
             </div>
             <span style="font-size:38px">📚</span>
@@ -1478,19 +1668,8 @@
             <h3 style="font-size:16px; font-weight:900; margin-bottom:12px">🎯 Weak Topics (Chủ đề cần luyện thêm)</h3>
             ${
               weakTopicList.length === 0
-                ? `<div style="display:flex; flex-direction:column; gap:8px; font-size:14px; font-weight:700">
-                    <div style="padding:10px 14px; border-radius:14px; background:#fef2f2; color:#991b1b; display:flex; justify-content:space-between">
-                      <span>🔴 Thứ tự thực hiện các phép tính</span>
-                      <span>Ưu tiên</span>
-                    </div>
-                    <div style="padding:10px 14px; border-radius:14px; background:#fffbeb; color:#92400e; display:flex; justify-content:space-between">
-                      <span>🟠 Diện tích hình chữ nhật (S = a × b)</span>
-                      <span>Cần ôn</span>
-                    </div>
-                    <div style="padding:10px 14px; border-radius:14px; background:#fefce8; color:#854d0e; display:flex; justify-content:space-between">
-                      <span>🟡 Word Form (Adjective vs Adverb)</span>
-                      <span>Luyện thêm</span>
-                    </div>
+                ? `<div style="padding:14px; border-radius:16px; background:#f0fdf4; color:#166534; font-size:14px; font-weight:700">
+                    🌟 Tuyệt vời! Hiện tại em chưa có chủ đề nào bị sai nhiều. Hãy bắt đầu làm các bài học trong mục Learn nhé!
                   </div>`
                 : `<div style="display:flex; flex-direction:column; gap:8px; font-size:14px; font-weight:700">
                     ${weakTopicList
@@ -1510,7 +1689,7 @@
             <div>
               <h3 style="font-size:16px; font-weight:900; margin-bottom:6px">🔄 Mistake Review (Ôn tập câu làm sai)</h3>
               <p style="font-size:13px; color:#64748b">
-                Hệ thống tự động lưu các câu trả lời sai. Khi bạn làm đúng liên tiếp 3 lần, câu hỏi sẽ được đánh dấu Mastered!
+                Các câu trả lời sai được lưu vào hồ sơ riêng của em. Khi trả lời đúng liên tiếp 3 lần, câu hỏi sẽ chuyển sang Mastered!
               </p>
             </div>
             <div style="padding:14px 16px; border-radius:18px; background:#f8fafc; border:1px solid var(--border); display:flex; align-items:center; justify-content:space-between">
@@ -1529,7 +1708,8 @@
 
     function renderLearnView() {
       const st = APP.state;
-      const chapters = CHAPTERS.filter((c) => c.subject === st.selectedSubject);
+      const curr = getMergedCurriculum();
+      const chapters = curr.chapters.filter((c) => c.subject === st.selectedSubject);
 
       const chaptersHtml = chapters
         .map((ch) => {
@@ -1537,7 +1717,7 @@
             const stNode = st.progress[l.id]?.status;
             return stNode === 'completed' || stNode === 'perfect';
           }).length;
-          const pct = Math.round((completedCount / ch.lessons.length) * 100);
+          const pct = ch.lessons.length > 0 ? Math.round((completedCount / ch.lessons.length) * 100) : 0;
 
           const lessonsHtml = ch.lessons
             .map((lesson, idx) => {
@@ -1602,15 +1782,184 @@
         .join('');
 
       return `
-        <div style="display:flex; gap:10px; margin-bottom:18px">
-          <button class="btn ${st.selectedSubject === 'math' ? 'btn-success' : 'btn-outline'}" data-action="switch-subject" data-subject="math">
-            📐 TOÁN LỚP 6
-          </button>
-          <button class="btn ${st.selectedSubject === 'english' ? 'btn-primary' : 'btn-outline'}" data-action="switch-subject" data-subject="english">
-            🇬🇧 TIẾNG ANH LỚP 6
+        <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px; margin-bottom:18px">
+          <div style="display:flex; gap:10px">
+            <button class="btn ${st.selectedSubject === 'math' ? 'btn-success' : 'btn-outline'}" data-action="switch-subject" data-subject="math">
+              📐 TOÁN LỚP 6 (${curr.chapters.filter((c) => c.subject === 'math').length} Chương)
+            </button>
+            <button class="btn ${st.selectedSubject === 'english' ? 'btn-primary' : 'btn-outline'}" data-action="switch-subject" data-subject="english">
+              🇬🇧 TIẾNG ANH LỚP 6 (${curr.chapters.filter((c) => c.subject === 'english').length} Unit)
+            </button>
+          </div>
+          <button class="btn btn-amber" data-action="nav" data-tab="ai-studio">
+            🪄 + Thêm Chương/Bài Mới bằng AI
           </button>
         </div>
         ${chaptersHtml}
+      `;
+    }
+
+    // MÀN HÌNH CÁCH 3: AI CURRICULUM STUDIO & LƯU FILE GITHUB
+    function renderAIStudioView() {
+      const cfg = APP.cloudConfig;
+      const ai = APP.aiStudio;
+
+      const statusBanner = ai.statusMsg
+        ? `<div style="padding:14px 16px; border-radius:16px; font-size:14px; font-weight:800; margin-bottom:16px; background:${
+            ai.statusType === 'success' ? '#f0fdf4' : ai.statusType === 'error' ? '#fef2f2' : '#f0f9ff'
+          }; border:1px solid ${
+            ai.statusType === 'success' ? '#86efac' : ai.statusType === 'error' ? '#fca5a5' : '#bae6fd'
+          }; color:${
+            ai.statusType === 'success' ? '#14532d' : ai.statusType === 'error' ? '#991b1b' : '#0c4a6e'
+          }">
+            ${escapeHtml(ai.statusMsg)}
+          </div>`
+        : '';
+
+      const previewHtml = ai.generatedPreview
+        ? `<div class="card" style="border-color:#4ade80; background:#f0fdf4">
+            <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px; margin-bottom:14px">
+              <div>
+                <h3 style="font-size:18px; font-weight:900; color:#14532d">
+                  🎉 Xem trước ${ai.generatedPreview.questions.length} câu hỏi AI vừa tạo cho "${escapeHtml(ai.lessonTitle)}"
+                </h3>
+                <p style="font-size:13px; color:#166534">Kiểm tra nội dung dưới đây rồi bấm nút Lưu để đưa vào lộ trình học và đẩy lên GitHub.</p>
+              </div>
+              <button class="btn btn-success" data-action="ai-publish-curriculum">
+                ☁️ Lưu & Cập Nhật Ngay Lên GitHub
+              </button>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:10px">
+              ${ai.generatedPreview.questions
+                .map(
+                  (q, idx) => `
+                  <div style="padding:12px 14px; border-radius:14px; background:#fff; border:1px solid #bbf7d0; font-size:14px">
+                    <div style="font-weight:900; color:#0f172a">Câu ${idx + 1} (${escapeHtml(q.type)}): ${escapeHtml(q.prompt)}</div>
+                    <div style="color:#15803d; font-weight:800; margin-top:4px">✓ Đáp án: ${escapeHtml(q.correctAnswer)}</div>
+                    <div style="color:#64748b; font-size:13px; margin-top:2px">💡 Giải thích: ${escapeHtml(q.explanation)}</div>
+                  </div>`
+                )
+                .join('')}
+            </div>
+          </div>`
+        : '';
+
+      return `
+        ${statusBanner}
+
+        <div class="card">
+          <h2 style="font-size:20px; font-weight:900; margin-bottom:6px">🪄 1. AI Curriculum Studio — Nhập Sách Giáo Khoa, Tự Động Sinh Câu Hỏi</h2>
+          <p style="font-size:13px; color:#64748b; margin-bottom:18px">
+            Dán văn bản một bài học trong Sách Giáo Khoa hoặc tải ảnh chụp trang sách lên. AI Gemini sẽ tự động đọc và tạo bộ câu hỏi tương tác + thẻ từ vựng cho chương mới!
+          </p>
+
+          <div class="grid-2" style="margin-bottom:14px">
+            <div>
+              <label style="display:block; font-size:12px; font-weight:800; color:#475569; margin-bottom:4px">Chọn Môn học:</label>
+              <select id="ai-subject" class="input-box" style="padding:11px 14px; font-size:15px">
+                <option value="math" ${ai.subject === 'math' ? 'selected' : ''}>📐 Toán Lớp 6</option>
+                <option value="english" ${ai.subject === 'english' ? 'selected' : ''}>🇬🇧 Tiếng Anh Lớp 6</option>
+              </select>
+            </div>
+            <div>
+              <label style="display:block; font-size:12px; font-weight:800; color:#475569; margin-bottom:4px">Số lượng câu hỏi muốn AI tạo:</label>
+              <input id="ai-qcount" type="number" min="3" max="15" class="input-box" style="padding:11px 14px; font-size:15px" value="${ai.questionCount}" />
+            </div>
+          </div>
+
+          <div class="grid-2" style="margin-bottom:14px">
+            <div>
+              <label style="display:block; font-size:12px; font-weight:800; color:#475569; margin-bottom:4px">Tên Chương / Unit (Có thể nhập Chương mới):</label>
+              <input id="ai-chapter" type="text" class="input-box" style="padding:11px 14px; font-size:15px" value="${escapeHtml(ai.chapterTitle)}" placeholder="Ví dụ: Chương 5: Phân số" />
+            </div>
+            <div>
+              <label style="display:block; font-size:12px; font-weight:800; color:#475569; margin-bottom:4px">Tên Bài học (Lesson):</label>
+              <input id="ai-lesson" type="text" class="input-box" style="padding:11px 14px; font-size:15px" value="${escapeHtml(ai.lessonTitle)}" placeholder="Ví dụ: Bài 1: Mở rộng khái niệm phân số" />
+            </div>
+          </div>
+
+          <div style="margin-bottom:14px">
+            <label style="display:block; font-size:12px; font-weight:800; color:#475569; margin-bottom:4px">
+              Nội dung Sách Giáo Khoa (Dán văn bản bài học, quy tắc, bài tập trong sách vào đây):
+            </label>
+            <textarea id="ai-source-text" rows="5" class="input-box" style="font-size:14px; font-weight:600" placeholder="Dán đoạn văn bản trong Sách Giáo Khoa hoặc yêu cầu chủ đề cần tạo câu hỏi vào đây...">${escapeHtml(ai.sourceText)}</textarea>
+          </div>
+
+          <div style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px">
+            <div>
+              <label class="btn btn-outline" style="padding:10px 16px; font-size:13px; cursor:pointer">
+                📷 Hoặc chọn Ảnh chụp trang Sách Giáo Khoa ${ai.imageFileName ? `(${escapeHtml(ai.imageFileName)})` : ''}
+                <input id="ai-image-upload" type="file" accept="image/*" style="display:none" />
+              </label>
+            </div>
+            <button class="btn btn-primary" data-action="ai-generate" ${ai.generating ? 'disabled' : ''}>
+              ${ai.generating ? '⏳ AI đang soạn câu hỏi...' : '🪄 AI Tự Động Sinh Câu Hỏi & Từ Vựng'}
+            </button>
+          </div>
+        </div>
+
+        ${previewHtml}
+
+        <div class="card">
+          <h2 style="font-size:20px; font-weight:900; margin-bottom:6px">☁️ 2. Cấu hình Kết Nối GitHub & Khóa Gemini AI</h2>
+          <p style="font-size:13px; color:#64748b; margin-bottom:16px">
+            Nhập thông tin Repository GitHub của bạn để khi học sinh đăng nhập tên ở đầu giờ, hệ thống sẽ tự động tạo file riêng <code>students/ten-hoc-sinh.json</code> ngay trên GitHub.
+          </p>
+
+          <div class="grid-2" style="margin-bottom:14px">
+            <div>
+              <label style="display:block; font-size:12px; font-weight:800; color:#475569; margin-bottom:4px">GitHub Username (Tên tài khoản GitHub):</label>
+              <input id="cfg-gh-owner" type="text" class="input-box" style="padding:10px 14px; font-size:14px" value="${escapeHtml(cfg.githubOwner)}" placeholder="Ví dụ: nguyenvana" />
+            </div>
+            <div>
+              <label style="display:block; font-size:12px; font-weight:800; color:#475569; margin-bottom:4px">GitHub Repository Name (Tên Repo):</label>
+              <input id="cfg-gh-repo" type="text" class="input-box" style="padding:10px 14px; font-size:14px" value="${escapeHtml(cfg.githubRepo)}" placeholder="Ví dụ: lop6" />
+            </div>
+          </div>
+
+          <div class="grid-2" style="margin-bottom:16px">
+            <div>
+              <label style="display:block; font-size:12px; font-weight:800; color:#475569; margin-bottom:4px">
+                GitHub Personal Access Token (Quyền Contents Read/Write):
+              </label>
+              <input id="cfg-gh-token" type="password" class="input-box" style="padding:10px 14px; font-size:14px" value="${escapeHtml(cfg.githubToken)}" placeholder="github_pat_... hoặc ghp_..." />
+            </div>
+            <div>
+              <label style="display:block; font-size:12px; font-weight:800; color:#475569; margin-bottom:4px">
+                Gemini API Key (Lấy miễn phí tại aistudio.google.com):
+              </label>
+              <input id="cfg-gemini-key" type="password" class="input-box" style="padding:10px 14px; font-size:14px" value="${escapeHtml(cfg.geminiApiKey)}" placeholder="AIzaSy..." />
+            </div>
+          </div>
+
+          <div style="display:flex; flex-wrap:wrap; gap:10px">
+            <button class="btn btn-success" data-action="save-cloud-config">
+              💾 Lưu Cấu Hình Kết Nối
+            </button>
+            <button class="btn btn-outline" data-action="load-class-roster">
+              📂 Xem Danh Sách File Học Sinh Trên GitHub (students/)
+            </button>
+          </div>
+
+          ${
+            ai.classRoster.length > 0
+              ? `<div style="margin-top:16px; padding-top:14px; border-top:1px solid var(--border)">
+                  <div style="font-weight:900; font-size:14px; margin-bottom:8px">Danh sách các file học sinh trên GitHub (${ai.classRoster.length} file):</div>
+                  <div class="grid-2">
+                    ${ai.classRoster
+                      .map(
+                        (f) => `
+                        <a href="${escapeHtml(f.html_url)}" target="_blank" style="padding:10px 14px; border-radius:12px; background:#f8fafc; border:1px solid var(--border); font-size:13px; font-weight:800; color:var(--primary); text-decoration:none; display:flex; justify-content:space-between">
+                          <span>📄 students/${escapeHtml(f.name)}</span>
+                          <span>Xem trên GitHub ↗</span>
+                        </a>`
+                      )
+                      .join('')}
+                  </div>
+                </div>`
+              : ''
+          }
+        </div>
       `;
     }
 
@@ -1629,13 +1978,8 @@
           </button>
         </div>
       `;
-
-      if (sub === 'mental') {
-        return tabsHtml + renderMentalMathArena();
-      }
-      if (sub === 'wordform') {
-        return tabsHtml + renderWordFormArena();
-      }
+      if (sub === 'mental') return tabsHtml + renderMentalMathArena();
+      if (sub === 'wordform') return tabsHtml + renderWordFormArena();
       return `
         ${tabsHtml}
         <div class="card">
@@ -1667,9 +2011,8 @@
           <div class="card">
             <h2 style="font-size:20px; font-weight:900; margin-bottom:4px">⚡ Mental Math Arena (Luyện Tính Nhẩm Siêu Tốc)</h2>
             <p style="font-size:13px; color:#64748b; margin-bottom:18px">
-              Cộng trừ nhẩm tròn chục (52 - 19 = 52 - 20 + 1), nhân chia nhẩm, thứ tự phép tính & tách thừa số tính nhanh (25 × 16 = 25 × 4 × 4 = 400).
+              Cộng trừ nhẩm tròn chục, nhân chia nhẩm, cộng trừ số nguyên âm & tách thừa số tính nhanh (25 × 16 = 25 × 4 × 4 = 400).
             </p>
-
             <div class="grid-2" style="margin-bottom:18px">
               <div style="padding:16px; border-radius:18px; background:#f8fafc; border:1px solid var(--border)">
                 <div style="font-size:12px; font-weight:800; color:#64748b; text-transform:uppercase; margin-bottom:10px">Chọn Độ khó</div>
@@ -1688,7 +2031,6 @@
                     .join('')}
                 </div>
               </div>
-
               <div style="padding:16px; border-radius:18px; background:#f8fafc; border:1px solid var(--border)">
                 <div style="font-size:12px; font-weight:800; color:#64748b; text-transform:uppercase; margin-bottom:10px">Chế độ Thử thách</div>
                 <div style="display:flex; gap:8px">
@@ -1707,7 +2049,6 @@
                 </div>
               </div>
             </div>
-
             <button class="btn btn-primary" style="width:100%; padding:16px; font-size:16px" data-action="mm-start">
               🚀 Bắt đầu Thử thách Tính nhẩm
             </button>
@@ -1737,7 +2078,6 @@
               </div>
             </div>
           </div>
-
           ${
             !ms.finished
               ? `<div style="padding:26px; border-radius:20px; background:var(--primary-light); border:2px solid #c7d2fe; text-align:center; margin-bottom:16px">
@@ -1759,7 +2099,6 @@
                   </div>
                 </div>`
           }
-
           ${
             ms.feedback
               ? `<div style="padding:14px 16px; border-radius:16px; font-size:14px; font-weight:700; background:${
@@ -1786,7 +2125,6 @@
           <p style="font-size:13px; color:#64748b; margin-bottom:16px">
             Quan sát bảng họ từ (Word Family) và điền đúng dạng Noun / Verb / Adjective / Adverb vào chỗ trống.
           </p>
-
           <div class="grid-4" style="margin-bottom:18px">
             <div style="padding:12px; border-radius:16px; background:#f0f9ff; border:1px solid #bae6fd">
               <div style="font-size:11px; font-weight:800; color:#0369a1; text-transform:uppercase">Noun (Danh từ)</div>
@@ -1805,14 +2143,12 @@
               <div style="font-weight:900; margin-top:4px">${escapeHtml(fam.adverb)}</div>
             </div>
           </div>
-
           <div style="padding:18px; border-radius:18px; background:#f8fafc; border:1px solid var(--border); margin-bottom:14px">
             <div style="font-size:12px; font-weight:800; color:var(--primary); text-transform:uppercase; margin-bottom:6px">
               Root word: <u>${escapeHtml(fam.rootWord)}</u> • Cần điền: ${escapeHtml(q.targetPos)}
             </div>
             <div style="font-size:18px; font-weight:900">${escapeHtml(q.sentence)}</div>
           </div>
-
           <div style="display:flex; gap:10px; margin-bottom:14px">
             <input id="wf-input" type="text" class="input-box" value="${escapeHtml(wf.inputVal)}" placeholder="Nhập từ đã biến đổi..." ${wf.result ? 'disabled' : ''} />
             ${
@@ -1821,7 +2157,6 @@
                 : `<button class="btn btn-success" data-action="wf-next">Câu tiếp →</button>`
             }
           </div>
-
           ${
             wf.result
               ? `<div style="padding:14px 16px; border-radius:16px; font-size:14px; font-weight:700; background:${
@@ -1841,17 +2176,19 @@
     }
 
     function renderFlashcardsView() {
+      const curr = getMergedCurriculum();
+      const vocabList = curr.vocabulary;
       const fc = APP.flashcardSession;
-      const card = VOCABULARY_CARDS[fc.index];
+      const card = vocabList[fc.index % vocabList.length];
       const learnedCount = Object.values(APP.state.flashcardSRS || {}).filter((x) => x.learned).length;
-      const pct = Math.round((learnedCount / VOCABULARY_CARDS.length) * 100);
+      const pct = Math.round((learnedCount / vocabList.length) * 100);
 
       return `
         <div style="max-width:620px; margin:0 auto">
           <div class="card">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px">
               <span style="font-weight:900">🗂️ Vocabulary Flashcards (SGK Tiếng Anh 6)</span>
-              <span style="font-size:14px; font-weight:900; color:var(--primary)">${learnedCount} / ${VOCABULARY_CARDS.length} words learned</span>
+              <span style="font-size:14px; font-weight:900; color:var(--primary)">${learnedCount} / ${vocabList.length} words learned</span>
             </div>
             <div class="progress-track"><div class="progress-fill green" style="width:${pct}%"></div></div>
           </div>
@@ -1879,24 +2216,17 @@
 
           <div class="grid-4" style="margin-bottom:12px">
             <button class="btn" style="background:#fef2f2; border:2px solid #fca5a5; color:#b91c1c; flex-direction:column; padding:12px" data-action="fc-rate" data-rating="Again">
-              <span>Again</span>
-              <span style="font-size:11px; opacity:0.8">Xem lại sớm</span>
+              <span>Again</span><span style="font-size:11px; opacity:0.8">Xem lại sớm</span>
             </button>
             <button class="btn" style="background:#fffbeb; border:2px solid #fcd34d; color:#b45309; flex-direction:column; padding:12px" data-action="fc-rate" data-rating="Hard">
-              <span>Hard</span>
-              <span style="font-size:11px; opacity:0.8">Sau vài câu</span>
+              <span>Hard</span><span style="font-size:11px; opacity:0.8">Sau vài câu</span>
             </button>
             <button class="btn" style="background:#f0fdf4; border:2px solid #86efac; color:#15803d; flex-direction:column; padding:12px" data-action="fc-rate" data-rating="Good">
-              <span>Good</span>
-              <span style="font-size:11px; opacity:0.8">Tăng interval</span>
+              <span>Good</span><span style="font-size:11px; opacity:0.8">Tăng interval</span>
             </button>
             <button class="btn" style="background:#f0f9ff; border:2px solid #7dd3fc; color:#0369a1; flex-direction:column; padding:12px" data-action="fc-rate" data-rating="Easy">
-              <span>Easy</span>
-              <span style="font-size:11px; opacity:0.8">Đã thuộc kỹ</span>
+              <span>Easy</span><span style="font-size:11px; opacity:0.8">Đã thuộc kỹ</span>
             </button>
-          </div>
-          <div style="text-align:center; font-size:12px; font-weight:800; color:#94a3b8">
-            Thẻ ${fc.index + 1} / ${VOCABULARY_CARDS.length}
           </div>
         </div>
       `;
@@ -1905,31 +2235,42 @@
     function renderProfileView() {
       const st = APP.state;
       const badges = [
-        'First Lesson',
-        '10 Questions Correct',
-        '7 Day Streak',
-        'Math Master',
-        'Vocabulary Master',
-        'Perfect Chapter'
+        'First Lesson', '10 Questions Correct', '7 Day Streak',
+        'Math Master', 'Vocabulary Master', 'Perfect Chapter'
       ];
 
       return `
         <div class="grid-2">
           <div class="card">
-            <h2 style="font-size:18px; font-weight:900; margin-bottom:6px">🏅 Thành tích & Danh hiệu (Achievements)</h2>
-            <p style="font-size:13px; color:#64748b; font-weight:700; margin-bottom:14px">
-              Chuỗi kỷ lục: 🔥 ${st.bestStreak} ngày liên tiếp • Tổng điểm: ${st.xp} XP
+            <h2 style="font-size:18px; font-weight:900; margin-bottom:6px">👤 Hồ sơ Học sinh & Quản lý File</h2>
+            <p style="font-size:13px; color:#64748b; margin-bottom:14px">
+              Tên học sinh: <strong>${escapeHtml(st.studentName)}</strong><br/>
+              Đường dẫn file trên GitHub: <code>students/${escapeHtml(st.studentSlug)}.json</code>
             </p>
+
+            <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:18px">
+              <button class="btn btn-primary" data-action="sync-github-now">
+                ☁️ Đồng bộ ngay lên GitHub (students/${escapeHtml(st.studentSlug)}.json)
+              </button>
+              <button class="btn btn-outline" data-action="export-student-json">
+                💾 Tải file ${escapeHtml(st.studentSlug)}.json về máy tính
+              </button>
+              <button class="btn btn-outline" data-action="switch-student">
+                🔄 Đổi sang Học sinh khác
+              </button>
+            </div>
+
+            <h3 style="font-size:15px; font-weight:900; margin-bottom:10px">🏅 Huy hiệu đạt được</h3>
             <div class="grid-2">
               ${badges
                 .map((b) => {
                   const unlocked = st.achievements.includes(b);
                   return `
-                    <div style="padding:12px 14px; border-radius:16px; border:1px solid ${
+                    <div style="padding:10px 12px; border-radius:14px; border:1px solid ${
                       unlocked ? '#fcd34d' : '#e2e8f0'
                     }; background:${unlocked ? '#fffbeb' : '#f8fafc'}; color:${
                       unlocked ? '#92400e' : '#94a3b8'
-                    }; font-weight:800; font-size:14px; display:flex; align-items:center; gap:8px">
+                    }; font-weight:800; font-size:13px; display:flex; align-items:center; gap:8px">
                       <span>${unlocked ? '🏅' : '🔒'}</span>
                       <span>${escapeHtml(b)}</span>
                     </div>
@@ -1946,7 +2287,7 @@
               <div>
                 <div style="font-weight:800; font-size:15px">Chế độ Năng lượng (Hearts ❤️)</div>
                 <div style="font-size:12px; color:#64748b">
-                  Có thể tắt chế độ mất tim khi làm sai để học sinh nhỏ tuổi thoải mái thử nghiệm.
+                  Có thể tắt chế độ mất tim khi làm sai để học sinh thoải mái thử nghiệm.
                 </div>
               </div>
               <button class="btn ${st.heartsEnabled ? 'btn-danger' : 'btn-outline'}" style="padding:8px 14px; font-size:13px" data-action="toggle-hearts">
@@ -1967,12 +2308,6 @@
                   .join('')}
               </div>
             </div>
-
-            <div style="padding-top:14px; border-top:1px solid var(--border)">
-              <button data-action="reset-all" style="font-size:13px; font-weight:800; color:var(--danger); text-decoration:underline">
-                🔄 Đặt lại toàn bộ tiến độ về mặc định
-              </button>
-            </div>
           </div>
         </div>
       `;
@@ -1981,6 +2316,29 @@
     // ==========================================================================
     // 7. RENDER QUIZ & HÌNH HỌC TƯƠNG TÁC SVG
     // ==========================================================================
+    function createInitialGeoState() {
+      return {
+        phase: 'drag_labels',
+        assignedA: false, assignedB: false, selectedTouchLabel: null,
+        clickedSidesA: [], clickedSidesB: [],
+        feedbackType: 'info',
+        feedbackMsg: 'Bước 1/4: Trong công thức S = a × b, hãy KÉO THẢ ký hiệu [a] vào cạnh dài và [b] vào cạnh rộng (hoặc chạm nhãn rồi chạm cạnh).',
+        shake: false, calcInput: ''
+      };
+    }
+
+    function startQuizSession(title, questions, lessonId) {
+      APP.activeQuiz = {
+        title, questions, lessonId: lessonId || null,
+        currentIndex: 0, selectedOption: '', inputVal: '', orderedWords: [],
+        showHint: false, answered: false, isCorrect: null,
+        correctCount: 0, sessionStreak: 0, bestSessionStreak: 0, earnedXP: 0,
+        wrongQuestions: [], startTime: Date.now(), finished: false,
+        geoState: createInitialGeoState()
+      };
+      renderApp();
+    }
+
     function renderQuizView() {
       const qz = APP.activeQuiz;
       if (!qz) return '';
@@ -1990,7 +2348,7 @@
         const mins = Math.floor(durationSec / 60);
         const secs = durationSec % 60;
         const accuracy = Math.round((qz.correctCount / qz.questions.length) * 100);
-        const weakConcept = qz.wrongQuestions[0]?.topicTag || 'Không có — Bạn đã nắm vững tất cả!';
+        const weakConcept = qz.wrongQuestions[0]?.topicTag || 'Không có — Em đã nắm vững tất cả!';
 
         return `
           <div class="card" style="max-width:580px; margin:0 auto; text-align:center; padding:28px">
@@ -2059,7 +2417,7 @@
         questionBodyHtml = `
           <div style="margin-top:14px">
             <input id="quiz-input" type="${currentQ.type === 'number_input' ? 'number' : 'text'}" class="input-box" value="${escapeHtml(qz.inputVal)}" placeholder="${
-              currentQ.type === 'number_input' ? 'Nhập số đáp án...' : 'Nhập câu trả lời tiếng Anh...'
+              currentQ.type === 'number_input' ? 'Nhập số đáp án...' : 'Nhập câu trả lời...'
             }" ${qz.answered ? 'disabled' : ''} autofocus />
           </div>
         `;
@@ -2211,7 +2569,6 @@
           <div style="padding:12px 16px; border-radius:16px; font-size:14px; font-weight:800; margin-bottom:12px; ${bannerBg}">
             ${escapeHtml(gs.feedbackMsg)}
           </div>
-
           ${
             gs.phase === 'drag_labels'
               ? `<div style="padding:12px; border-radius:16px; background:#f8fafc; border:1px solid var(--border); display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:14px; margin-bottom:12px">
@@ -2225,7 +2582,6 @@
                 </div>`
               : ''
           }
-
           <div class="${gs.shake ? 'shake' : ''}" style="background:#fff; border:2px solid var(--border); border-radius:22px; padding:14px; display:flex; justify-content:center">
             <svg viewBox="0 0 480 270" style="width:100%; max-width:460px; height:auto; user-select:none">
               <rect x="90" y="55" width="300" height="160" fill="${gs.phase === 'calculate' ? 'rgba(22,163,74,0.08)' : 'rgba(241,245,249,0.75)'}" />
@@ -2234,22 +2590,18 @@
               <polyline points="390,197 372,197 372,215" fill="none" stroke="#94a3b8" stroke-width="2" />
               <polyline points="108,215 108,197 90,197" fill="none" stroke="#94a3b8" stroke-width="2" />
 
-              <!-- Cạnh AB -->
               <g data-side-drop="AB" data-action="geo-click-side" data-side="AB" style="cursor:pointer">
                 <line x1="90" y1="55" x2="390" y2="55" stroke="transparent" stroke-width="30" />
                 <line x1="90" y1="55" x2="390" y2="55" stroke="${getStroke('AB')}" stroke-width="7" stroke-linecap="round" />
               </g>
-              <!-- Cạnh BC -->
               <g data-side-drop="BC" data-action="geo-click-side" data-side="BC" style="cursor:pointer">
                 <line x1="390" y1="55" x2="390" y2="215" stroke="transparent" stroke-width="30" />
                 <line x1="390" y1="55" x2="390" y2="215" stroke="${getStroke('BC')}" stroke-width="7" stroke-linecap="round" />
               </g>
-              <!-- Cạnh CD -->
               <g data-side-drop="CD" data-action="geo-click-side" data-side="CD" style="cursor:pointer">
                 <line x1="390" y1="215" x2="90" y2="215" stroke="transparent" stroke-width="30" />
                 <line x1="390" y1="215" x2="90" y2="215" stroke="${getStroke('CD')}" stroke-width="7" stroke-linecap="round" />
               </g>
-              <!-- Cạnh DA -->
               <g data-side-drop="DA" data-action="geo-click-side" data-side="DA" style="cursor:pointer">
                 <line x1="90" y1="215" x2="90" y2="55" stroke="transparent" stroke-width="30" />
                 <line x1="90" y1="215" x2="90" y2="55" stroke="${getStroke('DA')}" stroke-width="7" stroke-linecap="round" />
@@ -2283,7 +2635,6 @@
               <text x="240" y="142" text-anchor="middle" font-weight="900" font-size="22" fill="#334155">S = a × b</text>
             </svg>
           </div>
-
           ${
             gs.phase === 'calculate'
               ? `<div style="margin-top:14px; padding:16px; border-radius:18px; background:var(--primary-light); border:2px solid #c7d2fe; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px">
@@ -2304,7 +2655,7 @@
     }
 
     // ==========================================================================
-    // 8. XỬ LÝ SỰ KIỆN TƯƠNG TÁC (CLICK, KEYBOARD, DRAG & DROP)
+    // 8. XỬ LÝ SỰ KIỆN TƯƠNG TÁC TOÀN CỤC
     // ==========================================================================
     function handleGeometryAssign(sideId, label) {
       const qz = APP.activeQuiz;
@@ -2356,9 +2707,7 @@
 
       if (gs.phase === 'click_sides_a') {
         if (cfg.sides[sideId] === 'a') {
-          if (!gs.clickedSidesA.includes(sideId)) {
-            gs.clickedSidesA.push(sideId);
-          }
+          if (!gs.clickedSidesA.includes(sideId)) gs.clickedSidesA.push(sideId);
           gs.feedbackType = 'success';
           gs.shake = false;
           if (gs.clickedSidesA.length >= 2) {
@@ -2378,9 +2727,7 @@
 
       if (gs.phase === 'click_sides_b') {
         if (cfg.sides[sideId] === 'b') {
-          if (!gs.clickedSidesB.includes(sideId)) {
-            gs.clickedSidesB.push(sideId);
-          }
+          if (!gs.clickedSidesB.includes(sideId)) gs.clickedSidesB.push(sideId);
           gs.feedbackType = 'success';
           gs.shake = false;
           if (gs.clickedSidesB.length >= 2) {
@@ -2446,7 +2793,82 @@
       renderApp();
     }
 
+    async function handleStudentLoginSubmit() {
+      const inputEl = document.getElementById('login-student-name');
+      const nameVal = inputEl ? inputEl.value.trim() : '';
+      if (!nameVal) {
+        alert('Vui lòng nhập Họ và Tên của em trước khi vào học nhé!');
+        return;
+      }
+      APP.loginLoading = true;
+      renderApp();
+      APP.state = await loadStudentFileFromGitHub(nameVal);
+      saveStudentToLocal();
+      APP.loginLoading = false;
+      renderApp();
+    }
+
     function attachDynamicInputListeners() {
+      const loginInput = document.getElementById('login-student-name');
+      if (loginInput) {
+        loginInput.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            handleStudentLoginSubmit();
+          }
+        });
+      }
+
+      const importJsonEl = document.getElementById('import-student-json');
+      if (importJsonEl) {
+        importJsonEl.addEventListener('change', (e) => {
+          const file = e.target.files?.[0];
+          if (!file) return;
+          const reader = new FileReader();
+          reader.onload = (ev) => {
+            try {
+              const parsed = JSON.parse(String(ev.target.result));
+              APP.state = ensureProgressNodes(Object.assign(createDefaultStudentState(parsed.studentName || 'Học sinh'), parsed));
+              saveStudentToLocal();
+              renderApp();
+            } catch (err) {
+              alert('File JSON không hợp lệ!');
+            }
+          };
+          reader.readAsText(file);
+        });
+      }
+
+      // AI Studio Inputs
+      const aiSub = document.getElementById('ai-subject');
+      if (aiSub) aiSub.addEventListener('change', (e) => { APP.aiStudio.subject = e.target.value; });
+      const aiCount = document.getElementById('ai-qcount');
+      if (aiCount) aiCount.addEventListener('input', (e) => { APP.aiStudio.questionCount = Number(e.target.value) || 5; });
+      const aiChap = document.getElementById('ai-chapter');
+      if (aiChap) aiChap.addEventListener('input', (e) => { APP.aiStudio.chapterTitle = e.target.value; });
+      const aiLes = document.getElementById('ai-lesson');
+      if (aiLes) aiLes.addEventListener('input', (e) => { APP.aiStudio.lessonTitle = e.target.value; });
+      const aiSrc = document.getElementById('ai-source-text');
+      if (aiSrc) aiSrc.addEventListener('input', (e) => { APP.aiStudio.sourceText = e.target.value; });
+
+      const aiImg = document.getElementById('ai-image-upload');
+      if (aiImg) {
+        aiImg.addEventListener('change', (e) => {
+          const file = e.target.files?.[0];
+          if (!file) return;
+          const reader = new FileReader();
+          reader.onload = (ev) => {
+            const dataUrl = String(ev.target.result);
+            const base64Part = dataUrl.split(',')[1];
+            APP.aiStudio.imageBase64 = base64Part;
+            APP.aiStudio.imageMimeType = file.type || 'image/jpeg';
+            APP.aiStudio.imageFileName = file.name;
+            renderApp();
+          };
+          reader.readAsDataURL(file);
+        });
+      }
+
       const quizInput = document.getElementById('quiz-input');
       if (quizInput) {
         quizInput.addEventListener('input', (e) => {
@@ -2466,9 +2888,7 @@
       const geoInput = document.getElementById('geo-calc-input');
       if (geoInput) {
         geoInput.addEventListener('input', (e) => {
-          if (APP.activeQuiz) {
-            APP.activeQuiz.geoState.calcInput = e.target.value;
-          }
+          if (APP.activeQuiz) APP.activeQuiz.geoState.calcInput = e.target.value;
         });
         geoInput.addEventListener('keydown', (e) => {
           if (e.key === 'Enter' && APP.activeQuiz && String(APP.activeQuiz.geoState.calcInput).trim() !== '') {
@@ -2489,9 +2909,7 @@
 
       const wfInput = document.getElementById('wf-input');
       if (wfInput) {
-        wfInput.addEventListener('input', (e) => {
-          APP.wordFormSession.inputVal = e.target.value;
-        });
+        wfInput.addEventListener('input', (e) => { APP.wordFormSession.inputVal = e.target.value; });
         wfInput.addEventListener('keydown', (e) => {
           if (e.key === 'Enter') {
             e.preventDefault();
@@ -2500,7 +2918,6 @@
         });
       }
 
-      // Gắn sự kiện HTML5 Drag & Drop cho nhãn [a], [b] và 4 cạnh SVG
       document.querySelectorAll('[data-drag-label]').forEach((el) => {
         el.addEventListener('dragstart', (e) => {
           e.dataTransfer.setData('text/plain', el.getAttribute('data-drag-label'));
@@ -2513,9 +2930,7 @@
           e.preventDefault();
           const label = e.dataTransfer.getData('text/plain');
           const sideId = el.getAttribute('data-side-drop');
-          if (label === 'a' || label === 'b') {
-            handleGeometryAssign(sideId, label);
-          }
+          if (label === 'a' || label === 'b') handleGeometryAssign(sideId, label);
         });
       });
     }
@@ -2572,7 +2987,7 @@
           avgResponseMs: avgMs,
           bestStreak: Math.max(APP.state.mentalMathStats.bestStreak, ms.bestStreak)
         };
-        saveState();
+        saveStudentToLocal();
       } else {
         ms.question = generateMentalMathQuestion(ms.difficulty);
         ms.questionStartMs = Date.now();
@@ -2591,11 +3006,78 @@
       renderApp();
     }
 
-    // Event Delegation toàn cục cho tất cả các nút bấm
     document.addEventListener('click', (e) => {
       const btn = e.target.closest('[data-action]');
       if (!btn || btn.disabled) return;
       const action = btn.getAttribute('data-action');
+
+      if (action === 'student-login') {
+        handleStudentLoginSubmit();
+        return;
+      }
+
+      if (action === 'switch-student') {
+        APP.activeQuiz = null;
+        APP.state = null;
+        window.localStorage.removeItem(CURRENT_STUDENT_SLUG_KEY);
+        renderApp();
+        return;
+      }
+
+      if (action === 'sync-github-now') {
+        syncStudentFileToGitHub(false);
+        return;
+      }
+
+      if (action === 'close-sync-msg') {
+        APP.syncStatusMsg = '';
+        renderApp();
+        return;
+      }
+
+      if (action === 'export-student-json') {
+        if (!APP.state) return;
+        const blob = new Blob([JSON.stringify(APP.state, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${APP.state.studentSlug}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+        return;
+      }
+
+      if (action === 'save-cloud-config') {
+        const ownerEl = document.getElementById('cfg-gh-owner');
+        const repoEl = document.getElementById('cfg-gh-repo');
+        const tokenEl = document.getElementById('cfg-gh-token');
+        const geminiEl = document.getElementById('cfg-gemini-key');
+        if (ownerEl) APP.cloudConfig.githubOwner = ownerEl.value.trim();
+        if (repoEl) APP.cloudConfig.githubRepo = repoEl.value.trim();
+        if (tokenEl) APP.cloudConfig.githubToken = tokenEl.value.trim();
+        if (geminiEl) APP.cloudConfig.geminiApiKey = geminiEl.value.trim();
+        saveCloudConfig();
+        APP.aiStudio.statusType = 'success';
+        APP.aiStudio.statusMsg = '✅ Đã lưu cấu hình GitHub & Gemini API Key!';
+        fetchRemoteCustomCurriculum();
+        renderApp();
+        return;
+      }
+
+      if (action === 'ai-generate') {
+        runGeminiCurriculumGenerator();
+        return;
+      }
+
+      if (action === 'ai-publish-curriculum') {
+        publishGeneratedPreviewToCurriculum();
+        return;
+      }
+
+      if (action === 'load-class-roster') {
+        loadClassRosterFromGitHub();
+        return;
+      }
 
       if (action === 'nav') {
         APP.activeQuiz = null;
@@ -2606,7 +3088,7 @@
 
       if (action === 'refill-hearts') {
         APP.state.hearts = 5;
-        saveState();
+        saveStudentToLocal();
         renderApp();
         return;
       }
@@ -2614,26 +3096,27 @@
       if (action === 'select-subject-learn') {
         APP.state.selectedSubject = btn.getAttribute('data-subject');
         APP.activeTab = 'learn';
-        saveState();
+        saveStudentToLocal();
         renderApp();
         return;
       }
 
       if (action === 'switch-subject') {
         APP.state.selectedSubject = btn.getAttribute('data-subject');
-        saveState();
+        saveStudentToLocal();
         renderApp();
         return;
       }
 
       if (action === 'start-daily-practice') {
+        const curr = getMergedCurriculum();
         const activeMistakes = Object.values(APP.state.mistakes || {})
           .filter((m) => !m.mastered)
           .slice(0, 2)
           .map((m) => m.question);
         const mentalQ = generateMentalMathQuestion(2);
         const rectQ = generateDynamicRectangleQuestion();
-        const engQs = SEED_QUESTIONS.filter((q) => q.subject === 'english').slice(0, 2);
+        const engQs = curr.questions.filter((q) => q.subject === 'english').slice(0, 2);
         startQuizSession('Daily Practice (Luyện tập hằng ngày)', [...activeMistakes, mentalQ, rectQ, ...engQs]);
         return;
       }
@@ -2649,17 +3132,18 @@
       }
 
       if (action === 'start-lesson') {
+        const curr = getMergedCurriculum();
         const lessonId = btn.getAttribute('data-lesson');
         const title = btn.getAttribute('data-title');
         const type = btn.getAttribute('data-type');
-        let qs = SEED_QUESTIONS.filter((q) => q.lesson === lessonId);
+        let qs = curr.questions.filter((q) => q.lesson === lessonId);
         if (type === 'revision' || type === 'test' || qs.length === 0) {
-          const pool = SEED_QUESTIONS.filter((q) => q.subject === APP.state.selectedSubject);
+          const pool = curr.questions.filter((q) => q.subject === APP.state.selectedSubject);
           const extra =
             APP.state.selectedSubject === 'math'
               ? [generateMentalMathQuestion(2), generateDynamicRectangleQuestion()]
               : [];
-          qs = [...pool.slice(0, 5), ...extra];
+          qs = [...pool.slice(0, 6), ...extra];
         }
         startQuizSession(title, qs, lessonId);
         return;
@@ -2672,8 +3156,9 @@
       }
 
       if (action === 'start-dynamic-geo') {
+        const curr = getMergedCurriculum();
         startQuizSession('Thực hành Hình chữ nhật Tương tác SVG', [
-          SEED_QUESTIONS.find((q) => q.id === 'q-m-11'),
+          curr.questions.find((q) => q.id === 'q-m-13'),
           generateDynamicRectangleQuestion()
         ]);
         return;
@@ -2797,39 +3282,28 @@
         renderApp();
         return;
       }
-
       if (action === 'mm-set-mode') {
         APP.mentalSession.mode = btn.getAttribute('data-mode');
         renderApp();
         return;
       }
-
       if (action === 'mm-start') {
         const ms = APP.mentalSession;
-        ms.started = true;
-        ms.finished = false;
-        ms.score = 0;
-        ms.totalAnswered = 0;
-        ms.correctCount = 0;
-        ms.streak = 0;
-        ms.bestStreak = 0;
-        ms.timeLeft = 60;
-        ms.totalResponseMs = 0;
-        ms.feedback = null;
+        ms.started = true; ms.finished = false; ms.score = 0; ms.totalAnswered = 0;
+        ms.correctCount = 0; ms.streak = 0; ms.bestStreak = 0; ms.timeLeft = 60;
+        ms.totalResponseMs = 0; ms.feedback = null;
         ms.question = generateMentalMathQuestion(ms.difficulty);
         ms.questionStartMs = Date.now();
         startMentalMathTimer();
         renderApp();
         return;
       }
-
       if (action === 'mm-reset') {
         APP.mentalSession.started = false;
         APP.mentalSession.finished = false;
         renderApp();
         return;
       }
-
       if (action === 'mm-submit') {
         const el = document.getElementById('mm-input');
         if (el) submitMentalMathAnswer(el.value);
@@ -2841,12 +3315,10 @@
         checkWordFormAnswer();
         return;
       }
-
       if (action === 'wf-next') {
         const wf = APP.wordFormSession;
         const fam = WORD_FAMILIES[wf.familyIdx];
-        wf.inputVal = '';
-        wf.result = null;
+        wf.inputVal = ''; wf.result = null;
         if (wf.questionIdx + 1 < fam.questions.length) {
           wf.questionIdx += 1;
         } else {
@@ -2868,16 +3340,16 @@
         }
         return;
       }
-
       if (action === 'fc-flip') {
         APP.flashcardSession.flipped = !APP.flashcardSession.flipped;
         renderApp();
         return;
       }
-
       if (action === 'fc-rate') {
+        const curr = getMergedCurriculum();
+        const vocabList = curr.vocabulary;
         const rating = btn.getAttribute('data-rating');
-        const card = VOCABULARY_CARDS[APP.flashcardSession.index];
+        const card = vocabList[APP.flashcardSession.index % vocabList.length];
         const learned = rating === 'Good' || rating === 'Easy';
         APP.state.flashcardSRS[card.id] = {
           learned,
@@ -2888,40 +3360,43 @@
         if (learnedCount >= 10 && !APP.state.achievements.includes('Vocabulary Master')) {
           APP.state.achievements.push('Vocabulary Master');
         }
-        saveState();
+        saveStudentToLocal();
         APP.flashcardSession.flipped = false;
-        APP.flashcardSession.index = (APP.flashcardSession.index + 1) % VOCABULARY_CARDS.length;
+        APP.flashcardSession.index = (APP.flashcardSession.index + 1) % vocabList.length;
         renderApp();
         return;
       }
 
-      // Profile & Settings Actions
+      // Settings Actions
       if (action === 'toggle-hearts') {
         APP.state.heartsEnabled = !APP.state.heartsEnabled;
         APP.state.hearts = 5;
-        saveState();
+        saveStudentToLocal();
         renderApp();
         return;
       }
-
       if (action === 'set-goal') {
         APP.state.dailyGoalMinutes = Number(btn.getAttribute('data-mins'));
-        saveState();
-        renderApp();
-        return;
-      }
-
-      if (action === 'reset-all') {
-        try {
-          window.localStorage.removeItem(STORAGE_KEY);
-        } catch (err) {}
-        APP.state = createDefaultState();
+        saveStudentToLocal();
         renderApp();
       }
     });
 
-    // Khởi chạy ngay lập tức khi mở file
-    renderApp();
+    // Khởi tạo: Tự động tải ngân hàng câu hỏi mở rộng từ GitHub (nếu có) và hiển thị màn hình Đăng nhập Học sinh
+    (function initApp() {
+      const savedSlug = window.localStorage.getItem(CURRENT_STUDENT_SLUG_KEY);
+      if (savedSlug) {
+        const raw = window.localStorage.getItem('questlearn_student_' + savedSlug);
+        if (raw) {
+          try {
+            const parsed = JSON.parse(raw);
+            APP.state = ensureProgressNodes(parsed);
+          } catch (e) {}
+        }
+      }
+      fetchRemoteCustomCurriculum();
+      renderApp();
+    })();
   </script>
 </body>
 </html>
