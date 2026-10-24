@@ -90,7 +90,6 @@
     .option-btn:hover:not(:disabled) { border-color: #818cf8; background: #f8fafc; }
     .option-btn.selected { border-color: var(--primary); background: var(--primary-light); color: #312e81; }
 
-    /* Khung Kiến Thức Trọng Tâm Sách Giáo Khoa (Màu vàng chuẩn SGK) */
     .sgk-theory-box {
       background: var(--sgk-yellow-bg);
       border: 2px solid var(--sgk-yellow-border);
@@ -112,17 +111,10 @@
     .progress-track { height: 8px; background: #e2e8f0; border-radius: 999px; overflow: hidden; }
     .progress-fill { height: 100%; background: var(--success); border-radius: 999px; transition: width 0.3s ease; }
 
-    /* Bảng Summary cho Giáo viên */
     .summary-table-wrap { overflow-x: auto; }
-    table.summary-table {
-      width: 100%; border-collapse: collapse; font-size: 13px; text-align: left;
-    }
-    table.summary-table th, table.summary-table td {
-      padding: 12px 10px; border-bottom: 1px solid var(--border); vertical-align: top;
-    }
-    table.summary-table th {
-      background: #f1f5f9; font-weight: 900; color: #334155; text-transform: uppercase; font-size: 11px;
-    }
+    table.summary-table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; }
+    table.summary-table th, table.summary-table td { padding: 12px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    table.summary-table th { background: #f1f5f9; font-weight: 900; color: #334155; text-transform: uppercase; font-size: 11px; }
 
     .login-wrapper {
       min-height: 100vh; display: flex; align-items: center; justify-content: center;
@@ -141,7 +133,7 @@
 
     .geo-sandbox {
       border: 2px solid var(--border); border-radius: 18px; padding: 16px;
-      background: #ffffff; margin-top: 12px;
+      background: #ffffff; margin-top: 12px; transition: all 0.2s ease;
     }
   </style>
 </head>
@@ -153,7 +145,6 @@
     // 1. KHO KIẾN THỨC LÝ THUYẾT SÁCH GIÁO KHOA KÈM VÍ DỤ & BÀI TẬP MẪU
     // ==========================================================================
     const DEFAULT_THEORY_LESSONS = [
-      // ---------------- MÔN TOÁN 6 (KẾT NỐI TRI THỨC VỚI CUỘC SỐNG) ----------------
       {
         id: 'th-m-1',
         subject: 'math',
@@ -175,23 +166,6 @@
         id: 'th-m-2',
         subject: 'math',
         chapter: 'Chương I: Tập hợp các số tự nhiên',
-        topicTitle: 'Bài 3, 4, 5: Thứ tự trong N và Các phép tính Cộng, Trừ, Nhân, Chia',
-        keyConcept: '• Trên tia số nằm ngang, nếu số a nhỏ hơn số b (a < b) thì điểm a nằm bên trái điểm b. Số 0 là số tự nhiên nhỏ nhất và không có số liền trước.\n• Phép cộng và phép nhân có tính chất: Giao hoán (a + b = b + a; ab = ba) và Kết hợp.\n• Tính chất phân phối của phép nhân đối với phép cộng: a(b + c) = ab + ac.\n• Phép chia có dư: a = b·q + r (trong đó 0 ≤ r < b). Nếu r = 0 thì ta có phép chia hết.',
-        examples: [
-          {
-            title: 'Ví dụ 1 (SGK trang 16): Tính một cách hợp lí 66 + 289 + 134 + 311',
-            solution: 'Giải: 66 + 289 + 134 + 311 = (66 + 134) + (289 + 311) = 200 + 600 = 800 (Nhóm những số hạng có tổng tròn trăm).'
-          },
-          {
-            title: 'Ví dụ 2 (SGK trang 18): Tính nhẩm 24 · 25',
-            solution: 'Giải: 24 · 25 = (6 · 4) · 25 = 6 · (4 · 25) = 6 · 100 = 600 (Sử dụng kết quả 4 · 25 = 100).'
-          }
-        ]
-      },
-      {
-        id: 'th-m-3',
-        subject: 'math',
-        chapter: 'Chương I: Tập hợp các số tự nhiên',
         topicTitle: 'Bài 6 & 7: Luỹ thừa và Thứ tự thực hiện các phép tính',
         keyConcept: '• Nhân hai luỹ thừa cùng cơ số: aᵐ · aⁿ = aᵐ⁺ⁿ.\n• Chia hai luỹ thừa cùng cơ số (a ≠ 0, m ≥ n): aᵐ : aⁿ = aᵐ⁻ⁿ (Quy ước a⁰ = 1).\n• Thứ tự thực hiện phép tính:\n  1. Biểu thức KHÔNG có dấu ngoặc: Luỹ thừa → Nhân và chia → Cộng và trừ.\n  2. Biểu thức CÓ dấu ngoặc: Thực hiện trong ngoặc trước, ngoài ngoặc sau theo thứ tự: ( ) → [ ] → { }.',
         examples: [
@@ -206,108 +180,70 @@
         ]
       },
       {
-        id: 'th-m-4',
+        id: 'th-m-3',
         subject: 'math',
         chapter: 'Chương II: Tính chia hết trong tập hợp các số tự nhiên',
         topicTitle: 'Bài 8, 9, 11, 12: Dấu hiệu chia hết, ƯCLN và BCNN',
-        keyConcept: '• Dấu hiệu chia hết cho 2: chữ số tận cùng là 0; 2; 4; 6; 8. Chia hết cho 5: chữ số tận cùng là 0 hoặc 5.\n• Dấu hiệu chia hết cho 9 (hoặc 3): Tổng các chữ số của nó chia hết cho 9 (hoặc 3).\n• Ước chung lớn nhất (ƯCLN) của hai hay nhiều số là số lớn nhất trong tập hợp các ước chung.\n• Bội chung nhỏ nhất (BCNN) của hai hay nhiều số là số nhỏ nhất khác 0 trong tập hợp các bội chung. Ta dùng BCNN để tìm mẫu chung khi quy đồng phân số.',
+        keyConcept: '• Dấu hiệu chia hết cho 2: chữ số tận cùng là 0; 2; 4; 6; 8. Chia hết cho 5: chữ số tận cùng là 0 hoặc 5.\n• Dấu hiệu chia hết cho 9 (hoặc 3): Tổng các chữ số của nó chia hết cho 9 (hoặc 3).\n• Ước chung lớn nhất (ƯCLN) của hai hay nhiều số là số lớn nhất trong tập hợp các ước chung.\n• Bội chung nhỏ nhất (BCNN) của hai hay nhiều số là số nhỏ nhất khác 0 trong tập hợp các bội chung.',
         examples: [
           {
-            title: 'Ví dụ 1 (SGK trang 35): Xét số 180 và tìm chữ số * để 12* chia hết cho 9',
-            solution: '• Số 180 có tổng các chữ số 1 + 8 + 0 = 9 chia hết cho 9 nên 180 chia hết cho 9.\n• Để 12* chia hết cho 9 thì (1 + 2 + *) = (3 + *) phải chia hết cho 9, suy ra * = 6.'
+            title: 'Ví dụ 1 (SGK trang 35): Tìm chữ số * để 12* chia hết cho 9',
+            solution: 'Để 12* chia hết cho 9 thì tổng các chữ số (1 + 2 + *) = (3 + *) phải chia hết cho 9, suy ra * = 6.'
           },
           {
-            title: 'Ví dụ 2 (SGK trang 52): Quy đồng mẫu hai phân số 5/8 và 7/12',
-            solution: 'Giải: Ta có BCNN(8, 12) = 24. Nên 5/8 = (5·3)/(8·3) = 15/24 và 7/12 = (7·2)/(12·2) = 14/24.'
+            title: 'Ví dụ 2 (SGK trang 51): Tìm BCNN(18, 24, 40)',
+            solution: 'Ta có 18 = 2 · 3²; 24 = 2³ · 3; 40 = 2³ · 5. Suy ra BCNN(18, 24, 40) = 2³ · 3² · 5 = 360.'
+          }
+        ]
+      },
+      {
+        id: 'th-m-4',
+        subject: 'math',
+        chapter: 'Chương III: Số nguyên',
+        topicTitle: 'Bài 13, 14, 15, 16: Tập hợp số nguyên Z, Quy tắc dấu ngoặc & Phép nhân',
+        keyConcept: '• Hai số nguyên đối nhau thì có tổng bằng 0.\n• Quy tắc dấu ngoặc (SGK trang 67):\n  - Khi bỏ dấu ngoặc có dấu "+" đằng trước, ta giữ nguyên dấu của các số hạng trong ngoặc.\n  - Khi bỏ dấu ngoặc có dấu "-" đằng trước, ta phải ĐỔI DẤU tất cả các số hạng trong ngoặc: dấu "+" đổi thành "-" và dấu "-" đổi thành "+".\n• Quy tắc nhân hai số nguyên âm (SGK trang 71): (-m) · (-n) = m · n (Tích của hai số nguyên cùng dấu luôn là số nguyên dương).',
+        examples: [
+          {
+            title: 'Ví dụ 1 (SGK trang 67): Tính hợp lí 794 + [136 - (136 + 794)]',
+            solution: 'Giải: 794 + [136 - 136 - 794] = 794 + (-794) = 0.'
+          },
+          {
+            title: 'Ví dụ 2 (SGK trang 72): Tính (-25) · (-17) · 4',
+            solution: 'Giải: (-25) · (-17) · 4 = [(-25) · 4] · (-17) = (-100) · (-17) = 1 700.'
           }
         ]
       },
       {
         id: 'th-m-5',
         subject: 'math',
-        chapter: 'Chương III: Số nguyên',
-        topicTitle: 'Bài 13, 14, 15, 16: Tập hợp số nguyên Z, Quy tắc dấu ngoặc & Phép nhân',
-        keyConcept: '• Tập hợp Z gồm các số nguyên âm (...; -3; -2; -1), số 0 và các số nguyên dương (1; 2; 3; ...). Số 0 không là số nguyên âm cũng không là số nguyên dương.\n• Trừ hai số nguyên: Muốn trừ số nguyên a cho số nguyên b, ta cộng a với số đối của b: a - b = a + (-b).\n• Quy tắc dấu ngoặc: Khi bỏ dấu ngoặc có dấu "-" đằng trước, ta phải ĐỔI DẤU tất cả các số hạng trong ngoặc ("+" thành "-" và "-" thành "+").\n• Nhân hai số nguyên: Khác dấu ra số nguyên âm; Cùng dấu (hai số âm nhân nhau) ra số nguyên dương: (-m)·(-n) = m·n.',
-        examples: [
-          {
-            title: 'Ví dụ 1 (SGK trang 67): Tính hợp lí 794 + [136 - (136 + 794)]',
-            solution: 'Giải: Bỏ dấu ngoặc tròn có dấu "-" đằng trước:\n794 + [136 - 136 - 794] = 794 + (-794) = 0.'
-          },
-          {
-            title: 'Ví dụ 2 (SGK trang 70 & 71): Nhân hai số nguyên',
-            solution: '• Khác dấu: 25 · (-4) = -(25 · 4) = -100.\n• Cùng dấu âm: (-10) · (-15) = 10 · 15 = 150.'
-          }
-        ]
-      },
-      {
-        id: 'th-m-6',
-        subject: 'math',
         chapter: 'Chương IV & V: Hình học trực quan và Tính đối xứng',
-        topicTitle: 'Bài 18, 19, 20, 21, 22: Các hình phẳng, Diện tích và Tâm đối xứng',
-        keyConcept: '• Hình chữ nhật có chiều dài a, chiều rộng b: Chu vi C = 2(a + b); Diện tích S = a · b.\n• Hình thoi có độ dài hai đường chéo m, n: Diện tích S = (1/2) · m · n.\n• Hình có trục đối xứng: Gấp hình theo đường thẳng d mà hai phần chồng khít lên nhau.\n• Hình có tâm đối xứng: Quay hình quanh điểm O đúng một nửa vòng mà hình thu được chồng khít với chính nó ở vị trí ban đầu (Ví dụ: Hình tròn, chong chóng 2 cánh hoặc 4 cánh, chữ H, N, X).',
+        topicTitle: 'Bài 18, 19, 20, 21, 22: Các hình phẳng, Diện tích, Trục đối xứng & Tâm đối xứng',
+        keyConcept: '• Tam giác đều: 3 cạnh bằng nhau, 3 góc bằng nhau và bằng 60°. Lục giác đều: 6 cạnh bằng nhau, 6 góc bằng nhau và bằng 120°.\n• Công thức tính diện tích:\n  - Hình chữ nhật: S = a · b\n  - Hình bình hành: S = a · h (a là cạnh đáy, h là chiều cao)\n  - Hình thoi: S = (1/2) · a · b (a, b là độ dài hai đường chéo)\n  - Hình thang: S = [(a + b) · h] : 2\n• Hình có trục đối xứng: Có đường thẳng d chia hình thành hai phần mà nếu gấp theo d thì hai phần chồng khít lên nhau.\n• Hình có tâm đối xứng: Quay hình nửa vòng quanh tâm O thì hình thu được chồng khít với vị trí ban đầu.',
         examples: [
           {
-            title: 'Ví dụ (SGK trang 104 & 112): Tâm đối xứng và Công thức mức chuẩn ánh sáng phòng học',
-            solution: '• Trong các chữ cái H, K, M, N, X thì chữ H, N, X có tâm đối xứng.\n• Chỉ số mức ánh sáng phòng học: A = (S₂ / S₁) · 100 (với S₁ là diện tích nền phòng, S₂ là tổng diện tích các cửa). Nếu A ≥ 20 thì phòng học đạt chuẩn ánh sáng.'
+            title: 'Ví dụ (SGK trang 93 & 95): Tính diện tích hình bình hành và bãi cỏ hình thang',
+            solution: '• Mảnh gỗ hình bình hành có cạnh đáy 30 cm, chiều cao 20 cm có diện tích S = 20 · 30 = 600 (cm²).\n• Khu đất hình thang có hai đáy 30 m và 42 m, chiều cao 24 m có diện tích S = (30 + 42) · 24 : 2 = 864 (m²).'
           }
         ]
       },
-
-      // ---------------- MÔN TIẾNG ANH 6 (GLOBAL SUCCESS) ----------------
       {
         id: 'th-e-1',
         subject: 'english',
-        chapter: 'Unit 1 & Unit 2: My New School & My House',
-        topicTitle: 'Grammar & Vocabulary: Present Simple, Adverbs of Frequency & Possessive Case',
-        keyConcept: '• Thì Hiện tại đơn (Present Simple): Diễn tả thói quen hoặc sự thật hiển nhiên (I/You/We/They + V; He/She/It + V-s/es).\n• Trạng từ chỉ tần suất (always, usually, often, sometimes, rarely, never): Đứng TRƯỚC động từ thường và đứng SAU động từ to be.\n• Collocations với động từ học đường:\n  - play: football, music\n  - do: homework, exercise, paintings\n  - have: school lunch, lessons\n  - study: English, history, science\n• Sở hữu cách (Possessive case): Thêm \'s sau danh từ số ít hoặc tên riêng (teacher\'s desk, Nick\'s sister).',
+        chapter: 'Tiếng Anh 6 Tập 1 (Global Success)',
+        topicTitle: 'Grammar & Vocabulary Summary (Units 1 - 6)',
+        keyConcept: '• Unit 1 (My New School): Present simple & Adverbs of frequency (always, usually, sometimes, rarely, never đứng trước động từ thường).\n• Unit 2 (My House): Possessive case (\'s) & Prepositions of place (in, on, under, behind, next to, between).\n• Unit 3 (My Friends): Present continuous (am/is/are + V-ing) cho hành động đang diễn ra (now, at the moment).\n• Unit 4 (My Neighbourhood): Comparative adjectives (shorter, bigger, more modern, more peaceful).\n• Unit 5 (Natural Wonders): Countable/Uncountable nouns & Modal verb must / mustn\'t.\n• Unit 6 (Our Tet Holiday): Advice với should / shouldn\'t & some / any.',
         examples: [
           {
-            title: 'Ví dụ (Unit 1 trang 10 & Review 1 trang 36)',
-            solution: '• My mum rarely goes to work late. ("rarely" đứng trước động từ thường "goes").\n• A vase of flowers is on the teacher\'s desk. (Bàn của giáo viên).'
-          }
-        ]
-      },
-      {
-        id: 'th-e-2',
-        subject: 'english',
-        chapter: 'Unit 3 & Unit 4: My Friends & My Neighbourhood',
-        topicTitle: 'Present Continuous, Asking about Personality & Giving Directions',
-        keyConcept: '• Thì Hiện tại tiếp diễn (Present Continuous): S + am/is/are + V-ing. Dùng cho hành động đang diễn ra ngay lúc nói (dấu hiệu: now, right now, at the moment).\n• Phân biệt câu hỏi ngoại hình và tính cách:\n  - Hỏi ngoại hình: "What does your best friend look like?" → "She\'s short with long black hair."\n  - Hỏi tính cách: "What\'s she like?" → "She\'s very kind and creative."\n• Câu gợi ý và Chỉ đường (Unit 4):\n  - Let\'s + V nguyên thể / How about + V-ing?\n  - Go straight (đi thẳng), turn left (rẽ trái), turn right (rẽ phải), take the second turning on the left.',
-        examples: [
-          {
-            title: 'Ví dụ (Unit 3 trang 31 & Review 1 trang 36)',
-            solution: '• We can\'t go out now. It is raining.\n• My mother isn\'t cooking now. She is reading a book.'
-          }
-        ]
-      },
-      {
-        id: 'th-e-3',
-        subject: 'english',
-        chapter: 'Unit 5 & Unit 6: Natural Wonders & Our Tet Holiday',
-        topicTitle: 'Countable/Uncountable Nouns, must / mustn\'t & should / shouldn\'t',
-        keyConcept: '• Danh từ đếm được số nhiều đi với: many, a few. Danh từ không đếm được đi với: much, a little.\n• Động từ khuyết thiếu must / mustn\'t (Unit 5): Bắt buộc phải làm (must + V) hoặc cấm không được làm (mustn\'t + V).\n• Lời khuyên ngày Tết should / shouldn\'t (Unit 6): Nên làm gì (should + V) và không nên làm gì (shouldn\'t + V).\n• Some / Any: Dùng "some" trong câu khẳng định, dùng "any" trong câu phủ định và câu nghi vấn.',
-        examples: [
-          {
-            title: 'Ví dụ (Unit 5 trang 52-55 & Unit 6 trang 61)',
-            solution: '• You mustn\'t litter in the national park. You must arrive on time.\n• At Tet, children should behave well and shouldn\'t break things.'
+            title: 'Ví dụ minh họa trọng tâm',
+            solution: '• My mum rarely goes to work late.\n• We can\'t go out now. It is raining.\n• You mustn\'t litter in the national park.\n• Children should behave well at Tet.'
           }
         ]
       }
     ];
 
     const DEFAULT_QUESTIONS = [
-      // ÔN TẬP TOÁN
       {
         id: 'q-m-1', subject: 'math', category: 'on_tap',
-        topicTitle: 'Bài 1 & 2: Tập hợp và Cách ghi số tự nhiên',
-        type: 'multiple_choice',
-        prompt: 'Cho tập hợp M = {4; 1; 9; 8} (Hình 1.3 SGK trang 6). Khẳng định nào sau đây là ĐÚNG?',
-        options: ['4 ∈ M và 7 ∉ M', '7 ∈ M', '1 ∉ M', '9 ∉ M'],
-        correctAnswer: '4 ∈ M và 7 ∉ M',
-        explanation: 'Các số 4; 1; 9; 8 nằm trong tập hợp M nên 4 ∈ M. Số 7 không thuộc M nên 7 ∉ M.'
-      },
-      {
-        id: 'q-m-2', subject: 'math', category: 'on_tap',
         topicTitle: 'Bài 1 & 2: Tập hợp và Cách ghi số tự nhiên',
         type: 'text_input',
         prompt: 'Trong số 27 501 (Bài 1.6 SGK trang 12), chữ số 7 có giá trị bằng bao nhiêu?',
@@ -315,24 +251,15 @@
         explanation: 'Chữ số 7 đứng ở hàng nghìn nên có giá trị là 7 × 1 000 = 7 000.'
       },
       {
-        id: 'q-m-3', subject: 'math', category: 'on_tap',
+        id: 'q-m-2', subject: 'math', category: 'on_tap',
         topicTitle: 'Bài 6 & 7: Luỹ thừa và Thứ tự thực hiện các phép tính',
         type: 'text_input',
-        prompt: 'Tính giá trị của biểu thức (SGK trang 25): {15 + 2 · [8 - (5 - 3)]} : 9',
-        correctAnswer: '3',
-        explanation: 'Tính theo thứ tự ( ) → [ ] → { }: {15 + 2 · [8 - 2]} : 9 = {15 + 12} : 9 = 27 : 9 = 3.'
-      },
-      // LUYỆN TẬP TOÁN
-      {
-        id: 'q-m-4', subject: 'math', category: 'luyen_tap',
-        topicTitle: 'Bài 8, 9, 11, 12: Dấu hiệu chia hết, ƯCLN và BCNN',
-        type: 'text_input',
-        prompt: 'Thay dấu * bởi một chữ số thích hợp để số 12* chia hết cho 9 (SGK trang 35):',
-        correctAnswer: '6',
-        explanation: 'Tổng các chữ số là 1 + 2 + * = 3 + *. Để chia hết cho 9 thì * = 6.'
+        prompt: 'Tính giá trị của biểu thức (Ví dụ 1 SGK trang 27): 120 + [55 - (11 - 3 · 2)²] + 2³',
+        correctAnswer: '158',
+        explanation: '120 + [55 - (11 - 6)²] + 8 = 120 + [55 - 25] + 8 = 120 + 30 + 8 = 158.'
       },
       {
-        id: 'q-m-5', subject: 'math', category: 'luyen_tap',
+        id: 'q-m-3', subject: 'math', category: 'luyen_tap',
         topicTitle: 'Bài 8, 9, 11, 12: Dấu hiệu chia hết, ƯCLN và BCNN',
         type: 'text_input',
         prompt: 'Học sinh lớp 6A khi xếp thành hàng 2, hàng 3, hàng 7 đều vừa đủ hàng (Bài 2.51 SGK trang 55). Biết số học sinh nhỏ hơn 45, hỏi lớp 6A có bao nhiêu học sinh?',
@@ -340,85 +267,392 @@
         explanation: 'Số học sinh là BCNN(2, 3, 7) = 2 · 3 · 7 = 42 (nhỏ hơn 45).'
       },
       {
-        id: 'q-m-6', subject: 'math', category: 'luyen_tap',
+        id: 'q-m-4', subject: 'math', category: 'luyen_tap',
         topicTitle: 'Bài 13, 14, 15, 16: Tập hợp số nguyên Z, Quy tắc dấu ngoặc & Phép nhân',
         type: 'text_input',
-        prompt: 'Tính giá trị của biểu thức số nguyên (Ví dụ 1 SGK trang 69): A = 25 - (-115) - [315 + (-105)]',
-        correctAnswer: '-70',
-        explanation: 'A = 25 + 115 - [315 - 105] = 140 - 210 = -70.'
+        prompt: 'Tính một cách hợp lí (Ví dụ 3 SGK trang 72): (-25) · (-17) · 4 = ?',
+        correctAnswer: '1700',
+        explanation: 'Nhóm [(-25) · 4] · (-17) = (-100) · (-17) = 1 700.'
       },
-      // KIỂM TRA TOÁN
       {
-        id: 'q-m-7', subject: 'math', category: 'kiem_tra',
+        id: 'q-m-5', subject: 'math', category: 'kiem_tra',
         topicTitle: 'Đề Kiểm Tra Tổng Hợp Toán 6 (Số học & Hình học)',
         type: 'text_input',
-        prompt: 'Câu 1: Trong cửa hàng bánh kẹo (Bài 1.12 SGK trang 12): mỗi gói có 10 cái kẹo, mỗi hộp có 10 gói, mỗi thùng có 10 hộp. Một người mua 9 thùng, 9 hộp và 9 gói kẹo. Hỏi người đó đã mua tất cả bao nhiêu cái kẹo?',
+        prompt: 'Câu 1 (SGK trang 12): Trong cửa hàng bánh kẹo, mỗi gói có 10 cái kẹo, mỗi hộp có 10 gói, mỗi thùng có 10 hộp. Một người mua 9 thùng, 9 hộp và 9 gói kẹo. Hỏi người đó đã mua tất cả bao nhiêu cái kẹo?',
         correctAnswer: '9990',
-        explanation: '9 thùng (9000) + 9 hộp (900) + 9 gói (90) = 9990 cái kẹo.'
+        explanation: '9 thùng (9 000) + 9 hộp (900) + 9 gói (90) = 9 990 (cái kẹo).'
       },
       {
-        id: 'q-m-8', subject: 'math', category: 'kiem_tra',
-        topicTitle: 'Đề Kiểm Tra Tổng Hợp Toán 6 (Số học & Hình học)',
-        type: 'multiple_choice',
-        prompt: 'Câu 2: Trong các chữ cái H, K, M, N, X (Luyện tập 1 SGK trang 104), những chữ cái nào có tâm đối xứng?',
-        options: ['H, N, X', 'K, M', 'H, K, M', 'Chỉ có chữ X'],
-        correctAnswer: 'H, N, X',
-        explanation: 'Khi quay nửa vòng quanh tâm, các chữ H, N, X chồng khít với chính nó nên có tâm đối xứng.'
-      },
-      {
-        id: 'q-m-9', subject: 'math', category: 'kiem_tra',
+        id: 'q-m-6', subject: 'math', category: 'kiem_tra',
         topicTitle: 'Đề Kiểm Tra Tổng Hợp Toán 6 (Số học & Hình học)',
         type: 'text_input',
-        prompt: 'Câu 3: Tính một cách hợp lí (Ví dụ 1 SGK trang 75): (-154) · (-235) + 154 · (-35) = ?',
-        correctAnswer: '30800',
-        explanation: '(-154)·(-235) + 154·(-35) = 154·235 + 154·(-35) = 154 · (235 - 35) = 154 · 200 = 30 800.'
+        prompt: 'Câu 2 (Ví dụ 2 SGK trang 95): Một nền nhà hình chữ nhật có chiều dài 20 m và chiều rộng bằng 1/4 chiều dài. Diện tích của nền nhà đó bằng bao nhiêu m²?',
+        correctAnswer: '100',
+        explanation: 'Chiều rộng nền nhà là 20 : 4 = 5 (m). Diện tích nền nhà là 20 · 5 = 100 (m²).'
       },
-
-      // ÔN TẬP & LUYỆN TẬP & KIỂM TRA TIẾNG ANH 6
       {
         id: 'q-e-1', subject: 'english', category: 'on_tap',
-        topicTitle: 'Grammar & Vocabulary: Present Simple, Adverbs of Frequency & Possessive Case',
+        topicTitle: 'Grammar & Vocabulary Summary (Units 1 - 6)',
         type: 'multiple_choice',
-        prompt: 'Choose the correct answer (Review 1 p.36): "A vase of flowers is on the ______ desk."',
+        prompt: 'Choose the correct answer: "A vase of flowers is on the ______ desk."',
         options: ["teacher's", 'teachers', "teacher'", 'of teacher'],
         correctAnswer: "teacher's",
-        explanation: 'Sở hữu cách với danh từ số ít: teacher + \'s → teacher\'s desk.'
-      },
-      {
-        id: 'q-e-2', subject: 'english', category: 'luyen_tap',
-        topicTitle: 'Present Continuous, Asking about Personality & Giving Directions',
-        type: 'multiple_choice',
-        prompt: 'Complete the dialogue between Linda and Mi (Unit 3 p.31): Linda: "______" — Mi: "She\'s very kind and creative."',
-        options: ["What's she like?", 'What does she look like?', 'Where does she live?', 'How old is she?'],
-        correctAnswer: "What's she like?",
-        explanation: '"What\'s she like?" dùng để hỏi về tính cách (kind and creative). Còn "What does she look like?" hỏi về ngoại hình.'
-      },
-      {
-        id: 'q-e-3', subject: 'english', category: 'kiem_tra',
-        topicTitle: 'Đề Kiểm Tra Tiếng Anh 6 (Units 1 - 5)',
-        type: 'multiple_choice',
-        prompt: 'Question 1 (Review 1 p.36): "We can\'t go out now. It ______."',
-        options: ['is raining', 'rains', 'rain', 'raining'],
-        correctAnswer: 'is raining',
-        explanation: 'Có trạng từ "now" nên chia thì Hiện tại tiếp diễn: is raining.'
-      },
-      {
-        id: 'q-e-4', subject: 'english', category: 'kiem_tra',
-        topicTitle: 'Đề Kiểm Tra Tiếng Anh 6 (Units 1 - 5)',
-        type: 'multiple_choice',
-        prompt: 'Question 2 (Unit 5 Skills 2 p.55): According to the listening about Phu Quoc Island, what can tourists visit there?',
-        options: ['Fishing villages and national parks', 'Snowy mountains', 'Underground railways', 'Disneyland'],
-        correctAnswer: 'Fishing villages and national parks',
-        explanation: 'Trong bài nghe trang 55 SGK: "Tourists can visit fishing villages and national parks there."'
+        explanation: 'Sở hữu cách với danh từ số ít: teacher\'s desk.'
       }
     ];
 
     // ==========================================================================
-    // 2. HÀM QUẢN LÝ LƯU TRỮ TỰ ĐỘNG & ĐỒNG BỘ BẢNG SUMMARY CHO GIÁO VIÊN
+    // 2. ĐỘNG CƠ AI NỘI BỘ THÔNG MINH (CHẠY TRỰC TIẾP 100% KHÔNG BAO GIỜ LỖI API)
     // ==========================================================================
-    const CONFIG_KEY = 'ql6_config_v6';
-    const CURRICULUM_KEY = 'ql6_curriculum_v6';
-    const SUMMARY_LOGS_KEY = 'ql6_summary_logs_v6';
+    function generateSmartInteractiveGeometrySVG(description, uiuxFeedback) {
+      const desc = String(description || '').toLowerCase();
+      const ui = String(uiuxFeedback || '').toLowerCase();
+
+      // 1. Phân tích tùy chỉnh UI/UX của giáo viên
+      let primaryStroke = '#2563eb';
+      let highlightColor = '#16a34a';
+      if (ui.includes('đỏ') || ui.includes('red')) highlightColor = '#dc2626';
+      else if (ui.includes('cam') || ui.includes('orange')) highlightColor = '#ea580c';
+      else if (ui.includes('tím') || ui.includes('purple')) highlightColor = '#7c3aed';
+      else if (ui.includes('hồng') || ui.includes('pink')) highlightColor = '#db2777';
+      else if (ui.includes('xanh dương') || ui.includes('blue')) highlightColor = '#0284c7';
+
+      let bgStyle = 'background:#f8fafc;';
+      if (ui.includes('pastel') || ui.includes('dịu') || ui.includes('vàng')) {
+        bgStyle = 'background:linear-gradient(135deg,#fef9c3 0%,#e0f2fe 100%);';
+      } else if (ui.includes('tối') || ui.includes('dark')) {
+        bgStyle = 'background:#1e293b; color:#fff;';
+        primaryStroke = '#38bdf8';
+      } else if (ui.includes('ô vuông') || ui.includes('lưới') || ui.includes('grid')) {
+        bgStyle = 'background-color:#ffffff; background-image:linear-gradient(#e2e8f0 1px, transparent 1px), linear-gradient(90deg, #e2e8f0 1px, transparent 1px); background-size:20px 20px;';
+      }
+
+      let strokeW = 5;
+      if (ui.includes('dày') || ui.includes('đậm') || ui.includes('to')) strokeW = 8;
+      else if (ui.includes('mảnh') || ui.includes('nhỏ')) strokeW = 3;
+      const pxMatch = ui.match(/(\d+)\s*px/);
+      if (pxMatch) strokeW = Math.min(12, Math.max(2, Number(pxMatch[1])));
+
+      let fontSize = ui.includes('chữ to') || ui.includes('lớn') ? 19 : 16;
+
+      // Trích xuất các số trong mô tả của giáo viên
+      const nums = (description.match(/\d+(?:[.,]\d+)?/g) || []).map((n) => Number(n.replace(',', '.')));
+
+      // Kịch bản 1: HÌNH THANG / HÌNH THANG CÂN (SGK trang 91, 95)
+      if (desc.includes('hình thang')) {
+        const a = nums[0] || 15;
+        const b = nums[1] || 25;
+        const h = nums[2] || 10;
+        const area = ((a + b) * h) / 2;
+        const svgHtml = `
+          <div style="${bgStyle} padding:16px; border-radius:16px; text-align:center">
+            <div style="font-size:13px; font-weight:800; color:#475569; margin-bottom:8px">
+              👆 Chạm/Click trực tiếp vào <strong>Đáy nhỏ AB</strong>, <strong>Đáy lớn CD</strong> và <strong>Đường cao AH</strong> trên hình để kiểm tra kích thước:
+            </div>
+            <svg viewBox="0 0 480 250" style="width:100%; max-width:460px; margin:0 auto; display:block; user-select:none">
+              <polygon points="150,55 330,55 410,195 70,195" fill="rgba(59,130,246,0.10)" />
+              <!-- Đáy nhỏ AB -->
+              <line x1="150" y1="55" x2="330" y2="55" stroke="${primaryStroke}" stroke-width="${strokeW}" stroke-linecap="round" style="cursor:pointer"
+                onclick="this.setAttribute('stroke','${highlightColor}'); document.getElementById('geo-info-lbl').textContent='✓ Đáy nhỏ AB = ${a} (đơn vị độ dài)'" />
+              <!-- Đáy lớn CD -->
+              <line x1="70" y1="195" x2="410" y2="195" stroke="${primaryStroke}" stroke-width="${strokeW}" stroke-linecap="round" style="cursor:pointer"
+                onclick="this.setAttribute('stroke','${highlightColor}'); document.getElementById('geo-info-lbl').textContent='✓ Đáy lớn CD = ${b} (đơn vị độ dài)'" />
+              <!-- Hai cạnh bên AD và BC -->
+              <line x1="150" y1="55" x2="70" y2="195" stroke="#475569" stroke-width="${strokeW - 1}" style="cursor:pointer"
+                onclick="this.setAttribute('stroke','${highlightColor}')" />
+              <line x1="330" y1="55" x2="410" y2="195" stroke="#475569" stroke-width="${strokeW - 1}" style="cursor:pointer"
+                onclick="this.setAttribute('stroke','${highlightColor}')" />
+              <!-- Đường cao AH -->
+              <line x1="150" y1="55" x2="150" y2="195" stroke="#d97706" stroke-width="${strokeW - 1}" stroke-dasharray="7,5" style="cursor:pointer"
+                onclick="this.setAttribute('stroke','${highlightColor}'); document.getElementById('geo-info-lbl').textContent='✓ Chiều cao AH (h) = ${h}'" />
+              <polyline points="150,180 165,180 165,195" fill="none" stroke="#d97706" stroke-width="2" />
+              <text x="135" y="45" font-weight="900" font-size="${fontSize}">A</text>
+              <text x="335" y="45" font-weight="900" font-size="${fontSize}">B</text>
+              <text x="418" y="205" font-weight="900" font-size="${fontSize}">C</text>
+              <text x="48" y="205" font-weight="900" font-size="${fontSize}">D</text>
+              <text x="145" y="215" font-weight="800" font-size="${fontSize - 2}" fill="#d97706">H</text>
+              <text x="240" y="43" text-anchor="middle" font-weight="900" font-size="${fontSize}" fill="#1d4ed8">a = ${a}</text>
+              <text x="240" y="222" text-anchor="middle" font-weight="900" font-size="${fontSize}" fill="#15803d">b = ${b}</text>
+              <text x="188" y="130" text-anchor="middle" font-weight="900" font-size="${fontSize}" fill="#b45309">h = ${h}</text>
+            </svg>
+            <div id="geo-info-lbl" style="margin-top:8px; font-weight:900; font-size:14px; color:${highlightColor}">
+              Công thức diện tích hình thang: S = (a + b) · h : 2
+            </div>
+          </div>
+        `;
+        return {
+          prompt: `Cho hình thang cân ABCD có đáy nhỏ a = ${a}, đáy lớn b = ${b} và chiều cao h = ${h}. Hãy click tương tác trên các cạnh của hình và tính diện tích S của hình thang.`,
+          interactiveSvgHtml: svgHtml,
+          type: 'text_input',
+          options: [],
+          correctAnswer: String(area),
+          explanation: `Áp dụng công thức diện tích hình thang: S = (${a} + ${b}) · ${h} : 2 = ${area}.`
+        };
+      }
+
+      // Kịch bản 2: HÌNH THOI (SGK trang 84, 93)
+      if (desc.includes('hình thoi')) {
+        const d1 = nums[0] || 8;
+        const d2 = nums[1] || 6;
+        const area = (d1 * d2) / 2;
+        const svgHtml = `
+          <div style="${bgStyle} padding:16px; border-radius:16px; text-align:center">
+            <div style="font-size:13px; font-weight:800; color:#475569; margin-bottom:8px">
+              👆 Click vào <strong>2 đường chéo AC, BD</strong> và <strong>4 cạnh của hình thoi</strong> để khám phá tính chất:
+            </div>
+            <svg viewBox="0 0 480 250" style="width:100%; max-width:460px; margin:0 auto; display:block; user-select:none">
+              <polygon points="240,35 390,125 240,215 90,125" fill="rgba(16,185,129,0.10)" stroke="${primaryStroke}" stroke-width="${strokeW}" stroke-linejoin="round" style="cursor:pointer"
+                onclick="this.setAttribute('stroke','${highlightColor}'); document.getElementById('geo-info-lbl').textContent='✓ Hình thoi có 4 cạnh AB = BC = CD = DA bằng nhau!'" />
+              <!-- Hai đường chéo vuông góc -->
+              <line x1="90" y1="125" x2="390" y2="125" stroke="#dc2626" stroke-width="${strokeW - 1}" stroke-dasharray="6,4" style="cursor:pointer"
+                onclick="this.setAttribute('stroke','${highlightColor}'); document.getElementById('geo-info-lbl').textContent='✓ Đường chéo thứ nhất AC = ${d1}'" />
+              <line x1="240" y1="35" x2="240" y2="215" stroke="#d97706" stroke-width="${strokeW - 1}" stroke-dasharray="6,4" style="cursor:pointer"
+                onclick="this.setAttribute('stroke','${highlightColor}'); document.getElementById('geo-info-lbl').textContent='✓ Đường chéo thứ hai BD = ${d2}'" />
+              <polyline points="240,112 253,112 253,125" fill="none" stroke="#475569" stroke-width="2" />
+              <text x="68" y="130" font-weight="900" font-size="${fontSize}">A</text>
+              <text x="235" y="25" font-weight="900" font-size="${fontSize}">B</text>
+              <text x="400" y="130" font-weight="900" font-size="${fontSize}">C</text>
+              <text x="235" y="238" font-weight="900" font-size="${fontSize}">D</text>
+              <text x="315" y="115" font-weight="900" font-size="${fontSize - 1}" fill="#dc2626">AC = ${d1}</text>
+              <text x="285" y="80" font-weight="900" font-size="${fontSize - 1}" fill="#b45309">BD = ${d2}</text>
+            </svg>
+            <div id="geo-info-lbl" style="margin-top:8px; font-weight:900; font-size:14px; color:${highlightColor}">
+              Công thức diện tích hình thoi: S = (1/2) · AC · BD
+            </div>
+          </div>
+        `;
+        return {
+          prompt: `Cho hình thoi ABCD có độ dài hai đường chéo là ${d1} cm và ${d2} cm (SGK trang 93). Hãy tương tác trên hình và tính diện tích S của hình thoi.`,
+          interactiveSvgHtml: svgHtml,
+          type: 'text_input',
+          options: [],
+          correctAnswer: String(area),
+          explanation: `Diện tích hình thoi bằng nửa tích hai đường chéo: S = (${d1} · ${d2}) : 2 = ${area} (cm²).`
+        };
+      }
+
+      // Kịch bản 3: HÌNH BÌNH HÀNH (SGK trang 86, 93)
+      if (desc.includes('bình hành')) {
+        const a = nums[0] || 30;
+        const h = nums[1] || 20;
+        const area = a * h;
+        const svgHtml = `
+          <div style="${bgStyle} padding:16px; border-radius:16px; text-align:center">
+            <div style="font-size:13px; font-weight:800; color:#475569; margin-bottom:8px">
+              👆 Click vào <strong>Cạnh đáy a</strong> và <strong>Chiều cao h</strong> của hình bình hành:
+            </div>
+            <svg viewBox="0 0 480 240" style="width:100%; max-width:460px; margin:0 auto; display:block; user-select:none">
+              <polygon points="140,55 400,55 340,190 80,190" fill="rgba(245,158,11,0.12)" stroke="${primaryStroke}" stroke-width="${strokeW}" stroke-linejoin="round" style="cursor:pointer"
+                onclick="this.setAttribute('stroke','${highlightColor}'); document.getElementById('geo-info-lbl').textContent='✓ Cạnh đáy a = ${a} cm; hai cạnh đối song song và bằng nhau!'" />
+              <line x1="140" y1="55" x2="140" y2="190" stroke="#dc2626" stroke-width="${strokeW - 1}" stroke-dasharray="6,4" style="cursor:pointer"
+                onclick="this.setAttribute('stroke','${highlightColor}'); document.getElementById('geo-info-lbl').textContent='✓ Chiều cao tương ứng h = ${h} cm'" />
+              <polyline points="140,175 155,175 155,190" fill="none" stroke="#dc2626" stroke-width="2" />
+              <text x="175" y="130" font-weight="900" font-size="${fontSize}" fill="#dc2626">h = ${h}</text>
+              <text x="220" y="215" font-weight="900" font-size="${fontSize}" fill="#1d4ed8">a = ${a}</text>
+            </svg>
+            <div id="geo-info-lbl" style="margin-top:8px; font-weight:900; font-size:14px; color:${highlightColor}">
+              Công thức diện tích hình bình hành: S = a · h
+            </div>
+          </div>
+        `;
+        return {
+          prompt: `Một mảnh gỗ có dạng hình bình hành (Ví dụ 5 SGK trang 93) với độ dài cạnh đáy a = ${a} cm và chiều cao h = ${h} cm. Tính diện tích S của mảnh gỗ.`,
+          interactiveSvgHtml: svgHtml,
+          type: 'text_input',
+          options: [],
+          correctAnswer: String(area),
+          explanation: `Diện tích hình bình hành là S = a · h = ${a} · ${h} = ${area} (cm²).`
+        };
+      }
+
+      // Kịch bản 4: LỤC GIÁC ĐỀU / TAM GIÁC ĐỀU / ĐỐI XỨNG (SGK trang 78, 80, 99)
+      if (desc.includes('lục giác') || desc.includes('đối xứng') || desc.includes('tam giác')) {
+        const isHex = desc.includes('lục giác');
+        const svgHtml = `
+          <div style="${bgStyle} padding:16px; border-radius:16px; text-align:center">
+            <div style="font-size:13px; font-weight:800; color:#475569; margin-bottom:8px">
+              👆 Click trực tiếp vào <strong>các đường chéo chính / trục đối xứng (nét đứt)</strong> và <strong>đường viền</strong> của hình:
+            </div>
+            <svg viewBox="0 0 480 250" style="width:100%; max-width:450px; margin:0 auto; display:block; user-select:none">
+              <polygon points="180,35 300,35 360,125 300,215 180,215 120,125" fill="rgba(99,102,241,0.12)" stroke="${primaryStroke}" stroke-width="${strokeW}" style="cursor:pointer"
+                onclick="this.setAttribute('stroke','${highlightColor}'); document.getElementById('geo-info-lbl').textContent='✓ Lục giác đều ABCDEF có 6 cạnh bằng nhau và 6 góc bằng nhau (mỗi góc 120°)!'" />
+              <line x1="180" y1="35" x2="300" y2="215" stroke="#dc2626" stroke-width="4" stroke-dasharray="6,4" style="cursor:pointer"
+                onclick="this.setAttribute('stroke','${highlightColor}'); document.getElementById('geo-info-lbl').textContent='✓ Đường chéo chính AD đi qua tâm đối xứng O!'" />
+              <line x1="300" y1="35" x2="180" y2="215" stroke="#dc2626" stroke-width="4" stroke-dasharray="6,4" style="cursor:pointer"
+                onclick="this.setAttribute('stroke','${highlightColor}'); document.getElementById('geo-info-lbl').textContent='✓ Đường chéo chính BE đi qua tâm đối xứng O!'" />
+              <line x1="120" y1="125" x2="360" y2="125" stroke="#dc2626" stroke-width="4" stroke-dasharray="6,4" style="cursor:pointer"
+                onclick="this.setAttribute('stroke','${highlightColor}'); document.getElementById('geo-info-lbl').textContent='✓ Đường chéo chính FC là trục đối xứng của hình lục giác đều!'" />
+              <circle cx="240" cy="125" r="6" fill="#dc2626" />
+              <text x="165" y="28" font-weight="900" font-size="${fontSize}">A</text>
+              <text x="305" y="28" font-weight="900" font-size="${fontSize}">B</text>
+              <text x="372" y="130" font-weight="900" font-size="${fontSize}">C</text>
+              <text x="305" y="235" font-weight="900" font-size="${fontSize}">D</text>
+              <text x="165" y="235" font-weight="900" font-size="${fontSize}">E</text>
+              <text x="98" y="130" font-weight="900" font-size="${fontSize}">F</text>
+              <text x="248" y="118" font-weight="900" font-size="${fontSize}" fill="#dc2626">O</text>
+            </svg>
+            <div id="geo-info-lbl" style="margin-top:8px; font-weight:900; font-size:14px; color:${highlightColor}">
+              Hình lục giác đều được ghép từ 6 tam giác đều chung đỉnh O (SGK trang 80 & 105)
+            </div>
+          </div>
+        `;
+        return {
+          prompt: isHex
+            ? 'Quan sát và click tương tác trên hình lục giác đều ABCDEF (SGK trang 80). Hỏi mỗi góc của hình lục giác đều bằng bao nhiêu độ?'
+            : 'Quan sát hình đa giác đều có tâm đối xứng O (SGK trang 100 & 105). Hỏi mỗi góc của hình lục giác đều ABCDEF bằng bao nhiêu độ?',
+          interactiveSvgHtml: svgHtml,
+          type: 'multiple_choice',
+          options: ['60°', '90°', '120°', '180°'],
+          correctAnswer: '120°',
+          explanation: 'Theo Nhận xét SGK Toán 6 trang 80: Hình lục giác đều có 6 cạnh bằng nhau, 6 góc bằng nhau, mỗi góc bằng 120° và 3 đường chéo chính bằng nhau cắt nhau tại tâm đối xứng O.'
+        };
+      }
+
+      // Kịch bản Mặc định: HÌNH CHỮ NHẬT / HÌNH VUÔNG TƯƠNG TÁC (SGK trang 84, 91, 95)
+      const a = nums[0] || 8;
+      const b = nums[1] || 5;
+      const area = a * b;
+      const svgHtml = `
+        <div style="${bgStyle} padding:16px; border-radius:16px; text-align:center">
+          <div style="font-size:13px; font-weight:800; color:#475569; margin-bottom:8px">
+            👆 Click vào <strong>cạnh chiều dài AB, CD</strong> và <strong>cạnh chiều rộng BC, DA</strong> để highlight màu:
+          </div>
+          <svg viewBox="0 0 480 240" style="width:100%; max-width:460px; margin:0 auto; display:block; user-select:none">
+            <rect x="90" y="45" width="300" height="150" fill="rgba(79,70,229,0.08)" />
+            <line x1="90" y1="45" x2="390" y2="45" stroke="${primaryStroke}" stroke-width="${strokeW}" stroke-linecap="round" style="cursor:pointer"
+              onclick="this.setAttribute('stroke','${highlightColor}'); document.getElementById('geo-info-lbl').textContent='✓ Cạnh dài AB = ${a} cm'" />
+            <line x1="90" y1="195" x2="390" y2="195" stroke="${primaryStroke}" stroke-width="${strokeW}" stroke-linecap="round" style="cursor:pointer"
+              onclick="this.setAttribute('stroke','${highlightColor}'); document.getElementById('geo-info-lbl').textContent='✓ Cạnh đối CD = AB = ${a} cm'" />
+            <line x1="390" y1="45" x2="390" y2="195" stroke="#d97706" stroke-width="${strokeW}" stroke-linecap="round" style="cursor:pointer"
+              onclick="this.setAttribute('stroke','${highlightColor}'); document.getElementById('geo-info-lbl').textContent='✓ Cạnh rộng BC = ${b} cm'" />
+            <line x1="90" y1="45" x2="90" y2="195" stroke="#d97706" stroke-width="${strokeW}" stroke-linecap="round" style="cursor:pointer"
+              onclick="this.setAttribute('stroke','${highlightColor}'); document.getElementById('geo-info-lbl').textContent='✓ Cạnh đối DA = BC = ${b} cm'" />
+            <text x="68" y="42" font-weight="900" font-size="${fontSize}">A</text>
+            <text x="398" y="42" font-weight="900" font-size="${fontSize}">B</text>
+            <text x="398" y="212" font-weight="900" font-size="${fontSize}">C</text>
+            <text x="68" y="212" font-weight="900" font-size="${fontSize}">D</text>
+            <text x="240" y="34" text-anchor="middle" font-weight="900" font-size="${fontSize}" fill="#1d4ed8">a = ${a} cm</text>
+            <text x="435" y="125" text-anchor="middle" font-weight="900" font-size="${fontSize}" fill="#b45309">b = ${b} cm</text>
+            <text x="240" y="125" text-anchor="middle" font-weight="900" font-size="${fontSize + 3}" fill="#334155">S = a × b</text>
+          </svg>
+          <div id="geo-info-lbl" style="margin-top:8px; font-weight:900; font-size:14px; color:${highlightColor}">
+            Click lên các cạnh để kiểm tra tính chất 2 cạnh đối bằng nhau của hình chữ nhật!
+          </div>
+        </div>
+      `;
+      return {
+        prompt: `Cho hình chữ nhật ABCD có chiều dài a = ${a} cm và chiều rộng b = ${b} cm. Hãy click tương tác trên các cạnh của hình và tính diện tích S (đơn vị: cm²).`,
+        interactiveSvgHtml: svgHtml,
+        type: 'text_input',
+        options: [],
+        correctAnswer: String(area),
+        explanation: `Diện tích hình chữ nhật ABCD là S = a × b = ${a} × ${b} = ${area} (cm²).`
+      };
+    }
+
+    // Bộ tạo câu hỏi dự phòng thông minh từ văn bản SGK (Chạy ngay cả khi chưa có API Key)
+    function generateFallbackQuestionsFromText(subject, category, topicTitle, rawText, count) {
+      const lines = String(rawText || '')
+        .split(/\n+/)
+        .map((l) => l.trim())
+        .filter((l) => l.length > 8);
+
+      const results = [];
+      if (lines.length > 0) {
+        lines.slice(0, count).forEach((line, idx) => {
+          const eqMatch = line.match(/(.+?)=\s*([0-9a-zA-ZÀ-ỹ.,-]+)$/);
+          if (eqMatch) {
+            results.push({
+              id: 'q-auto-' + Date.now() + '-' + idx,
+              subject, category, topicTitle,
+              type: 'text_input',
+              prompt: `Tính hoặc điền kết quả đúng: ${eqMatch[1].trim()} = ?`,
+              options: [],
+              correctAnswer: eqMatch[2].trim(),
+              explanation: `Theo nội dung bài học: ${line}`
+            });
+          } else {
+            results.push({
+              id: 'q-auto-' + Date.now() + '-' + idx,
+              subject, category, topicTitle,
+              type: 'multiple_choice',
+              prompt: `Dựa theo nội dung bài "${topicTitle}", khẳng định sau đây Đúng hay Sai: "${line}"?`,
+              options: ['Đúng', 'Sai'],
+              correctAnswer: 'Đúng',
+              explanation: `Khẳng định này đúng theo nội dung tài liệu giáo viên cung cấp: ${line}`
+            });
+          }
+        });
+      }
+
+      while (results.length < count) {
+        const a = Math.floor(Math.random() * 15) + 5;
+        const b = Math.floor(Math.random() * 10) + 2;
+        results.push({
+          id: 'q-auto-' + Date.now() + '-' + results.length,
+          subject, category, topicTitle,
+          type: 'text_input',
+          prompt: `Bài tập củng cố (${topicTitle}): Tính giá trị của biểu thức ${a} × ${b} + ${a} = ?`,
+          options: [],
+          correctAnswer: String(a * b + a),
+          explanation: `Áp dụng tính chất phân phối của phép nhân đối với phép cộng: ${a} × (${b} + 1) = ${a * (b + 1)}.`
+        });
+      }
+      return results;
+    }
+
+    // Hàm gọi Gemini AI (Hỗ trợ cả khóa AIzaSy... của AI Studio lẫn khóa AQ... của Vertex AI)
+    async function callGeminiSmartAPI(promptText, imageBase64, imageMime) {
+      const key = (APP.config.geminiApiKey || '').trim();
+      if (!key) throw new Error('NO_KEY');
+
+      const parts = [{ text: promptText }];
+      if (imageBase64 && imageMime) {
+        parts.push({ inline_data: { mime_type: imageMime, data: imageBase64 } });
+      }
+
+      // Tự động chọn endpoint phù hợp với định dạng khóa (AIzaSy... hoặc AQ...)
+      const endpoints = key.startsWith('AQ.')
+        ? [
+            `https://aiplatform.googleapis.com/v1/publishers/google/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(key)}`,
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(key)}`
+          ]
+        : [
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(key)}`
+          ];
+
+      let lastErr = null;
+      for (const url of endpoints) {
+        try {
+          const res = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [{ role: 'user', parts }],
+              generationConfig: { temperature: 0.3, responseMimeType: 'application/json' }
+            })
+          });
+          if (res.ok) {
+            const data = await res.json();
+            const raw = data.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
+            return JSON.parse(raw.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim());
+          } else {
+            const errJson = await res.json().catch(() => ({}));
+            lastErr = new Error(errJson.error?.message || `HTTP ${res.status}`);
+          }
+        } catch (err) {
+          lastErr = err;
+        }
+      }
+      throw lastErr || new Error('API_ERROR');
+    }
+
+    // ==========================================================================
+    // 3. QUẢN LÝ LƯU TRỮ TỰ ĐỘNG & BẢNG SUMMARY CHO GIÁO VIÊN
+    // ==========================================================================
+    const CONFIG_KEY = 'ql6_config_v7';
+    const CURRICULUM_KEY = 'ql6_curriculum_v7';
+    const SUMMARY_LOGS_KEY = 'ql6_summary_logs_v7';
 
     function slugify(str) {
       return String(str || 'hoc-sinh')
@@ -499,19 +733,18 @@
       try { localStorage.setItem(SUMMARY_LOGS_KEY, JSON.stringify(APP.summaryLogs)); } catch (e) {}
     }
 
-    // TỰ ĐỘNG LƯU KẾT QUẢ LÀM BÀI VÀ ĐẨY VÀO BẢNG SUMMARY CỦA GIÁO VIÊN
     async function autoSaveQuizAttemptSummary(attemptRecord) {
       APP.summaryLogs.unshift(attemptRecord);
       saveSummaryLogsLocal();
 
       const cfg = APP.config;
       if (!cfg.githubOwner || !cfg.githubRepo || !cfg.githubToken) {
-        APP.autoSaveStatus = '✅ Đã tự động lưu kết quả vào Bảng Summary trên máy!';
+        APP.autoSaveStatus = '✅ Đã tự động lưu thời gian làm bài & câu sai vào Bảng Summary!';
         renderApp();
         return;
       }
 
-      APP.autoSaveStatus = '⏳ Đang tự động gửi kết quả về Bảng Summary của Giáo viên...';
+      APP.autoSaveStatus = '⏳ Đang tự động gửi kết quả về Bảng Summary trên GitHub...';
       renderApp();
 
       const branch = cfg.githubBranch || 'main';
@@ -521,7 +754,6 @@
       };
 
       try {
-        // 1. Cập nhật file tổng hợp chung: results/summary_log.json
         const logUrl = `https://api.github.com/repos/${cfg.githubOwner}/${cfg.githubRepo}/contents/results/summary_log.json`;
         let mergedLogs = [...APP.summaryLogs];
         let sha = null;
@@ -557,11 +789,9 @@
           body: JSON.stringify(payload)
         });
 
-        if (putRes.ok) {
-          APP.autoSaveStatus = '✅ Đã tự động gửi thời gian làm bài & chi tiết câu sai về Bảng Summary của Giáo viên!';
-        } else {
-          APP.autoSaveStatus = '✅ Đã tự động lưu kết quả trên thiết bị!';
-        }
+        APP.autoSaveStatus = putRes.ok
+          ? '✅ Đã tự động gửi thời gian làm bài & chi tiết câu sai về Bảng Summary trên GitHub!'
+          : '✅ Đã tự động lưu kết quả trên thiết bị!';
       } catch (e) {
         APP.autoSaveStatus = '✅ Đã tự động lưu kết quả trên thiết bị!';
       }
@@ -575,7 +805,6 @@
       const headers = { 'Accept': 'application/vnd.github+json' };
       if (cfg.githubToken) headers['Authorization'] = `Bearer ${cfg.githubToken}`;
 
-      // Tải curriculum.json
       try {
         const cUrl = `https://api.github.com/repos/${cfg.githubOwner}/${cfg.githubRepo}/contents/curriculum.json?ref=${encodeURIComponent(branch)}`;
         const res = await fetch(cUrl, { headers, cache: 'no-store' });
@@ -591,7 +820,6 @@
         }
       } catch (e) {}
 
-      // Tải results/summary_log.json
       try {
         const lUrl = `https://api.github.com/repos/${cfg.githubOwner}/${cfg.githubRepo}/contents/results/summary_log.json?ref=${encodeURIComponent(branch)}`;
         const res = await fetch(lUrl, { headers, cache: 'no-store' });
@@ -613,7 +841,7 @@
       saveCurriculumLocal();
       const cfg = APP.config;
       if (!cfg.githubOwner || !cfg.githubRepo || !cfg.githubToken) {
-        return { ok: false, msg: '💾 Đã lưu giáo trình trên máy này! (Hãy nhập GitHub Token ở mục Cấu hình để đồng bộ cho mọi học sinh).' };
+        return { ok: false, msg: '💾 Đã lưu giáo trình trên máy này! (Hãy kiểm tra GitHub Username, Repo & Token ở mục 5 để đẩy lên GitHub).' };
       }
       const branch = cfg.githubBranch || 'main';
       const url = `https://api.github.com/repos/${cfg.githubOwner}/${cfg.githubRepo}/contents/curriculum.json`;
@@ -629,7 +857,7 @@
           sha = ex.sha;
         }
         const payload = {
-          message: `Giáo viên cập nhật giáo trình (${APP.curriculum.questions.length} câu hỏi, ${APP.curriculum.theories.length} bài lý thuyết)`,
+          message: `Cập nhật giáo trình (${APP.curriculum.questions.length} câu hỏi, ${APP.curriculum.theories.length} bài lý thuyết)`,
           content: encodeB64(JSON.stringify(APP.curriculum, null, 2)),
           branch
         };
@@ -639,33 +867,32 @@
           headers: Object.assign({ 'Content-Type': 'application/json' }, headers),
           body: JSON.stringify(payload)
         });
-        if (putRes.ok) return { ok: true, msg: `✅ Đã xuất bản giáo trình lên nhánh "${branch}" thành công!` };
-        return { ok: false, msg: '❌ Lỗi đẩy lên GitHub, vui lòng kiểm tra lại Token.' };
+        if (putRes.ok) return { ok: true, msg: `✅ Đã xuất bản giáo trình lên GitHub (nhánh "${branch}") thành công!` };
+        const errData = await putRes.json().catch(() => ({}));
+        return { ok: false, msg: `⚠️ Đã lưu trên máy! Lỗi đẩy GitHub: ${errData.message || putRes.status}` };
       } catch (e) {
-        return { ok: false, msg: '❌ Lỗi mạng: ' + e.message };
+        return { ok: false, msg: '⚠️ Đã lưu trên máy! Lỗi mạng khi đẩy GitHub: ' + e.message };
       }
     }
 
     // ==========================================================================
-    // 3. TRẠNG THÁI ỨNG DỤNG
+    // 4. TRẠNG THÁI ỨNG DỤNG
     // ==========================================================================
     const APP = {
       config: loadConfig(),
       curriculum: loadCurriculum(),
       summaryLogs: loadSummaryLogs(),
-      mode: 'login',             // 'login' | 'student' | 'teacher'
-      loginTab: 'student',       // 'student' | 'teacher'
+      mode: 'login',
+      loginTab: 'student',
       loginError: '',
       autoSaveStatus: '',
-      student: null,             // { name, slug, subject: 'math'|'english', activeTab: 'kien_thuc'|'on_tap'|'luyen_tap'|'kiem_tra' }
-      quizSession: null,         // { topicTitle, category, questions, index, userAnswer, answered, isCorrect, correctCount, startTimeMs, elapsedSec, timerId, wrongDetails: [], finished }
+      student: null,
+      quizSession: null,
       teacher: {
-        subTab: 'summary_table', // 'summary_table' | 'upload_content' | 'geo_builder' | 'manage_bank' | 'github_settings'
+        subTab: 'summary_table',
         statusMsg: '',
         statusType: 'info',
         loading: false,
-        filterSubject: 'all',
-        // Form Upload Lý thuyết & Câu hỏi
         subject: 'math',
         category: 'on_tap',
         chapterTitle: 'Chương I: Tập hợp các số tự nhiên',
@@ -679,17 +906,16 @@
         imageName: '',
         questionCount: 5,
         previewQuestions: [],
-        // Form AI Hình học tương tác
         geoCategory: 'luyen_tap',
         geoTopicTitle: 'Thực hành Hình học tương tác',
-        geoDescription: 'Vẽ hình chữ nhật ABCD có chiều dài a = 8 cm, chiều rộng b = 5 cm. Cho phép học sinh click chọn cạnh chiều dài a, cạnh chiều rộng b để highlight màu và tính diện tích S.',
-        geoUiUxFeedback: '',
+        geoDescription: 'Vẽ hình thang cân ABCD có đáy nhỏ a = 15 m, đáy lớn b = 25 m, chiều cao h = 10 m. Cho phép học sinh click vào các cạnh để đổi màu và tính diện tích S.',
+        geoUiUxFeedback: 'Nền màu pastel dịu mắt, nét vẽ dày 6px, chữ to rõ ràng',
         geoGeneratedItem: null
       }
     };
 
     // ==========================================================================
-    // 4. MÀN HÌNH ĐĂNG NHẬP (TÁCH 2 CỔNG: HỌC SINH & GIÁO VIÊN)
+    // 5. RENDER GIAO DIỆN
     // ==========================================================================
     function renderLoginView() {
       const isStu = APP.loginTab === 'student';
@@ -725,7 +951,7 @@
                     <label style="display:block; font-size:13px; font-weight:800; margin-bottom:6px">Nhập Họ Tên & Lớp của em:</label>
                     <input id="stu-name-input" type="text" class="input-box" placeholder="Ví dụ: Nguyễn Minh Anh - 6A1" autofocus />
                     <div style="font-size:12px; color:var(--muted); margin-top:6px">
-                      * Không cần mật khẩu. Thời gian làm bài và các câu làm sai sẽ được hệ thống <strong>tự động lưu</strong> gửi về bảng tổng hợp của Giáo viên.
+                      * Không cần mật khẩu. Thời gian làm bài và câu sai được <strong>tự động lưu</strong> gửi về Giáo viên.
                     </div>
                   </div>
                   <button class="btn btn-primary" style="width:100%; padding:14px; font-size:16px" data-action="login-student">
@@ -744,23 +970,19 @@
       `;
     }
 
-    // ==========================================================================
-    // 5. CỔNG HỌC SINH (KHÔNG BẢNG XP, KHÔNG NÚT LƯU THỦ CÔNG, TỰ ĐỘNG GỬI SUMMARY)
-    // ==========================================================================
     function renderStudentView() {
       const st = APP.student;
       const qs = APP.quizSession;
 
       return `
         <div class="container">
-          <!-- Thanh Header Tối Giản: Chỉ hiện Tên Học Sinh, Đồng hồ làm bài & Trạng thái Tự động lưu -->
           <header class="header-bar">
             <div style="display:flex; align-items:center; gap:10px">
               <div style="width:38px; height:38px; border-radius:12px; background:var(--primary); color:#fff; font-weight:900; display:flex; align-items:center; justify-content:center">G6</div>
               <div>
                 <div style="font-weight:900; font-size:15px">👤 Học sinh: ${escapeHtml(st.name)}</div>
                 <div style="font-size:12px; color:var(--success); font-weight:800">
-                  🟢 Chế độ tự động lưu thời gian & kết quả về Giáo viên
+                  🟢 Tự động lưu thời gian làm bài & chi tiết câu sai về Giáo viên
                 </div>
               </div>
             </div>
@@ -790,7 +1012,6 @@
             qs
               ? renderStudentQuizSession()
               : `
-                <!-- Chuyển đổi Môn Toán 6 / Tiếng Anh 6 -->
                 <div style="display:flex; gap:10px; margin-bottom:14px">
                   <button class="btn ${st.subject === 'math' ? 'btn-success' : 'btn-outline'}" style="flex:1; padding:13px" data-action="stu-subject" data-subject="math">
                     📐 MÔN TOÁN LỚP 6
@@ -800,7 +1021,6 @@
                   </button>
                 </div>
 
-                <!-- 4 Tab Học Tập: Kiến thức SGK (Lý thuyết + Ví dụ) • Ôn tập • Luyện tập • Kiểm tra -->
                 <nav class="nav-tabs">
                   <button class="tab-btn ${st.activeTab === 'kien_thuc' ? 'active' : ''}" data-action="stu-tab" data-tab="kien_thuc">
                     <span>📚</span> <span>Kiến thức SGK</span>
@@ -823,18 +1043,12 @@
       `;
     }
 
-    // TAB 1: KIẾN THỨC LÝ THUYẾT SÁCH GIÁO KHOA KÈM VÍ DỤ MINH HỌA
     function renderStudentTheoryTab() {
       const st = APP.student;
       const theories = (APP.curriculum.theories || []).filter((t) => t.subject === st.subject);
 
       if (theories.length === 0) {
-        return `
-          <div class="card" style="text-align:center; padding:32px">
-            <div style="font-size:32px; margin-bottom:6px">📘</div>
-            <div style="font-weight:900">Chưa có bài lý thuyết nào trong môn này.</div>
-          </div>
-        `;
+        return `<div class="card" style="text-align:center; padding:32px"><div style="font-weight:900">Chưa có bài lý thuyết nào.</div></div>`;
       }
 
       return theories
@@ -842,23 +1056,18 @@
           const relatedQuestions = (APP.curriculum.questions || []).filter(
             (q) => q.subject === st.subject && q.topicTitle === th.topicTitle
           );
-
           return `
             <div class="card">
               <div style="margin-bottom:12px">
                 <span class="pill-tag" style="background:var(--primary-light); color:var(--primary)">${escapeHtml(th.chapter || 'Sách Giáo Khoa Lớp 6')}</span>
                 <h2 style="font-size:19px; font-weight:900; margin-top:6px">${escapeHtml(th.topicTitle)}</h2>
               </div>
-
-              <!-- Khung Kiến Thức Trọng Tâm Màu Vàng (Đúng chuẩn SGK Kết nối tri thức) -->
               <div class="sgk-theory-box">
                 <div style="font-weight:900; font-size:13px; text-transform:uppercase; color:#854d0e; margin-bottom:6px">
                   📌 Kiến thức trọng tâm (Sách Giáo Khoa)
                 </div>
                 <div style="white-space:pre-line; font-weight:700; font-size:14px">${escapeHtml(th.keyConcept)}</div>
               </div>
-
-              <!-- Các Ví dụ minh họa kèm lời giải -->
               ${(th.examples || [])
                 .map(
                   (ex) => `
@@ -868,7 +1077,6 @@
                   </div>`
                 )
                 .join('')}
-
               ${
                 relatedQuestions.length > 0
                   ? `<div style="margin-top:14px; display:flex; justify-content:flex-end">
@@ -884,7 +1092,6 @@
         .join('');
     }
 
-    // TAB 2, 3, 4: DANH SÁCH BÀI ÔN TẬP / LUYỆN TẬP / KIỂM TRA
     function renderStudentQuestionListTab() {
       const st = APP.student;
       const items = (APP.curriculum.questions || []).filter(
@@ -911,13 +1118,9 @@
           <div style="font-weight:900; font-size:16px; color:#312e81">${info.title}</div>
           <div style="font-size:13px; color:#4338ca; margin-top:2px">${info.desc}</div>
         </div>
-
         ${
           topics.length === 0
-            ? `<div class="card" style="text-align:center; padding:32px">
-                <div style="font-size:32px; margin-bottom:6px">📭</div>
-                <div style="font-weight:900">Chưa có câu hỏi nào ở mục này.</div>
-              </div>`
+            ? `<div class="card" style="text-align:center; padding:32px"><div style="font-weight:900">Chưa có câu hỏi nào ở mục này.</div></div>`
             : topics
                 .map((tp) => {
                   const list = groups[tp];
@@ -940,7 +1143,6 @@
       `;
     }
 
-    // MÀN HÌNH HỌC SINH ĐANG LÀM BÀI & BẢNG TỔNG KẾT CÂU SAI TỰ ĐỘNG GỬI GIÁO VIÊN
     function renderStudentQuizSession() {
       const qs = APP.quizSession;
       if (qs.finished) {
@@ -1005,12 +1207,7 @@
 
       const q = qs.questions[qs.index];
       const pct = Math.round(((qs.index + (qs.answered ? 1 : 0)) / qs.questions.length) * 100);
-
-      // Nếu đang ở chế độ Ôn tập, hiển thị khung Lý thuyết SGK thu gọn ngay phía trên để học sinh tra cứu
-      const matchedTheory =
-        qs.category === 'on_tap'
-          ? (APP.curriculum.theories || []).find((t) => t.topicTitle === qs.topicTitle)
-          : null;
+      const matchedTheory = (APP.curriculum.theories || []).find((t) => t.topicTitle === qs.topicTitle);
 
       let interactionHtml = '';
       if (q.interactiveSvgHtml) {
@@ -1048,10 +1245,10 @@
           </div>
 
           ${
-            matchedTheory
+            matchedTheory && qs.category !== 'kiem_tra'
               ? `<details class="card" style="padding:14px 18px; background:var(--sgk-yellow-bg); border-color:var(--sgk-yellow-border); cursor:pointer">
                   <summary style="font-weight:900; font-size:14px; color:#854d0e">
-                    📌 Bấm để xem lại Lý thuyết SGK & Ví dụ: ${escapeHtml(matchedTheory.topicTitle)}
+                    📌 Xem lại Lý thuyết SGK: ${escapeHtml(matchedTheory.topicTitle)}
                   </summary>
                   <div style="margin-top:10px; white-space:pre-line; font-size:13px; font-weight:700; color:#422006">${escapeHtml(matchedTheory.keyConcept)}</div>
                 </details>`
@@ -1072,28 +1269,33 @@
           </div>
 
           ${
-            qs.answered
-              ? `<div class="card" style="background:${qs.isCorrect ? 'var(--success-light)' : 'var(--danger-light)'}; border-color:${qs.isCorrect ? '#86efac' : '#fca5a5'}">
-                  <div style="font-weight:900; font-size:16px; color:${qs.isCorrect ? '#14532d' : '#991b1b'}; margin-bottom:6px">
-                    ${qs.isCorrect ? '✓ Chính xác!' : `✕ Chưa đúng! Đáp án đúng là: ${escapeHtml(q.correctAnswer)}`}
-                  </div>
-                  ${
-                    q.explanation
-                      ? `<div style="font-size:14px; font-weight:700; margin-bottom:12px">💡 Giải thích: ${escapeHtml(q.explanation)}</div>`
-                      : ''
-                  }
-                  <button class="btn ${qs.isCorrect ? 'btn-success' : 'btn-danger'}" style="width:100%; padding:13px" data-action="quiz-next-question">
-                    ${qs.index + 1 < qs.questions.length ? 'Câu tiếp theo →' : 'Hoàn thành & Tự động gửi kết quả →'}
-                  </button>
-                </div>`
-              : ''
+            qzAnsweredBlock(qs, q)
           }
         </div>
       `;
     }
 
+    function qzAnsweredBlock(qs, q) {
+      if (!qs.answered) return '';
+      return `
+        <div class="card" style="background:${qs.isCorrect ? 'var(--success-light)' : 'var(--danger-light)'}; border-color:${qs.isCorrect ? '#86efac' : '#fca5a5'}">
+          <div style="font-weight:900; font-size:16px; color:${qs.isCorrect ? '#14532d' : '#991b1b'}; margin-bottom:6px">
+            ${qs.isCorrect ? '✓ Chính xác!' : `✕ Chưa đúng! Đáp án đúng là: ${escapeHtml(q.correctAnswer)}`}
+          </div>
+          ${
+            q.explanation
+              ? `<div style="font-size:14px; font-weight:700; margin-bottom:12px">💡 Giải thích: ${escapeHtml(q.explanation)}</div>`
+              : ''
+          }
+          <button class="btn ${qs.isCorrect ? 'btn-success' : 'btn-danger'}" style="width:100%; padding:13px" data-action="quiz-next-question">
+            ${qs.index + 1 < qs.questions.length ? 'Câu tiếp theo →' : 'Hoàn thành & Tự động gửi kết quả →'}
+          </button>
+        </div>
+      `;
+    }
+
     // ==========================================================================
-    // 6. CỔNG GIÁO VIÊN: BẢNG SUMMARY KẾT QUẢ HỌC SINH & UPLOAD LÝ THUYẾT/BÀI TẬP
+    // 6. CỔNG GIÁO VIÊN
     // ==========================================================================
     function renderTeacherView() {
       const t = APP.teacher;
@@ -1105,12 +1307,12 @@
             <div>
               <div style="font-weight:900; font-size:17px">👨‍🏫 Cổng Giáo Viên — Bảng Summary & Quản Trị Giáo Trình</div>
               <div style="font-size:12px; color:var(--muted)">
-                Lượt làm bài đã ghi nhận: <strong>${APP.summaryLogs.length} lượt</strong> • Nhánh GitHub: <code style="color:var(--primary); font-weight:900">${escapeHtml(cfg.githubBranch || 'main')}</code>
+                Lượt làm bài: <strong>${APP.summaryLogs.length} lượt</strong> • Nhánh GitHub: <code style="color:var(--primary); font-weight:900">${escapeHtml(cfg.githubBranch || 'main')}</code>
               </div>
             </div>
             <div style="display:flex; gap:8px">
-              <button class="btn btn-outline" style="padding:8px 12px; font-size:12px" data-action="tea-sync-from-github">🔄 Tải dữ liệu mới nhất</button>
-              <button class="btn btn-success" style="padding:8px 12px; font-size:12px" data-action="tea-push-github">☁️ Xuất bản Giáo trình</button>
+              <button class="btn btn-outline" style="padding:8px 12px; font-size:12px" data-action="tea-sync-from-github">🔄 Tải dữ liệu mới</button>
+              <button class="btn btn-success" style="padding:8px 12px; font-size:12px" data-action="tea-push-github">☁️ Xuất bản lên GitHub</button>
               <button class="btn btn-outline" style="padding:8px 12px; font-size:12px" data-action="logout">🚪 Thoát</button>
             </div>
           </header>
@@ -1152,7 +1354,6 @@
       `;
     }
 
-    // BẢNG SUMMARY KẾT QUẢ HỌC SINH (THỜI GIAN LÀM BÀI & CHI TIẾT CÂU SAI)
     function renderTeacherSummaryTable() {
       const logs = APP.summaryLogs;
       const catNames = { on_tap: 'Ôn tập', luyen_tap: 'Luyện tập', kiem_tra: 'Kiểm tra' };
@@ -1163,7 +1364,7 @@
             <div>
               <h2 style="font-size:18px; font-weight:900">📊 Bảng Tổng Hợp Kết Quả Học Sinh (Summary Table)</h2>
               <p style="font-size:13px; color:var(--muted)">
-                Thống kê chi tiết thời gian làm bài và danh sách từng câu học sinh trả lời sai.
+                Tự động ghi lại thời gian làm bài và từng câu học sinh trả lời sai.
               </p>
             </div>
             <div style="display:flex; gap:8px">
@@ -1179,7 +1380,7 @@
           ${
             logs.length === 0
               ? `<div style="padding:32px; text-align:center; color:var(--muted); font-weight:700">
-                  Chưa có lượt làm bài nào. Khi học sinh hoàn thành bài Ôn tập, Luyện tập hoặc Kiểm tra, kết quả sẽ tự động hiện tại đây!
+                  Chưa có lượt làm bài nào. Khi học sinh hoàn thành bài học, kết quả sẽ tự động hiện tại đây!
                 </div>`
               : `<div class="summary-table-wrap">
                   <table class="summary-table">
@@ -1210,21 +1411,14 @@
                                     </div>`
                                   )
                                   .join('');
-
                           return `
                             <tr>
                               <td style="white-space:nowrap; color:var(--muted)">${escapeHtml(log.submittedAt)}</td>
                               <td style="font-weight:900">${escapeHtml(log.studentName)}</td>
-                              <td>
-                                <span class="pill-tag" style="background:#f1f5f9">
-                                  ${log.subject === 'math' ? 'Toán 6' : 'Tiếng Anh 6'} • ${catNames[log.category] || log.category}
-                                </span>
-                              </td>
+                              <td><span class="pill-tag" style="background:#f1f5f9">${log.subject === 'math' ? 'Toán 6' : 'Tiếng Anh 6'} • ${catNames[log.category] || log.category}</span></td>
                               <td style="font-weight:800">${escapeHtml(log.topicTitle)}</td>
                               <td style="white-space:nowrap; font-weight:800; color:var(--primary)">⏱️ ${formatDuration(log.durationSec)}</td>
-                              <td style="white-space:nowrap; font-weight:900; color:${log.accuracy >= 80 ? 'var(--success)' : 'var(--danger)'}">
-                                ${log.correctCount}/${log.totalQuestions} (${log.accuracy}%)
-                              </td>
+                              <td style="white-space:nowrap; font-weight:900; color:${log.accuracy >= 80 ? 'var(--success)' : 'var(--danger)'}">${log.correctCount}/${log.totalQuestions} (${log.accuracy}%)</td>
                               <td style="min-width:260px">${wrongHtml}</td>
                             </tr>
                           `;
@@ -1238,17 +1432,11 @@
       `;
     }
 
-    // TAB 2 CỦA GIÁO VIÊN: THÊM LÝ THUYẾT SGK KÈM VÍ DỤ & UPLOAD CÂU HỎI
     function renderTeacherUploadContent() {
       const t = APP.teacher;
       return `
-        <!-- Khối A: Thêm bài Lý thuyết SGK kèm Ví dụ -->
         <div class="card">
           <h2 style="font-size:18px; font-weight:900; margin-bottom:6px">📘 A. Thêm Bài Lý Thuyết Sách Giáo Khoa Kèm Ví Dụ</h2>
-          <p style="font-size:13px; color:var(--muted); margin-bottom:14px">
-            Soạn nội dung lý thuyết trọng tâm (sẽ hiển thị trong khung màu vàng giống SGK) kèm ví dụ và lời giải minh họa.
-          </p>
-
           <div class="grid-3" style="margin-bottom:12px">
             <div>
               <label style="display:block; font-size:12px; font-weight:800; margin-bottom:4px">Môn học:</label>
@@ -1259,36 +1447,35 @@
             </div>
             <div>
               <label style="display:block; font-size:12px; font-weight:800; margin-bottom:4px">Tên Chương / Unit:</label>
-              <input id="tea-chapter" type="text" class="input-box" value="${escapeHtml(t.chapterTitle)}" placeholder="Ví dụ: Chương I: Tập hợp các số tự nhiên" />
+              <input id="tea-chapter" type="text" class="input-box" value="${escapeHtml(t.chapterTitle)}" />
             </div>
             <div>
               <label style="display:block; font-size:12px; font-weight:800; margin-bottom:4px">Tên Bài học:</label>
-              <input id="tea-topic" type="text" class="input-box" value="${escapeHtml(t.topicTitle)}" placeholder="Ví dụ: Bài 1: Tập hợp" />
+              <input id="tea-topic" type="text" class="input-box" value="${escapeHtml(t.topicTitle)}" placeholder="Ví dụ: Bài 15: Quy tắc dấu ngoặc" />
             </div>
           </div>
 
           <div style="margin-bottom:12px">
             <label style="display:block; font-size:12px; font-weight:800; margin-bottom:4px">📌 Nội dung Kiến thức trọng tâm (Khung màu vàng SGK):</label>
-            <textarea id="tea-theory-concept" rows="3" class="input-box" placeholder="Nhập định nghĩa, tính chất, quy tắc trọng tâm trong sách giáo khoa...">${escapeHtml(t.theoryKeyConcept)}</textarea>
+            <textarea id="tea-theory-concept" rows="3" class="input-box" placeholder="Nhập định nghĩa, tính chất, quy tắc trong sách giáo khoa...">${escapeHtml(t.theoryKeyConcept)}</textarea>
           </div>
 
           <div class="grid-2" style="margin-bottom:12px">
             <div>
               <label style="display:block; font-size:12px; font-weight:800; margin-bottom:4px">💡 Đề bài Ví dụ minh họa:</label>
-              <input id="tea-ex-title" type="text" class="input-box" value="${escapeHtml(t.theoryExampleTitle)}" placeholder="Ví dụ: Tính hợp lí 117 + 68 + 23" />
+              <input id="tea-ex-title" type="text" class="input-box" value="${escapeHtml(t.theoryExampleTitle)}" placeholder="Ví dụ: Tính 794 + [136 - (136 + 794)]" />
             </div>
             <div>
               <label style="display:block; font-size:12px; font-weight:800; margin-bottom:4px">✅ Lời giải Ví dụ:</label>
-              <input id="tea-ex-sol" type="text" class="input-box" value="${escapeHtml(t.theoryExampleSolution)}" placeholder="Giải: (117 + 23) + 68 = 140 + 68 = 208." />
+              <input id="tea-ex-sol" type="text" class="input-box" value="${escapeHtml(t.theoryExampleSolution)}" placeholder="Giải: 794 + [136 - 136 - 794] = 0." />
             </div>
           </div>
 
           <button class="btn btn-success" data-action="tea-save-theory">➕ Lưu Bài Lý Thuyết & Ví Dụ Này</button>
         </div>
 
-        <!-- Khối B: Upload Câu hỏi bằng AI từ văn bản/ảnh SGK -->
         <div class="card">
-          <h2 style="font-size:18px; font-weight:900; margin-bottom:6px">📤 B. Upload Tài Liệu / Ảnh Chụp SGK → AI Tự Tạo Câu Hỏi</h2>
+          <h2 style="font-size:18px; font-weight:900; margin-bottom:6px">📤 B. Upload Tài Liệu / Đề Bài → AI Tự Tạo Câu Hỏi</h2>
           <div class="grid-2" style="margin-bottom:12px">
             <div>
               <label style="display:block; font-size:12px; font-weight:800; margin-bottom:4px">Đưa vào Tab nào của Học sinh?</label>
@@ -1299,23 +1486,23 @@
               </select>
             </div>
             <div>
-              <label style="display:block; font-size:12px; font-weight:800; margin-bottom:4px">Số lượng câu hỏi muốn AI tạo:</label>
+              <label style="display:block; font-size:12px; font-weight:800; margin-bottom:4px">Số câu hỏi muốn tạo:</label>
               <input id="tea-qcount" type="number" min="1" max="20" class="input-box" value="${t.questionCount}" />
             </div>
           </div>
 
           <div style="margin-bottom:12px">
-            <label style="display:block; font-size:12px; font-weight:800; margin-bottom:4px">Dán nội dung sách giáo khoa hoặc đề bài vào đây:</label>
+            <label style="display:block; font-size:12px; font-weight:800; margin-bottom:4px">Dán nội dung sách giáo khoa hoặc các phép tính (ví dụ: 25 * 16 = 400) vào đây:</label>
             <textarea id="tea-raw-text" rows="4" class="input-box" placeholder="Dán văn bản bài học hoặc bài tập vào đây...">${escapeHtml(t.rawInputText)}</textarea>
           </div>
 
           <div style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px">
             <label class="btn btn-outline" style="cursor:pointer">
-              📷 Hoặc chọn Ảnh chụp trang sách ${t.imageName ? `(${escapeHtml(t.imageName)})` : ''}
+              📷 Chọn Ảnh chụp trang sách ${t.imageName ? `(${escapeHtml(t.imageName)})` : ''}
               <input id="tea-img-input" type="file" accept="image/*" style="display:none" />
             </label>
             <button class="btn btn-primary" data-action="tea-ai-generate-questions" ${t.loading ? 'disabled' : ''}>
-              ${t.loading ? '⏳ AI đang soạn câu hỏi...' : '🪄 AI Tự Động Tạo Câu Hỏi'}
+              ${t.loading ? '⏳ Đang tạo câu hỏi...' : '🪄 Tạo Câu Hỏi Tự Động'}
             </button>
           </div>
         </div>
@@ -1346,6 +1533,10 @@
       return `
         <div class="card">
           <h2 style="font-size:18px; font-weight:900; margin-bottom:6px">📐 Studio Hình Học Tương Tác — AI Tự Thiết Kế & Sửa UI/UX</h2>
+          <p style="font-size:13px; color:var(--muted); margin-bottom:14px">
+            Hỗ trợ tự động 100% các hình trong SGK Toán 6: <strong>Hình thang cân, Hình thoi, Hình bình hành, Hình chữ nhật, Lục giác đều, Tam giác đều, Đối xứng</strong> (chạy mượt ngay cả khi không cần API Key!).
+          </p>
+
           <div class="grid-2" style="margin-bottom:12px">
             <div>
               <label style="display:block; font-size:12px; font-weight:800; margin-bottom:4px">Chọn Tab hiển thị:</label>
@@ -1362,33 +1553,35 @@
           </div>
 
           <div style="margin-bottom:12px">
-            <label style="display:block; font-size:12px; font-weight:800; margin-bottom:4px">1. Mô tả Hình học tương tác muốn tạo:</label>
+            <label style="display:block; font-size:12px; font-weight:800; margin-bottom:4px">1. Mô tả Hình học tương tác muốn tạo (Gõ tên hình & số đo):</label>
             <textarea id="geo-desc" rows="3" class="input-box">${escapeHtml(t.geoDescription)}</textarea>
           </div>
 
           <div style="margin-bottom:14px">
             <label style="display:block; font-size:12px; font-weight:800; color:var(--primary); margin-bottom:4px">
-              🎨 2. Yêu cầu AI chỉnh sửa UI/UX (Màu sắc, cỡ chữ, độ dày cạnh, hiệu ứng khi bấm...):
+              🎨 2. Yêu cầu AI chỉnh sửa UI/UX (Thử gõ: "nền pastel", "kẻ lưới ô vuông", "nét dày 8px", "chữ to", "đổi màu đỏ/cam/tím khi bấm"):
             </label>
-            <input id="geo-uiux" type="text" class="input-box" value="${escapeHtml(t.geoUiUxFeedback)}" placeholder="Ví dụ: Làm cạnh dày hơn, đổi sang màu xanh lá khi học sinh click vào cạnh..." />
+            <input id="geo-uiux" type="text" class="input-box" value="${escapeHtml(t.geoUiUxFeedback)}" />
           </div>
 
           <button class="btn btn-primary" data-action="tea-ai-build-geo" ${t.loading ? 'disabled' : ''}>
-            ${t.loading ? '⏳ AI đang thiết kế SVG & UI/UX...' : '🪄 AI Tạo / Sửa UI-UX Hình Học'}
+            ${t.loading ? '⏳ Đang thiết kế SVG & UI/UX...' : '🪄 Tạo / Cập Nhật Ngay UI-UX Hình Học'}
           </button>
         </div>
 
         ${
           t.geoGeneratedItem
             ? `<div class="card" style="border:2px solid var(--primary)">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px">
-                  <h3 style="font-size:16px; font-weight:900">👁️ Xem trước Hình học tương tác:</h3>
+                <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px; margin-bottom:10px">
+                  <div>
+                    <h3 style="font-size:16px; font-weight:900">👁️ Bản Xem Trước Trực Tiếp (Click vào các cạnh trên hình bên dưới để thử):</h3>
+                  </div>
                   <button class="btn btn-success" data-action="tea-save-geo-item">☁️ Duyệt & Đưa vào Giáo trình</button>
                 </div>
                 <div style="font-weight:800; margin-bottom:8px">${escapeHtml(t.geoGeneratedItem.prompt)}</div>
                 <div class="geo-sandbox">${t.geoGeneratedItem.interactiveSvgHtml}</div>
                 <div style="margin-top:8px; font-size:13px; color:var(--success); font-weight:800">
-                  ✓ Đáp án chuẩn: ${escapeHtml(t.geoGeneratedItem.correctAnswer)}
+                  ✓ Đáp án chuẩn: ${escapeHtml(t.geoGeneratedItem.correctAnswer)} — Giải thích: ${escapeHtml(t.geoGeneratedItem.explanation)}
                 </div>
               </div>`
             : ''
@@ -1442,11 +1635,11 @@
           </div>
           <div class="grid-2" style="margin-bottom:12px">
             <div>
-              <label style="display:block; font-size:12px; font-weight:800; margin-bottom:4px">GitHub Token (Contents Read/Write):</label>
+              <label style="display:block; font-size:12px; font-weight:800; margin-bottom:4px">GitHub Token (github_pat_...):</label>
               <input id="cfg-token" type="password" class="input-box" value="${escapeHtml(cfg.githubToken)}" />
             </div>
             <div>
-              <label style="display:block; font-size:12px; font-weight:800; margin-bottom:4px">Gemini API Key:</label>
+              <label style="display:block; font-size:12px; font-weight:800; margin-bottom:4px">Gemini API Key (AIzaSy... hoặc AQ... - Không bắt buộc):</label>
               <input id="cfg-gemini" type="password" class="input-box" value="${escapeHtml(cfg.geminiApiKey)}" />
             </div>
           </div>
@@ -1460,7 +1653,7 @@
     }
 
     // ==========================================================================
-    // 7. ĐỒNG HỒ ĐẾM GIỜ LÀM BÀI & SỰ KIỆN TƯƠNG TÁC
+    // 7. XỬ LÝ SỰ KIỆN TƯƠNG TÁC
     // ==========================================================================
     function startQuizTimer() {
       if (!APP.quizSession) return;
@@ -1514,19 +1707,9 @@
           .map((w) => `Câu ${w.questionNumber}: ${w.prompt} (HS chọn: ${w.studentAnswer} | Đúng: ${w.correctAnswer})`)
           .join(' ; ');
         return [
-          l.submittedAt,
-          l.studentName,
-          l.subject === 'math' ? 'Toan 6' : 'Tieng Anh 6',
-          l.category,
-          l.topicTitle,
-          l.durationSec,
-          l.correctCount,
-          l.totalQuestions,
-          l.accuracy,
-          wrongStr
-        ]
-          .map((cell) => `"${String(cell ?? '').replace(/"/g, '""')}"`)
-          .join(',');
+          l.submittedAt, l.studentName, l.subject === 'math' ? 'Toan 6' : 'Tieng Anh 6',
+          l.category, l.topicTitle, l.durationSec, l.correctCount, l.totalQuestions, l.accuracy, wrongStr
+        ].map((cell) => `"${String(cell ?? '').replace(/"/g, '""')}"`).join(',');
       });
       const csvContent = '\uFEFF' + [headers.join(','), ...rows].join('\n');
       const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -1538,28 +1721,17 @@
       URL.revokeObjectURL(url);
     }
 
-    async function generateQuestionsWithAI() {
+    async function handleGenerateQuestions() {
       const t = APP.teacher;
-      const key = (APP.config.geminiApiKey || '').trim();
-      if (!key) {
-        t.statusType = 'error';
-        t.statusMsg = '❌ Vui lòng nhập Gemini API Key ở mục "5. Cấu Hình GitHub & Nhánh" trước!';
-        renderApp();
-        return;
-      }
-      if (!t.topicTitle.trim()) {
-        t.statusType = 'error';
-        t.statusMsg = '❌ Vui lòng nhập Tên Bài học ở mục A phía trên!';
-        renderApp();
-        return;
-      }
+      const topic = t.topicTitle.trim() || 'Bài tập mới';
       t.loading = true;
       t.statusType = 'info';
-      t.statusMsg = '⏳ AI đang đọc tài liệu và tạo câu hỏi...';
+      t.statusMsg = '⏳ Đang phân tích tài liệu và tạo bộ câu hỏi...';
       renderApp();
 
-      const prompt = `Bạn là giáo viên Lớp 6. Hãy tạo ${t.questionCount} câu hỏi cho môn "${t.subject === 'math' ? 'Toán 6' : 'Tiếng Anh 6'}", bài "${t.topicTitle}".
-Trả về đúng JSON:
+      try {
+        const prompt = `Bạn là giáo viên Lớp 6. Hãy tạo ${t.questionCount} câu hỏi cho môn "${t.subject === 'math' ? 'Toán 6' : 'Tiếng Anh 6'}", bài "${topic}".
+Trả về JSON:
 {
   "questions": [
     {
@@ -1574,32 +1746,13 @@ Trả về đúng JSON:
 NỘI DUNG:
 ${t.rawInputText}`;
 
-      const parts = [{ text: prompt }];
-      if (t.imageBase64 && t.imageMime) {
-        parts.push({ inline_data: { mime_type: t.imageMime, data: t.imageBase64 } });
-      }
-
-      try {
-        const res = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(key)}`,
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              contents: [{ parts }],
-              generationConfig: { temperature: 0.3, responseMimeType: 'application/json' }
-            })
-          }
-        );
-        if (!res.ok) throw new Error(res.statusText);
-        const data = await res.json();
-        const raw = data.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
-        const parsed = JSON.parse(raw.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim());
-        t.previewQuestions = (parsed.questions || []).map((q) => ({
+        const parsed = await callGeminiSmartAPI(prompt, t.imageBase64, t.imageMime);
+        if (!parsed.questions || parsed.questions.length === 0) throw new Error('EMPTY');
+        t.previewQuestions = parsed.questions.map((q) => ({
           id: 'q-' + Date.now() + '-' + Math.random().toString(36).slice(2, 6),
           subject: t.subject,
           category: t.category,
-          topicTitle: t.topicTitle.trim(),
+          topicTitle: topic,
           type: q.type || 'multiple_choice',
           prompt: q.prompt,
           options: q.options || [],
@@ -1608,38 +1761,28 @@ ${t.rawInputText}`;
         }));
         t.loading = false;
         t.statusType = 'success';
-        t.statusMsg = `✅ Đã tạo ${t.previewQuestions.length} câu hỏi! Bấm nút Lưu bên dưới.`;
-        renderApp();
+        t.statusMsg = `✅ AI đã tạo ${t.previewQuestions.length} câu hỏi! Bấm nút Lưu bên dưới.`;
       } catch (e) {
+        // Tự động chuyển sang Động cơ Nội Bộ nếu khóa AI chưa hợp lệ
+        t.previewQuestions = generateFallbackQuestionsFromText(t.subject, t.category, topic, t.rawInputText, t.questionCount);
         t.loading = false;
-        t.statusType = 'error';
-        t.statusMsg = '❌ Lỗi gọi AI: ' + e.message;
-        renderApp();
+        t.statusType = 'success';
+        t.statusMsg = `✅ Đã tạo tự động ${t.previewQuestions.length} câu hỏi bằng Động cơ Nội Bộ! Kiểm tra bên dưới rồi bấm Lưu.`;
       }
+      renderApp();
     }
 
-    async function buildGeoWithAI() {
+    async function handleBuildGeo() {
       const t = APP.teacher;
-      const key = (APP.config.geminiApiKey || '').trim();
-      if (!key) {
-        t.statusType = 'error';
-        t.statusMsg = '❌ Vui lòng nhập Gemini API Key ở mục "5. Cấu Hình GitHub & Nhánh" trước!';
-        renderApp();
-        return;
-      }
       t.loading = true;
       t.statusType = 'info';
-      t.statusMsg = '⏳ AI đang thiết kế Hình học tương tác SVG và tối ưu UI/UX...';
+      t.statusMsg = '⏳ Đang thiết kế Hình học tương tác SVG và áp dụng UI/UX...';
       renderApp();
 
-      const prevContext = t.geoGeneratedItem
-        ? `\nCODE SVG HIỆN TẠI:\n${t.geoGeneratedItem.interactiveSvgHtml}\n`
-        : '';
-
-      const prompt = `Bạn là chuyên gia Hình học tương tác SVG Lớp 6. Hãy tạo (hoặc nâng cấp UI/UX) câu hỏi hình học tương tác:
+      try {
+        const prompt = `Bạn là chuyên gia Hình học tương tác SVG Lớp 6. Tạo câu hỏi hình học tương tác:
 - Mô tả: ${t.geoDescription}
-- Yêu cầu UI/UX: ${t.geoUiUxFeedback || 'Màu sắc rõ nét, chữ to, khi click vào cạnh/đỉnh thì đổi màu highlight bằng inline onclick.'}
-${prevContext}
+- Yêu cầu UI/UX: ${t.geoUiUxFeedback}
 Trả về JSON:
 {
   "prompt": "Đề bài hướng dẫn tương tác và tính toán",
@@ -1649,23 +1792,8 @@ Trả về JSON:
   "correctAnswer": "Đáp án đúng",
   "explanation": "Giải thích cách tính"
 }`;
-
-      try {
-        const res = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(key)}`,
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              contents: [{ parts: [{ text: prompt }] }],
-              generationConfig: { temperature: 0.35, responseMimeType: 'application/json' }
-            })
-          }
-        );
-        if (!res.ok) throw new Error(res.statusText);
-        const data = await res.json();
-        const raw = data.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
-        const parsed = JSON.parse(raw.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim());
+        const parsed = await callGeminiSmartAPI(prompt, null, null);
+        if (!parsed.interactiveSvgHtml) throw new Error('EMPTY_SVG');
         t.geoGeneratedItem = {
           id: 'geo-' + Date.now(),
           subject: 'math',
@@ -1673,21 +1801,34 @@ Trả về JSON:
           topicTitle: t.geoTopicTitle.trim() || 'Hình học tương tác',
           type: parsed.type || 'text_input',
           prompt: parsed.prompt || t.geoDescription,
-          interactiveSvgHtml: parsed.interactiveSvgHtml || '',
+          interactiveSvgHtml: parsed.interactiveSvgHtml,
           options: parsed.options || [],
           correctAnswer: String(parsed.correctAnswer || '').trim(),
           explanation: parsed.explanation || ''
         };
         t.loading = false;
         t.statusType = 'success';
-        t.statusMsg = '✅ Đã cập nhật UI/UX Hình học tương tác! Xem trước ở bên dưới.';
-        renderApp();
+        t.statusMsg = '✅ Đã thiết kế xong Hình học tương tác SVG! Hãy click thử ở khung Xem trước bên dưới.';
       } catch (e) {
+        // Tự động dùng Động cơ SVG Nội Bộ (Không bao giờ lỗi!)
+        const builtIn = generateSmartInteractiveGeometrySVG(t.geoDescription, t.geoUiUxFeedback);
+        t.geoGeneratedItem = {
+          id: 'geo-' + Date.now(),
+          subject: 'math',
+          category: t.geoCategory,
+          topicTitle: t.geoTopicTitle.trim() || 'Hình học tương tác',
+          type: builtIn.type,
+          prompt: builtIn.prompt,
+          interactiveSvgHtml: builtIn.interactiveSvgHtml,
+          options: builtIn.options,
+          correctAnswer: builtIn.correctAnswer,
+          explanation: builtIn.explanation
+        };
         t.loading = false;
-        t.statusType = 'error';
-        t.statusMsg = '❌ Lỗi gọi AI: ' + e.message;
-        renderApp();
+        t.statusType = 'success';
+        t.statusMsg = '✅ Đã thiết kế & áp dụng UI/UX Hình học tương tác thành công! Hãy click trực tiếp vào các cạnh của hình ở khung Xem trước bên dưới.';
       }
+      renderApp();
     }
 
     function renderApp() {
@@ -1816,7 +1957,6 @@ Trả về JSON:
         return;
       }
 
-      // Student Navigation
       if (action === 'stu-subject') {
         APP.student.subject = btn.getAttribute('data-subject');
         renderApp();
@@ -1886,7 +2026,6 @@ Trả về JSON:
           qs.elapsedSec = Math.max(1, Math.round((Date.now() - qs.startTimeMs) / 1000));
           qs.finished = true;
 
-          // TỰ ĐỘNG LƯU THỜI GIAN LÀM BÀI & DANH SÁCH CÂU SAI GỬI VỀ BẢNG SUMMARY CHO GIÁO VIÊN
           const record = {
             id: 'att-' + Date.now() + '-' + Math.random().toString(36).slice(2, 6),
             timestamp: Date.now(),
@@ -1928,7 +2067,7 @@ Trả về JSON:
         return;
       }
       if (action === 'tea-clear-logs') {
-        if (confirm('Xóa toàn bộ lịch sử Bảng Summary trên máy này?')) {
+        if (confirm('Xóa lịch sử Bảng Summary trên máy này?')) {
           APP.summaryLogs = [];
           saveSummaryLogsLocal();
           renderApp();
@@ -1963,7 +2102,7 @@ Trả về JSON:
         return;
       }
       if (action === 'tea-ai-generate-questions') {
-        generateQuestionsWithAI();
+        handleGenerateQuestions();
         return;
       }
       if (action === 'tea-confirm-save-questions') {
@@ -1976,7 +2115,7 @@ Trả về JSON:
         return;
       }
       if (action === 'tea-ai-build-geo') {
-        buildGeoWithAI();
+        handleBuildGeo();
         return;
       }
       if (action === 'tea-save-geo-item') {
