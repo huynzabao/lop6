@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>QuestLearn 6 — Học Toán & Tiếng Anh Lớp 6</title>
+  <title>QuestLearn 6 — Hệ Thống Học Tập & Quản Trị Giáo Trình</title>
   <style>
     :root {
       --bg: #f8fafc;
@@ -19,81 +19,45 @@
       --danger: #dc2626;
       --danger-light: #fef2f2;
       --warning: #d97706;
+      --warning-light: #fffbeb;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
-      line-height: 1.5;
-      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--text); line-height: 1.5; min-height: 100vh;
     }
     button { font-family: inherit; cursor: pointer; border: none; background: none; transition: all 0.16s ease; }
     button:disabled { opacity: 0.45; cursor: not-allowed; }
     input, textarea, select { font-family: inherit; }
 
-    /* Top Navigation Layout (Clean 3-Tab Student UI) */
-    .container {
-      max-width: 860px;
-      margin: 0 auto;
-      padding: 20px 16px 60px 16px;
-    }
+    .container { max-width: 900px; margin: 0 auto; padding: 20px 16px 60px 16px; }
     .header-bar {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 12px 18px;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 16px;
+      background: var(--card); border: 1px solid var(--border); border-radius: 20px;
+      padding: 12px 18px; display: flex; flex-wrap: wrap; align-items: center;
+      justify-content: space-between; gap: 12px; margin-bottom: 16px;
       box-shadow: 0 2px 6px rgba(15,23,42,0.03);
     }
     .nav-tabs {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      padding: 6px;
-      border-radius: 18px;
-      margin-bottom: 22px;
-      box-shadow: 0 2px 6px rgba(15,23,42,0.02);
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+      background: var(--card); border: 1px solid var(--border); padding: 6px;
+      border-radius: 18px; margin-bottom: 20px;
     }
     .tab-btn {
-      padding: 12px 10px;
-      border-radius: 14px;
-      font-weight: 800;
-      font-size: 15px;
-      color: var(--muted);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
+      padding: 12px 10px; border-radius: 13px; font-weight: 800; font-size: 15px;
+      color: var(--muted); display: flex; align-items: center; justify-content: center; gap: 8px;
     }
     .tab-btn:hover { background: #f1f5f9; color: var(--text); }
-    .tab-btn.active {
-      background: var(--primary);
-      color: #ffffff;
-      box-shadow: 0 4px 12px rgba(79,70,229,0.22);
-    }
+    .tab-btn.active { background: var(--primary); color: #fff; box-shadow: 0 4px 12px rgba(79,70,229,0.22); }
 
-    /* Cards & Buttons */
     .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      padding: 22px;
-      margin-bottom: 16px;
-      box-shadow: 0 2px 8px rgba(15,23,42,0.03);
+      background: var(--card); border: 1px solid var(--border); border-radius: 22px;
+      padding: 22px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(15,23,42,0.03);
     }
     .grid-2 { display: grid; grid-template-columns: 1fr; gap: 14px; }
-    .grid-4 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr; gap: 12px; }
     @media (min-width: 640px) {
       .grid-2 { grid-template-columns: repeat(2, 1fr); }
-      .grid-4 { grid-template-columns: repeat(4, 1fr); }
+      .grid-3 { grid-template-columns: repeat(3, 1fr); }
     }
 
     .btn {
@@ -104,29 +68,16 @@
     .btn-primary:hover:not(:disabled) { background: var(--primary-hover); }
     .btn-success { background: var(--success); color: #fff; }
     .btn-danger { background: var(--danger); color: #fff; }
+    .btn-warning { background: #f59e0b; color: #fff; }
     .btn-outline { background: #fff; border: 2px solid var(--border); color: var(--text); }
     .btn-outline:hover:not(:disabled) { border-color: var(--primary); background: #f8fafc; }
 
     .input-box {
-      width: 100%; padding: 13px 16px; border-radius: 14px; border: 2px solid #cbd5e1;
-      font-size: 15px; font-weight: 700; outline: none; background: #fff;
+      width: 100%; padding: 12px 15px; border-radius: 14px; border: 2px solid #cbd5e1;
+      font-size: 14px; font-weight: 700; outline: none; background: #fff;
     }
     .input-box:focus { border-color: var(--primary); }
 
-    .progress-track { height: 8px; background: #e2e8f0; border-radius: 999px; overflow: hidden; }
-    .progress-fill { height: 100%; background: var(--success); border-radius: 999px; transition: width 0.3s ease; }
-
-    /* Lesson Node */
-    .lesson-node {
-      padding: 16px; border-radius: 18px; border: 2px solid var(--border); background: #fff;
-      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
-      gap: 12px; margin-bottom: 10px;
-    }
-    .lesson-node.available { border-color: #a5b4fc; }
-    .lesson-node.completed, .lesson-node.perfect { border-color: #86efac; background: #f0fdf4; }
-    .lesson-node.locked { background: #f8fafc; opacity: 0.65; }
-
-    /* Quiz Options */
     .option-btn {
       width: 100%; padding: 14px 16px; border-radius: 16px; border: 2px solid var(--border);
       background: #fff; font-weight: 800; font-size: 15px; text-align: left;
@@ -135,42 +86,32 @@
     .option-btn:hover:not(:disabled) { border-color: #818cf8; background: #f8fafc; }
     .option-btn.selected { border-color: var(--primary); background: var(--primary-light); color: #312e81; }
 
-    /* Geometry SVG */
-    .drag-chip {
-      display: inline-flex; align-items: center; justify-content: center;
-      padding: 9px 20px; border-radius: 12px; font-weight: 900; font-size: 17px;
-      border: 2px solid var(--primary); background: #fff; color: var(--text);
-      cursor: pointer; user-select: none;
-    }
-    .drag-chip.selected { background: #f59e0b; color: #fff; border-color: #d97706; }
-    .drag-chip.done { background: #dcfce7; border-color: #22c55e; color: #15803d; opacity: 0.6; cursor: default; }
-
-    /* Flashcard */
-    .flashcard-box {
-      background: #fff; border: 3px solid #c7d2fe; border-radius: 24px; min-height: 240px;
-      padding: 28px 20px; display: flex; flex-direction: column; align-items: center;
-      justify-content: center; text-align: center; cursor: pointer; user-select: none;
-    }
     .pill-tag { display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 800; }
+    .progress-track { height: 8px; background: #e2e8f0; border-radius: 999px; overflow: hidden; }
+    .progress-fill { height: 100%; background: var(--success); border-radius: 999px; transition: width 0.3s ease; }
 
-    /* Login Split Screen */
     .login-wrapper {
       min-height: 100vh; display: flex; align-items: center; justify-content: center;
       padding: 20px; background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
     }
     .login-box {
-      background: #fff; border-radius: 26px; max-width: 500px; width: 100%;
+      background: #fff; border-radius: 26px; max-width: 480px; width: 100%;
       padding: 28px; box-shadow: 0 20px 45px rgba(0,0,0,0.2);
     }
     .role-switcher {
       display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
-      background: #f1f5f9; padding: 6px; border-radius: 16px; margin-bottom: 22px;
+      background: #f1f5f9; padding: 6px; border-radius: 16px; margin-bottom: 20px;
     }
-    .role-btn {
-      padding: 12px; border-radius: 12px; font-weight: 800; font-size: 14px; color: #64748b;
+    .role-btn { padding: 11px; border-radius: 12px; font-weight: 800; font-size: 14px; color: #64748b; }
+    .role-btn.active { background: #fff; color: var(--primary); box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
+
+    /* Interactive Geometry Sandbox */
+    .geo-sandbox {
+      border: 2px solid var(--border); border-radius: 18px; padding: 16px;
+      background: #ffffff; margin-top: 12px;
     }
-    .role-btn.active {
-      background: #fff; color: var(--primary); box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    .geo-target.active-highlight {
+      stroke: #16a34a !important; stroke-width: 8px !important; fill: rgba(22,163,74,0.12) !important;
     }
   </style>
 </head>
@@ -179,740 +120,253 @@
 
   <script>
     // ==========================================================================
-    // 1. NGÂN HÀNG BÀI HỌC MẶC ĐỊNH (TOÁN 6 CHƯƠNG I-IV & TIẾNG ANH 6 UNIT 1-6)
+    // 1. CẤU HÌNH HỆ THỐNG & LƯU TRỮ TRÊN GITHUB (KHÔNG LƯU CỨNG CÂU HỎI TRONG CODE)
     // ==========================================================================
-    const DEFAULT_CHAPTERS = [
-      // MÔN TOÁN LỚP 6
-      {
-        id: 'math-ch1', subject: 'math',
-        title: 'Chương 1: Tập hợp các số tự nhiên',
-        subtitle: 'Tập hợp, Hệ thập phân, Số La Mã, Luỹ thừa & Thứ tự phép tính',
-        lessons: [
-          { id: 'm-c1-l1', title: 'Bài 1: Tập hợp, Số tự nhiên & Số La Mã', type: 'lesson', description: 'Tập hợp, giá trị chữ số trong hệ thập phân và số La Mã' },
-          { id: 'm-c1-l2', title: 'Bài 2: Luỹ thừa & Thứ tự thực hiện phép tính', type: 'lesson', description: 'Nhân chia luỹ thừa cùng cơ số & Quy tắc dấu ngoặc ( ) → [ ] → { }' }
-        ]
-      },
-      {
-        id: 'math-ch2', subject: 'math',
-        title: 'Chương 2: Tính chia hết trong tập hợp số tự nhiên',
-        subtitle: 'Quan hệ chia hết, Dấu hiệu chia hết, ƯCLN & BCNN',
-        lessons: [
-          { id: 'm-c2-l1', title: 'Bài 1: Quan hệ chia hết & Dấu hiệu chia hết', type: 'lesson', description: 'Tính chất chia hết của một tổng và dấu hiệu chia hết cho 2, 3, 5, 9' },
-          { id: 'm-c2-l2', title: 'Bài 2: Ước chung lớn nhất & Bội chung nhỏ nhất', type: 'lesson', description: 'Tìm ƯCLN, BCNN và quy đồng mẫu các phân số' }
-        ]
-      },
-      {
-        id: 'math-ch3', subject: 'math',
-        title: 'Chương 3: Số nguyên',
-        subtitle: 'Số nguyên âm, Tập hợp Z, Phép cộng trừ số nguyên & Quy tắc dấu ngoặc',
-        lessons: [
-          { id: 'm-c3-l1', title: 'Bài 1: Tập hợp các số nguyên & Thứ tự trong Z', type: 'lesson', description: 'Số nguyên âm, trục số và so sánh hai số nguyên' },
-          { id: 'm-c3-l2', title: 'Bài 2: Phép cộng, trừ số nguyên & Quy tắc dấu ngoặc', type: 'lesson', description: 'Tính tổng các số nguyên đối nhau và tính hợp lí' }
-        ]
-      },
-      {
-        id: 'math-ch4', subject: 'math',
-        title: 'Chương 4: Hình học trực quan & Đối xứng',
-        subtitle: 'Hình chữ nhật tương tác SVG, Hình tam giác đều, Lục giác đều, Đối xứng & GeoGebra',
-        lessons: [
-          { id: 'm-c4-l1', title: 'Bài 1: Hình chữ nhật tương tác SVG & Đa giác đều', type: 'lesson', description: 'Kéo thả trên cạnh hình học SVG, tính diện tích S = a × b' },
-          { id: 'm-c4-l2', title: 'Bài 2: Hình có trục đối xứng & Thực hành GeoGebra', type: 'lesson', description: 'Nhận biết trục đối xứng trong thực tế và vẽ hình trên GeoGebra' }
-        ]
-      },
+    const CONFIG_KEY = 'questlearn_cfg_v5';
+    const CURRICULUM_KEY = 'questlearn_curriculum_v5';
 
-      // MÔN TIẾNG ANH LỚP 6
-      {
-        id: 'eng-u1', subject: 'english',
-        title: 'Unit 1: My New School',
-        subtitle: 'School things, Present simple & Adverbs of frequency',
-        lessons: [
-          { id: 'e-u1-vocab', title: 'Lesson 1: Vocabulary & Grammar (Unit 1)', type: 'lesson', description: 'Đồ dùng học tập, Hiện tại đơn & Trạng từ tần suất' },
-          { id: 'e-u1-read', title: 'Lesson 2: Reading & Skills (Sunrise, An Son, Dream School)', type: 'lesson', description: 'Đọc hiểu các ngôi trường và cấu trúc câu giao tiếp' }
-        ]
-      },
-      {
-        id: 'eng-u2', subject: 'english',
-        title: 'Unit 2: My House',
-        subtitle: 'Types of house, Rooms, Furniture, Possessive case & Prepositions',
-        lessons: [
-          { id: 'e-u2-l1', title: 'Lesson 1: Rooms, Possessive Case & Prepositions of Place', type: 'lesson', description: "Các phòng trong nhà, Sở hữu cách ('s) và Giới từ chỉ vị trí" }
-        ]
-      },
-      {
-        id: 'eng-u3', subject: 'english',
-        title: 'Unit 3: My Friends & Review 1',
-        subtitle: 'Body parts, Personality adjectives & Present continuous',
-        lessons: [
-          { id: 'e-u3-l1', title: 'Lesson 1: Personality Adjectives & Present Continuous', type: 'lesson', description: 'Tính từ chỉ tính cách (creative, caring, clever...) và thì Hiện tại tiếp diễn' }
-        ]
-      },
-      {
-        id: 'eng-u4', subject: 'english',
-        title: 'Unit 4: My Neighbourhood',
-        subtitle: 'Places in a neighbourhood, Directions & Comparative adjectives',
-        lessons: [
-          { id: 'e-u4-l1', title: 'Lesson 1: Giving Directions & Describing a Neighbourhood', type: 'lesson', description: 'Chỉ đường (go straight, turn left/right) và miêu tả khu phố' }
-        ]
-      },
-      {
-        id: 'eng-u5', subject: 'english',
-        title: 'Unit 5: Natural Wonders of Viet Nam',
-        subtitle: 'Things in nature, Countable/Uncountable nouns & Modal verb must / mustn\'t',
-        lessons: [
-          { id: 'e-u5-l1', title: 'Lesson 1: Natural Wonders, Countable Nouns & must / mustn\'t', type: 'lesson', description: 'Danh từ đếm được/không đếm được (a few, a little, much, many) và must/mustn\'t' }
-        ]
-      },
-      {
-        id: 'eng-u6', subject: 'english',
-        title: 'Unit 6: Our Tet Holiday',
-        subtitle: 'Tet activities, should / shouldn\'t for advice & some / any',
-        lessons: [
-          { id: 'e-u6-l1', title: 'Lesson 1: Tet Holiday, should / shouldn\'t & some / any', type: 'lesson', description: 'Hoạt động ngày Tết, lời khuyên should/shouldn\'t và cách dùng some/any' }
-        ]
-      }
-    ];
-
-    const DEFAULT_QUESTIONS = [
-      // TOÁN CHƯƠNG 1
-      {
-        id: 'q-m-1', subject: 'math', lesson: 'm-c1-l1', topicTag: 'Tập hợp và phần tử', type: 'multiple_choice',
-        prompt: 'Cho tập hợp M = {4; 1; 9; 8} trên Hình 1.3 SGK trang 6. Khẳng định nào sau đây là ĐÚNG?',
-        options: ['4 ∈ M và 7 ∉ M', '7 ∈ M', '1 ∉ M', '9 ∉ M'], correctAnswer: '4 ∈ M và 7 ∉ M',
-        explanation: 'Các số 4; 1; 9; 8 nằm trong tập hợp M nên 4 ∈ M. Số 7 không thuộc M nên 7 ∉ M.', xp: 10
-      },
-      {
-        id: 'q-m-2', subject: 'math', lesson: 'm-c1-l1', topicTag: 'Cộng hai số tự nhiên hợp lí', type: 'number_input',
-        prompt: 'Tính một cách hợp lí (Luyện tập 1 SGK trang 16): 117 + 68 + 23 = ?',
-        correctAnswer: 208,
-        explanation: 'Nhóm (117 + 23) + 68 = 140 + 68 = 208.', xp: 10
-      },
-      {
-        id: 'q-m-3', subject: 'math', lesson: 'm-c1-l2', topicTag: 'Nhân hai luỹ thừa cùng cơ số', type: 'multiple_choice',
-        prompt: 'Viết kết quả phép tính 5⁶ · 5³ dưới dạng một luỹ thừa (Ví dụ 2 SGK trang 23):',
-        options: ['5⁹', '5¹⁸', '5³', '25⁹'], correctAnswer: '5⁹',
-        explanation: 'Khi nhân hai luỹ thừa cùng cơ số, ta giữ nguyên cơ số và cộng các số mũ: 5⁶ · 5³ = 5⁶⁺³ = 5⁹.', xp: 10
-      },
-      {
-        id: 'q-m-4', subject: 'math', lesson: 'm-c1-l2', topicTag: 'Thứ tự thực hiện các phép tính', type: 'number_input',
-        prompt: 'Tính giá trị biểu thức có dấu ngoặc (SGK trang 25): {15 + 2 · [8 - (5 - 3)]} : 9 = ?',
-        correctAnswer: 3,
-        explanation: 'Tính trong ngoặc tròn () → ngoặc vuông [] → ngoặc nhọn {}: {15 + 2 · [8 - 2]} : 9 = {15 + 12} : 9 = 27 : 9 = 3.', xp: 15
-      },
-
-      // TOÁN CHƯƠNG 2
-      {
-        id: 'q-m-5', subject: 'math', lesson: 'm-c2-l1', topicTag: 'Tính chất chia hết của một tổng', type: 'true_false',
-        prompt: 'Lớp 6A được thưởng 50 cái bút và thêm 4 hộp bút (số bút mỗi hộp như nhau) (Bài 8 SGK trang 29). Hỏi tổng số bút có chia đều được cho 4 tổ không?',
-        options: ['Không chia đều được', 'Chia đều được'], correctAnswer: 'Không chia đều được',
-        explanation: 'Vì số bút trong 4 hộp chia hết cho 4, nhưng 50 không chia hết cho 4 nên tổng số bút không chia đều được cho 4 tổ.', xp: 15
-      },
-      {
-        id: 'q-m-6', subject: 'math', lesson: 'm-c2-l2', topicTag: 'Bội chung nhỏ nhất thực tế', type: 'number_input',
-        prompt: 'Học sinh lớp 6A khi xếp thành hàng 2, hàng 3, hàng 7 đều vừa đủ hàng (Bài 2.51 SGK trang 55). Biết số học sinh nhỏ hơn 45, hỏi lớp 6A có bao nhiêu học sinh?',
-        correctAnswer: 42,
-        explanation: 'Số học sinh là BCNN(2, 3, 7) = 2 · 3 · 7 = 42 (nhỏ hơn 45).', xp: 15
-      },
-      {
-        id: 'q-m-7', subject: 'math', lesson: 'm-c2-l2', topicTag: 'Ước chung lớn nhất thực tế', type: 'number_input',
-        prompt: 'Từ ba tấm gỗ dài 56 dm, 48 dm và 40 dm, bác thợ mộc muốn cắt thành các thanh gỗ dài như nhau mà không thừa mẫu nào (Bài 2.50 SGK trang 55). Độ dài lớn nhất của mỗi thanh gỗ là bao nhiêu dm?',
-        correctAnswer: 8,
-        explanation: 'Độ dài lớn nhất là ƯCLN(56, 48, 40) = 8 (dm).', xp: 15
-      },
-
-      // TOÁN CHƯƠNG 3
-      {
-        id: 'q-m-8', subject: 'math', lesson: 'm-c3-l1', topicTag: 'Tập hợp số nguyên Z', type: 'multiple_choice',
-        prompt: 'Theo SGK Toán 6 trang 58-59, độ cao của rãnh Mariana (sâu 10 971 m dưới mực nước biển) được biểu diễn bằng số nguyên nào?',
-        options: ['-10 971 m', '+10 971 m', '0 m', '-3 143 m'], correctAnswer: '-10 971 m',
-        explanation: 'Độ cao dưới mực nước biển được biểu thị bằng số nguyên âm: -10 971 m.', xp: 10
-      },
-      {
-        id: 'q-m-9', subject: 'math', lesson: 'm-c3-l2', topicTag: 'Thứ tự trên trục số nguyên', type: 'true_false',
-        prompt: 'Trên trục số nằm ngang (SGK trang 59), điểm -4 nằm bên trái điểm -1 nên -4 < -1. Đúng hay Sai?',
-        options: ['Đúng', 'Sai'], correctAnswer: 'Đúng',
-        explanation: 'Trên trục số, nếu điểm a nằm trước (bên trái) điểm b thì số nguyên a nhỏ hơn số nguyên b (-4 < -1).', xp: 10
-      },
-
-      // TOÁN CHƯƠNG 4
-      {
-        id: 'q-m-10', subject: 'math', lesson: 'm-c4-l1', topicTag: 'Diện tích hình chữ nhật', type: 'geometry_interaction',
-        prompt: 'Tương tác trực tiếp trên hình chữ nhật ABCD để khám phá công thức diện tích S = a × b và tính diện tích khi a = 8 cm, b = 5 cm.',
-        correctAnswer: 40,
-        explanation: 'Trong hình chữ nhật ABCD, hai cạnh đối AB = CD = a = 8 cm và BC = DA = b = 5 cm. Diện tích S = 8 × 5 = 40 cm².', xp: 25,
-        geometryConfig: {
-          shape: 'rectangle', vertices: ['A', 'B', 'C', 'D'],
-          sides: { AB: 'a', BC: 'b', CD: 'a', DA: 'b' }, lengthA: 8, widthB: 5
-        }
-      },
-      {
-        id: 'q-m-11', subject: 'math', lesson: 'm-c4-l1', topicTag: 'Tam giác đều', type: 'multiple_choice',
-        prompt: 'Theo Nhận xét SGK trang 78, trong tam giác đều ABC có ba cạnh bằng nhau và ba góc bằng nhau, mỗi góc bằng bao nhiêu độ?',
-        options: ['60°', '90°', '120°', '45°'], correctAnswer: '60°',
-        explanation: 'Trong tam giác đều, ba cạnh bằng nhau và ba góc bằng nhau, mỗi góc bằng 60°.', xp: 10
-      },
-      {
-        id: 'q-m-12', subject: 'math', lesson: 'm-c4-l2', topicTag: 'Hình có trục đối xứng & GeoGebra', type: 'multiple_choice',
-        prompt: 'Trong phần mềm GeoGebra (SGK trang 118): Vẽ đường tròn tâm A đi qua B và đường tròn tâm B đi qua A cắt nhau tại C và D. Nối AC, CB, BD, DA rồi ẩn hai đường tròn đi thì ta được hình gì?',
-        options: ['Hình thoi ACBD', 'Hình chữ nhật', 'Hình thang', 'Hình lục giác đều'], correctAnswer: 'Hình thoi ACBD',
-        explanation: 'Bốn đoạn thẳng AC, CB, BD, DA đều bằng bán kính AB nên tứ giác ACBD có 4 cạnh bằng nhau là hình thoi.', xp: 15
-      },
-
-      // TIẾNG ANH UNIT 1 -> UNIT 6
-      {
-        id: 'q-e-1', subject: 'english', lesson: 'e-u1-vocab', topicTag: 'Unit 1: Getting Started', type: 'multiple_choice',
-        prompt: 'Complete the sentence (Unit 1 p.7): "Students ______ their uniforms on Monday."',
-        options: ['wear', 'go', 'has', 'subjects'], correctAnswer: 'wear',
-        explanation: 'Cụm từ "wear uniforms" nghĩa là mặc đồng phục.', xp: 10
-      },
-      {
-        id: 'q-e-2', subject: 'english', lesson: 'e-u1-read', topicTag: 'Unit 1: Reading', type: 'multiple_choice',
-        prompt: 'Read Skills 1 (Unit 1 p.12): "Students live and study in a ______ school. They only go home at weekends."',
-        options: ['boarding', 'international', 'primary', 'village'], correctAnswer: 'boarding',
-        explanation: 'Trường nội trú ("boarding school") là nơi học sinh học tập và sinh hoạt tại trường, cuối tuần mới về nhà.', xp: 15
-      },
-      {
-        id: 'q-e-3', subject: 'english', lesson: 'e-u2-l1', topicTag: 'Unit 2: Giving suggestions', type: 'multiple_choice',
-        prompt: 'Complete the suggestion (Unit 2 p.20): "How about ______ a picture on the wall?"',
-        options: ['putting', 'put', 'to put', 'puts'], correctAnswer: 'putting',
-        explanation: 'Cấu trúc đưa ra lời gợi ý: "How about + V-ing?" (Còn Let\'s + V nguyên thể).', xp: 15
-      },
-      {
-        id: 'q-e-4', subject: 'english', lesson: 'e-u3-l1', topicTag: 'Unit 3 & Review 1: Present Continuous', type: 'multiple_choice',
-        prompt: 'Complete the sentence (Review 1 p.36): "We can\'t go out now. It ______."',
-        options: ['is raining', 'rains', 'rain', 'raining'], correctAnswer: 'is raining',
-        explanation: 'Có trạng từ "now" chỉ hành động đang diễn ra nên dùng thì Hiện tại tiếp diễn: It is raining.', xp: 15
-      },
-      {
-        id: 'q-e-5', subject: 'english', lesson: 'e-u4-l1', topicTag: 'Unit 4: Making suggestions & Directions', type: 'multiple_choice',
-        prompt: 'Complete the sentence (Unit 4 p.39): "Go ______. Take the second turning on the left."',
-        options: ['straight', 'right', 'left', 'cross'], correctAnswer: 'straight',
-        explanation: 'Cụm chỉ đường "Go straight" nghĩa là đi thẳng.', xp: 10
-      },
-      {
-        id: 'q-e-6', subject: 'english', lesson: 'e-u5-l1', topicTag: 'Unit 5: Countable & Uncountable Nouns', type: 'multiple_choice',
-        prompt: 'Choose the correct option (Unit 5 p.52): "This is a difficult lesson, so only ______ students can understand it."',
-        options: ['a few', 'many', 'much', 'a little'], correctAnswer: 'a few',
-        explanation: '"students" là danh từ đếm được số nhiều, và vì bài học khó nên chỉ có "một vài" (a few) học sinh hiểu được.', xp: 15
-      },
-      {
-        id: 'q-e-7', subject: 'english', lesson: 'e-u5-l1', topicTag: 'Unit 5: Modal verb must / mustn\'t', type: 'multiple_choice',
-        prompt: 'Fill in the blank with must or mustn\'t (Unit 5 p.52): "You ______ make lots of noise in the museum."',
-        options: ["mustn't", 'must', 'should', 'can'], correctAnswer: "mustn't",
-        explanation: 'Trong viện bảo tàng, bạn không được phép ("mustn\'t") làm ồn.', xp: 10
-      },
-      {
-        id: 'q-e-8', subject: 'english', lesson: 'e-u6-l1', topicTag: 'Unit 6: Should / shouldn\'t for advice', type: 'multiple_choice',
-        prompt: 'Choose the correct advice at Tet (Unit 6 p.61): "Children ______ behave well and ______ break things."',
-        options: ["should / shouldn't", "shouldn't / should", 'mustn\'t / must', 'any / some'],
-        correctAnswer: "should / shouldn't",
-        explanation: 'Trẻ em nên cư xử ngoan ("should behave well") và không nên làm vỡ đồ đạc ("shouldn\'t break things").', xp: 15
-      },
-      {
-        id: 'q-e-9', subject: 'english', lesson: 'e-u6-l1', topicTag: 'Unit 6: Some / any for amount', type: 'multiple_choice',
-        prompt: 'Complete the sentence (Unit 6 p.66): "At Tet, my mother puts ______ into red envelopes."',
-        options: ['lucky money', 'banh chung', 'peach', 'gathering'], correctAnswer: 'lucky money',
-        explanation: 'Vào dịp Tết, mẹ bỏ tiền lì xì ("lucky money") vào phong bao màu đỏ ("red envelopes").', xp: 10
-      }
-    ];
-
-    const DEFAULT_VOCABULARY = [
-      { id: 'v-1', word: 'boarding school', phonetic: '/ˈbɔːdɪŋ skuːl/', pos: 'noun', meaningVi: 'trường nội trú', example: 'Sunrise is a boarding school in Sydney.' },
-      { id: 'v-2', word: 'compass', phonetic: '/ˈkʌmpəs/', pos: 'noun', meaningVi: 'com-pa, la bàn', example: 'You must bring a compass to the Himalayas.' },
-      { id: 'v-3', word: 'calculator', phonetic: '/ˈkælkjuleɪtə(r)/', pos: 'noun', meaningVi: 'máy tính bỏ túi', example: 'I have a new calculator in my school bag.' },
-      { id: 'v-4', word: 'pencil sharpener', phonetic: '/ˈpensl ˌʃɑːpnə(r)/', pos: 'noun', meaningVi: 'cái gọt bút chì', example: 'Can I borrow your pencil sharpener?' },
-      { id: 'v-5', word: 'uniform', phonetic: '/ˈjuːnɪfɔːm/', pos: 'noun', meaningVi: 'đồng phục', example: 'We always look smart in our uniforms.' },
-      { id: 'v-6', word: 'smart', phonetic: '/smɑːt/', pos: 'adjective', meaningVi: 'bảnh bao, gọn gàng, thông minh', example: 'You look smart in your new uniform!' },
-      { id: 'v-7', word: 'town house', phonetic: '/ˈtaʊn haʊs/', pos: 'noun', meaningVi: 'nhà phố', example: 'Nick lives in a town house.' },
-      { id: 'v-8', word: 'country house', phonetic: '/ˌkʌntri ˈhaʊs/', pos: 'noun', meaningVi: 'nhà ở vùng quê', example: 'Mi tells Nick about her grandparents\' country house.' },
-      { id: 'v-9', word: 'flat', phonetic: '/flæt/', pos: 'noun', meaningVi: 'căn hộ chung cư', example: 'Mi’s new flat has three bedrooms.' },
-      { id: 'v-10', word: 'confident', phonetic: '/ˈkɒnfɪdənt/', pos: 'adjective', meaningVi: 'tự tin', example: 'She is confident and active.' },
-      { id: 'v-11', word: 'hard-working', phonetic: '/ˌhɑːd ˈwɜːkɪŋ/', pos: 'adjective', meaningVi: 'chăm chỉ', example: 'Most students at my school are hard-working and kind.' },
-      { id: 'v-12', word: 'caring', phonetic: '/ˈkeərɪŋ/', pos: 'adjective', meaningVi: 'chu đáo, biết quan tâm', example: 'He is a caring and clever friend.' },
-      { id: 'v-13', word: 'creative', phonetic: '/kriˈeɪtɪv/', pos: 'adjective', meaningVi: 'sáng tạo', example: 'Mi is very kind and creative.' },
-      { id: 'v-14', word: 'go straight', phonetic: '/ɡəʊ streɪt/', pos: 'phrase', meaningVi: 'đi thẳng', example: 'Go straight. Take the second turning on the left.' },
-      { id: 'v-15', word: 'peaceful', phonetic: '/ˈpiːsfl/', pos: 'adjective', meaningVi: 'yên bình', example: 'I like peaceful streets in my neighbourhood.' },
-      { id: 'v-16', word: 'waterproof coat', phonetic: '/ˈwɔːtəpruːf kəʊt/', pos: 'noun', meaningVi: 'áo khoác chống thấm nước', example: 'You must bring a waterproof coat because it is cold and rainy.' },
-      { id: 'v-17', word: 'natural wonder', phonetic: '/ˌnætʃrəl ˈwʌndə(r)/', pos: 'noun', meaningVi: 'kì quan thiên nhiên', example: 'Australia has many natural wonders.' },
-      { id: 'v-18', word: 'behave well', phonetic: '/bɪˈheɪv wel/', pos: 'phrase', meaningVi: 'cư xử ngoan ngoãn', example: 'Children should behave well at Tet.' },
-      { id: 'v-19', word: 'lucky money', phonetic: '/ˈlʌki ˈmʌni/', pos: 'noun', meaningVi: 'tiền lì xì', example: 'My mother puts lucky money into red envelopes.' },
-      { id: 'v-20', word: 'family gathering', phonetic: '/ˈfæməli ˈɡæðərɪŋ/', pos: 'noun', meaningVi: 'buổi sum họp gia đình', example: 'When everybody is at home together, we call it a family gathering.' }
-    ];
-
-    const WORD_FAMILIES = [
-      {
-        rootWord: 'beauty', noun: 'beauty', verb: 'beautify', adjective: 'beautiful', adverb: 'beautifully',
-        questions: [
-          { sentence: 'We should dress ______ at Tet (Unit 6 p.65).', targetPos: 'adverb (trạng từ)', answer: 'beautifully', explanation: 'Sau động từ thường "dress" cần một trạng từ chỉ cách thức → "beautifully".' }
-        ]
-      },
-      {
-        rootWord: 'create', noun: 'creation, creativity', verb: 'create', adjective: 'creative', adverb: 'creatively',
-        questions: [
-          { sentence: 'He\'s good at drawing. He\'s very ______ (Review 1 p.36).', targetPos: 'adjective (tính từ)', answer: 'creative', explanation: 'Sau "He\'s very" cần tính từ chỉ phẩm chất sáng tạo → "creative".' }
-        ]
-      },
-      {
-        rootWord: 'friend', noun: 'friend, friendship', verb: 'befriend', adjective: 'friendly, unfriendly', adverb: 'friendlily',
-        questions: [
-          { sentence: 'She likes to meet new people. She\'s ______ (Review 1 p.36).', targetPos: 'adjective (tính từ)', answer: 'friendly', explanation: 'Người thích gặp gỡ làm quen mọi người là người thân thiện → "friendly".' }
-        ]
-      }
-    ];
-
-    // ==========================================================================
-    // 2. HÀM TIỆN ÍCH & BỘ SINH CÂU HỎI ĐỘNG
-    // ==========================================================================
-    function randInt(min, max) {
-      return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-
-    function slugifyStudentName(name) {
-      return String(name || 'hoc-sinh')
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
+    function slugify(str) {
+      return String(str || 'hoc-sinh')
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
         .replace(/đ/g, 'd').replace(/Đ/g, 'D')
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/^-+|-+$/g, '') || 'hoc-sinh';
+        .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'hoc-sinh';
     }
 
-    function encodeBase64UTF8(str) {
-      return btoa(unescape(encodeURIComponent(str)));
-    }
-
-    function decodeBase64UTF8(b64) {
-      return decodeURIComponent(escape(atob(b64.replace(/\s/g, ''))));
-    }
-
+    function encodeB64(str) { return btoa(unescape(encodeURIComponent(str))); }
+    function decodeB64(b64) { return decodeURIComponent(escape(atob(b64.replace(/\s/g, '')))); }
     function escapeHtml(str) {
-      return String(str || '')
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;');
+      return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
 
-    function generateMentalMathQuestion(difficulty) {
-      const id = 'mm-' + Date.now() + '-' + randInt(100, 999);
-      if (difficulty === 1) {
-        const a = randInt(15, 75);
-        const b = [8, 9, 18, 19, 28, 29][randInt(0, 5)];
-        const roundB = Math.ceil(b / 10) * 10;
-        const diff = roundB - b;
-        const ans = a + b;
-        return {
-          id, subject: 'math', topicTag: 'Cộng nhẩm tròn chục', type: 'number_input',
-          prompt: `${a} + ${b} = ?`, correctAnswer: ans,
-          explanation: `Mẹo tính nhẩm: ${a} + ${b} = ${a} + ${roundB} - ${diff} = ${ans}.`, xp: 10
-        };
-      }
-      if (difficulty === 2) {
-        const pairs = [
-          { a: 25, b: 16, factor: 4, rest: 4, base: 100 },
-          { a: 25, b: 24, factor: 4, rest: 6, base: 100 },
-          { a: 50, b: 24, factor: 2, rest: 12, base: 100 },
-          { a: 125, b: 16, factor: 8, rest: 2, base: 1000 }
-        ];
-        const pick = pairs[randInt(0, pairs.length - 1)];
-        const ans = pick.a * pick.b;
-        return {
-          id, subject: 'math', topicTag: 'Tính nhanh tách thừa số', type: 'number_input',
-          prompt: `Tính nhanh: ${pick.a} × ${pick.b} = ?`, correctAnswer: ans,
-          explanation: `Ta có ${pick.a} × ${pick.b} = (${pick.a} × ${pick.factor}) × ${pick.rest} = ${pick.base} × ${pick.rest} = ${ans}.`, xp: 15
-        };
-      }
-      const a = randInt(50, 90);
-      const b = randInt(4, 8);
-      const c = randInt(5, 8);
-      const ans = a - b * c;
-      return {
-        id, subject: 'math', topicTag: 'Thứ tự thực hiện phép tính', type: 'number_input',
-        prompt: `${a} - ${b} × ${c} = ?`, correctAnswer: ans,
-        explanation: `Thực hiện nhân trước: ${b} × ${c} = ${b * c}. Sau đó trừ: ${a} - ${b * c} = ${ans}.`, xp: 20
-      };
-    }
-
-    function generateDynamicRectangleQuestion() {
-      const lengthA = randInt(6, 15);
-      const widthB = randInt(2, Math.min(10, lengthA - 1));
-      return {
-        id: 'geo-rect-' + Date.now(), subject: 'math', lesson: 'm-c4-l1',
-        topicTag: 'Diện tích hình chữ nhật', type: 'geometry_interaction',
-        prompt: `Hình chữ nhật ABCD có chiều dài a = ${lengthA} cm và chiều rộng b = ${widthB} cm. Hãy tương tác trên hình và tính diện tích S.`,
-        correctAnswer: lengthA * widthB,
-        explanation: `Diện tích hình chữ nhật ABCD là S = a × b = ${lengthA} × ${widthB} = ${lengthA * widthB} cm².`,
-        xp: 25,
-        geometryConfig: {
-          shape: 'rectangle', vertices: ['A', 'B', 'C', 'D'],
-          sides: { AB: 'a', BC: 'b', CD: 'a', DA: 'b' }, lengthA, widthB
-        }
-      };
-    }
-
-    // ==========================================================================
-    // 3. QUẢN LÝ LƯU TRỮ & ĐỒNG BỘ GITHUB
-    // ==========================================================================
-    const CONFIG_STORAGE_KEY = 'questlearn_config_v4';
-    const CUSTOM_CURRICULUM_KEY = 'questlearn_custom_curriculum_v4';
-
-    function loadCloudConfig() {
-      let autoOwner = '';
-      let autoRepo = '';
+    function loadConfig() {
+      let autoOwner = '', autoRepo = '';
       if (window.location.hostname.endsWith('.github.io')) {
         autoOwner = window.location.hostname.replace('.github.io', '');
-        const pathParts = window.location.pathname.split('/').filter(Boolean);
-        if (pathParts.length > 0) autoRepo = pathParts[0];
+        const parts = window.location.pathname.split('/').filter(Boolean);
+        if (parts.length > 0) autoRepo = parts[0];
       }
-      const defaults = {
+      const def = {
         githubOwner: autoOwner,
         githubRepo: autoRepo,
-        githubBranch: 'main',
+        githubBranch: 'main', // Hỗ trợ đổi sang nhánh phụ (ví dụ: ban-va, dev)
         githubToken: '',
         geminiApiKey: '',
-        teacherPassword: '123456' // Mật khẩu mặc định vào cổng Giáo viên
+        teacherPassword: '123456'
       };
       try {
-        const raw = window.localStorage.getItem(CONFIG_STORAGE_KEY);
-        if (raw) return Object.assign(defaults, JSON.parse(raw));
+        const raw = localStorage.getItem(CONFIG_KEY);
+        if (raw) return Object.assign(def, JSON.parse(raw));
       } catch (e) {}
-      return defaults;
+      return def;
     }
 
-    function saveCloudConfig() {
-      try {
-        window.localStorage.setItem(CONFIG_STORAGE_KEY, JSON.stringify(APP.cloudConfig));
-      } catch (e) {}
+    function saveConfig() {
+      try { localStorage.setItem(CONFIG_KEY, JSON.stringify(APP.config)); } catch (e) {}
     }
 
-    function getMergedCurriculum() {
-      let custom = { chapters: [], questions: [], vocabulary: [] };
+    // Giáo trình rỗng mặc định: Giáo viên sẽ tự soạn và upload riêng
+    function loadCurriculum() {
       try {
-        const raw = window.localStorage.getItem(CUSTOM_CURRICULUM_KEY);
-        if (raw) custom = JSON.parse(raw);
-      } catch (e) {}
-
-      const chapters = JSON.parse(JSON.stringify(DEFAULT_CHAPTERS));
-      (custom.chapters || []).forEach((cCh) => {
-        const existing = chapters.find((x) => x.id === cCh.id);
-        if (existing) {
-          (cCh.lessons || []).forEach((l) => {
-            if (!existing.lessons.some((el) => el.id === l.id)) existing.lessons.push(l);
-          });
-        } else {
-          chapters.push(cCh);
+        const raw = localStorage.getItem(CURRICULUM_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && Array.isArray(parsed.items)) return parsed;
         }
-      });
-
-      const questions = [...DEFAULT_QUESTIONS, ...(custom.questions || [])];
-      const vocabulary = [...DEFAULT_VOCABULARY, ...(custom.vocabulary || [])];
-      return { chapters, questions, vocabulary, customRaw: custom };
-    }
-
-    function createDefaultStudentState(studentName) {
-      const curr = getMergedCurriculum();
-      const progress = {};
-      curr.chapters.forEach((ch) => {
-        ch.lessons.forEach((l, idx) => {
-          progress[l.id] = {
-            lessonId: l.id,
-            status: idx === 0 ? 'available' : 'locked',
-            highScore: 0
-          };
-        });
-      });
-
-      const flashcardSRS = {};
-      curr.vocabulary.forEach((c) => {
-        flashcardSRS[c.id] = { learned: false };
-      });
-
-      const cleanName = String(studentName || '').trim() || 'Học sinh Lớp 6';
-      const slug = slugifyStudentName(cleanName);
-
-      return {
-        studentName: cleanName,
-        studentSlug: slug,
-        filePathOnGithub: `students/${slug}.json`,
-        selectedSubject: 'math',
-        xp: 0,
-        progress,
-        mistakes: {},
-        flashcardSRS,
-        updatedAt: new Date().toISOString()
-      };
-    }
-
-    function ensureProgressNodes(stateObj) {
-      const curr = getMergedCurriculum();
-      if (!stateObj.progress) stateObj.progress = {};
-      curr.chapters.forEach((ch) => {
-        ch.lessons.forEach((l, idx) => {
-          if (!stateObj.progress[l.id]) {
-            stateObj.progress[l.id] = {
-              lessonId: l.id,
-              status: idx === 0 ? 'available' : 'locked',
-              highScore: 0
-            };
-          }
-        });
-      });
-      return stateObj;
-    }
-
-    function saveStudentToLocal() {
-      if (!APP.state || !APP.state.studentSlug) return;
-      APP.state.updatedAt = new Date().toISOString();
-      try {
-        window.localStorage.setItem('questlearn_student_' + APP.state.studentSlug, JSON.stringify(APP.state));
       } catch (e) {}
+      return { items: [], updatedAt: null };
     }
 
-    async function loadStudentFileFromGitHub(studentName) {
-      const slug = slugifyStudentName(studentName);
-      let localState = null;
-      try {
-        const raw = window.localStorage.getItem('questlearn_student_' + slug);
-        if (raw) localState = ensureProgressNodes(Object.assign(createDefaultStudentState(studentName), JSON.parse(raw)));
-      } catch (e) {}
-      if (!localState) localState = createDefaultStudentState(studentName);
+    function saveCurriculumLocal() {
+      APP.curriculum.updatedAt = new Date().toISOString();
+      try { localStorage.setItem(CURRICULUM_KEY, JSON.stringify(APP.curriculum)); } catch (e) {}
+    }
 
-      const cfg = APP.cloudConfig;
-      if (!cfg.githubOwner || !cfg.githubRepo) return localState;
-
-      const path = `students/${slug}.json`;
-      const apiUrl = `https://api.github.com/repos/${cfg.githubOwner}/${cfg.githubRepo}/contents/${path}?ref=${encodeURIComponent(cfg.githubBranch || 'main')}`;
+    // Đồng bộ file curriculum.json từ GitHub về máy học sinh
+    async function fetchCurriculumFromGitHub() {
+      const cfg = APP.config;
+      if (!cfg.githubOwner || !cfg.githubRepo) return;
+      const url = `https://api.github.com/repos/${cfg.githubOwner}/${cfg.githubRepo}/contents/curriculum.json?ref=${encodeURIComponent(cfg.githubBranch || 'main')}`;
       const headers = { 'Accept': 'application/vnd.github+json' };
       if (cfg.githubToken) headers['Authorization'] = `Bearer ${cfg.githubToken}`;
-
       try {
-        const res = await fetch(apiUrl, { headers });
+        const res = await fetch(url, { headers, cache: 'no-store' });
         if (res.ok) {
           const data = await res.json();
           if (data && data.content) {
-            const remoteState = JSON.parse(decodeBase64UTF8(data.content));
-            if ((remoteState.xp || 0) >= (localState.xp || 0)) {
-              return ensureProgressNodes(Object.assign(createDefaultStudentState(studentName), remoteState));
+            const remote = JSON.parse(decodeB64(data.content));
+            if (remote && Array.isArray(remote.items)) {
+              APP.curriculum = remote;
+              localStorage.setItem(CURRICULUM_KEY, JSON.stringify(remote));
+              renderApp();
             }
           }
         }
       } catch (e) {}
-      return localState;
     }
 
-    async function syncStudentFileToGitHub(silent = false) {
-      if (!APP.state) return;
-      saveStudentToLocal();
-      const cfg = APP.cloudConfig;
+    // Giáo viên đẩy toàn bộ Giáo trình lên GitHub (curriculum.json) theo nhánh đã chọn
+    async function pushCurriculumToGitHub() {
+      saveCurriculumLocal();
+      const cfg = APP.config;
       if (!cfg.githubOwner || !cfg.githubRepo || !cfg.githubToken) {
-        if (!silent) {
-          APP.syncNotice = '💾 Đã lưu tiến độ trên máy! (Giáo viên có thể kết nối GitHub Token để lưu tự động lên đám mây).';
-          renderApp();
-        }
-        return;
+        return { ok: false, msg: '💾 Đã lưu giáo trình trên trình duyệt máy này! (Hãy nhập GitHub Token ở mục Cấu hình để xuất bản lên GitHub cho học sinh).' };
       }
-
-      const path = `students/${APP.state.studentSlug}.json`;
-      const apiUrl = `https://api.github.com/repos/${cfg.githubOwner}/${cfg.githubRepo}/contents/${path}`;
+      const branch = cfg.githubBranch || 'main';
+      const url = `https://api.github.com/repos/${cfg.githubOwner}/${cfg.githubRepo}/contents/curriculum.json`;
       const headers = {
         'Accept': 'application/vnd.github+json',
         'Authorization': `Bearer ${cfg.githubToken}`
       };
-
       try {
-        if (!silent) {
-          APP.syncNotice = `⏳ Đang lưu file ${path} lên GitHub...`;
-          renderApp();
-        }
         let sha = null;
-        const getRes = await fetch(apiUrl + `?ref=${encodeURIComponent(cfg.githubBranch || 'main')}`, { headers });
+        const getRes = await fetch(`${url}?ref=${encodeURIComponent(branch)}`, { headers });
         if (getRes.ok) {
           const ex = await getRes.json();
           sha = ex.sha;
         }
         const payload = {
-          message: `Lưu kết quả học tập: ${APP.state.studentName} (${APP.state.xp} XP)`,
-          content: encodeBase64UTF8(JSON.stringify(APP.state, null, 2)),
-          branch: cfg.githubBranch || 'main'
+          message: `Giáo viên cập nhật giáo trình (${APP.curriculum.items.length} câu hỏi) trên nhánh ${branch}`,
+          content: encodeB64(JSON.stringify(APP.curriculum, null, 2)),
+          branch
         };
         if (sha) payload.sha = sha;
-
-        const putRes = await fetch(apiUrl, {
+        const putRes = await fetch(url, {
           method: 'PUT',
           headers: Object.assign({ 'Content-Type': 'application/json' }, headers),
           body: JSON.stringify(payload)
         });
         if (putRes.ok) {
-          APP.syncNotice = `✅ Đã lưu vào file "${path}" trên GitHub thành công!`;
-        } else {
-          APP.syncNotice = '⚠️ Đã lưu trên máy (Chưa đồng bộ được GitHub, vui lòng kiểm tra Token).';
+          return { ok: true, msg: `✅ Đã xuất bản thành công ${APP.curriculum.items.length} câu hỏi lên nhánh "${branch}" (file curriculum.json)!` };
         }
-        if (!silent) renderApp();
+        const err = await putRes.json().catch(() => ({}));
+        return { ok: false, msg: `❌ Lỗi GitHub (${putRes.status}): ${err.message || putRes.statusText}` };
       } catch (e) {
-        if (!silent) {
-          APP.syncNotice = '⚠️ Lỗi mạng khi kết nối GitHub.';
-          renderApp();
-        }
+        return { ok: false, msg: '❌ Lỗi kết nối mạng: ' + e.message };
       }
     }
 
-    async function fetchRemoteCustomCurriculum() {
-      const cfg = APP.cloudConfig;
-      if (!cfg.githubOwner || !cfg.githubRepo) return;
-      const apiUrl = `https://api.github.com/repos/${cfg.githubOwner}/${cfg.githubRepo}/contents/custom_curriculum.json?ref=${encodeURIComponent(cfg.githubBranch || 'main')}`;
-      const headers = { 'Accept': 'application/vnd.github+json' };
-      if (cfg.githubToken) headers['Authorization'] = `Bearer ${cfg.githubToken}`;
+    // Lưu kết quả làm bài của Học sinh lên GitHub: students/<slug>.json
+    async function saveStudentResultToGitHub() {
+      const st = APP.student;
+      if (!st) return;
+      st.updatedAt = new Date().toISOString();
+      try { localStorage.setItem('questlearn_stu_' + st.slug, JSON.stringify(st)); } catch (e) {}
+
+      const cfg = APP.config;
+      if (!cfg.githubOwner || !cfg.githubRepo || !cfg.githubToken) return;
+      const branch = cfg.githubBranch || 'main';
+      const path = `students/${st.slug}.json`;
+      const url = `https://api.github.com/repos/${cfg.githubOwner}/${cfg.githubRepo}/contents/${path}`;
+      const headers = {
+        'Accept': 'application/vnd.github+json',
+        'Authorization': `Bearer ${cfg.githubToken}`
+      };
       try {
-        const res = await fetch(apiUrl, { headers });
-        if (res.ok) {
-          const data = await res.json();
-          if (data && data.content) {
-            const parsed = JSON.parse(decodeBase64UTF8(data.content));
-            window.localStorage.setItem(CUSTOM_CURRICULUM_KEY, JSON.stringify(parsed));
-            if (APP.state) ensureProgressNodes(APP.state);
-            renderApp();
-          }
+        let sha = null;
+        const getRes = await fetch(`${url}?ref=${encodeURIComponent(branch)}`, { headers });
+        if (getRes.ok) {
+          const ex = await getRes.json();
+          sha = ex.sha;
         }
+        const payload = {
+          message: `Kết quả học sinh: ${st.name} (${st.score} điểm)`,
+          content: encodeB64(JSON.stringify(st, null, 2)),
+          branch
+        };
+        if (sha) payload.sha = sha;
+        await fetch(url, {
+          method: 'PUT',
+          headers: Object.assign({ 'Content-Type': 'application/json' }, headers),
+          body: JSON.stringify(payload)
+        });
       } catch (e) {}
     }
 
-    async function saveCustomCurriculumToGitHub(customObj) {
-      window.localStorage.setItem(CUSTOM_CURRICULUM_KEY, JSON.stringify(customObj));
-      const cfg = APP.cloudConfig;
-      if (!cfg.githubOwner || !cfg.githubRepo || !cfg.githubToken) {
-        return { ok: false, msg: '✅ Đã lưu bài học mới trên trình duyệt máy này! (Hãy nhập GitHub Token ở bên dưới để tự động đẩy lên GitHub cho toàn bộ học sinh).' };
-      }
-      const path = 'custom_curriculum.json';
-      const apiUrl = `https://api.github.com/repos/${cfg.githubOwner}/${cfg.githubRepo}/contents/${path}`;
-      const headers = {
-        'Accept': 'application/vnd.github+json',
-        'Authorization': `Bearer ${cfg.githubToken}`
-      };
-      try {
-        let sha = null;
-        const getRes = await fetch(apiUrl + `?ref=${encodeURIComponent(cfg.githubBranch || 'main')}`, { headers });
-        if (getRes.ok) {
-          const ex = await getRes.json();
-          sha = ex.sha;
-        }
-        const payload = {
-          message: 'Giáo viên cập nhật tài liệu mới bằng AI',
-          content: encodeBase64UTF8(JSON.stringify(customObj, null, 2)),
-          branch: cfg.githubBranch || 'main'
-        };
-        if (sha) payload.sha = sha;
-        const putRes = await fetch(apiUrl, {
-          method: 'PUT',
-          headers: Object.assign({ 'Content-Type': 'application/json' }, headers),
-          body: JSON.stringify(payload)
-        });
-        if (putRes.ok) {
-          return { ok: true, msg: '✅ Đã xuất bản bài học mới lên GitHub (custom_curriculum.json)! Toàn bộ học sinh mở link sẽ thấy ngay!' };
-        }
-        return { ok: false, msg: '⚠️ Lỗi đẩy lên GitHub, vui lòng kiểm tra lại Token.' };
-      } catch (e) {
-        return { ok: false, msg: '⚠️ Lỗi kết nối GitHub: ' + e.message };
-      }
-    }
-
     // ==========================================================================
-    // 4. TRẠNG THÁI ỨNG DỤNG (CHIA RÕ LOGIN / STUDENT / TEACHER)
+    // 2. TRẠNG THÁI TOÀN ỨNG DỤNG
     // ==========================================================================
     const APP = {
-      cloudConfig: loadCloudConfig(),
+      config: loadConfig(),
+      curriculum: loadCurriculum(),
       mode: 'login',             // 'login' | 'student' | 'teacher'
-      loginTab: 'student',       // 'student' (Học - Chỉ nhập tên) | 'teacher' (Upload tài liệu - Có mật khẩu)
+      loginTab: 'student',       // 'student' | 'teacher'
       loginError: '',
-      loginLoading: false,
-      state: null,               // Dữ liệu học sinh đang đăng nhập
-      syncNotice: '',
-      studentTab: 'learn',       // CHỈ GIỮ 3 MỤC: 'learn' | 'practice' | 'flashcards'
-      practiceSubTab: 'mental',  // 'mental' | 'geometry' | 'wordform' | 'mistakes'
-      activeQuiz: null,
-      mentalSession: {
-        difficulty: 1, question: generateMentalMathQuestion(1),
-        score: 0, totalAnswered: 0, correctCount: 0, feedback: null
-      },
-      flashcardSession: { index: 0, flipped: false },
-      wordFormSession: { familyIdx: 0, questionIdx: 0, inputVal: '', result: null },
-      aiStudio: {
-        subject: 'math',
-        chapterTitle: 'Chương 5: Phân số & Số thập phân',
-        lessonTitle: 'Bài 1: Mở rộng phân số',
-        questionCount: 5,
-        sourceText: '',
-        imageBase64: null,
-        imageMimeType: null,
-        imageFileName: '',
-        generating: false,
+      student: null,             // { name, slug, subject: 'math'|'english', activeTab: 'on_tap'|'luyen_tap'|'kiem_tra', score, history: {} }
+      quizSession: null,         // Phiên làm bài của học sinh
+      teacher: {
+        subTab: 'upload_questions', // 'upload_questions' | 'geo_builder' | 'manage_bank' | 'github_settings'
         statusMsg: '',
         statusType: 'info',
-        generatedPreview: null,
-        classRoster: []
+        loading: false,
+        // Form Upload câu hỏi giáo trình
+        subject: 'math',
+        category: 'on_tap',      // 'on_tap' (Ôn tập) | 'luyen_tap' (Luyện tập) | 'kiem_tra' (Kiểm tra)
+        topicTitle: '',
+        rawInputText: '',
+        imageBase64: null,
+        imageMime: null,
+        imageName: '',
+        questionCount: 5,
+        previewQuestions: [],
+        // Form AI Studio Hình học tương tác (Tự động tạo & sửa UI/UX)
+        geoSubject: 'math',
+        geoCategory: 'luyen_tap',
+        geoTopicTitle: 'Hình học trực quan tương tác',
+        geoDescription: 'Vẽ hình chữ nhật ABCD có chiều dài a = 8 cm, chiều rộng b = 5 cm. Cho phép học sinh click chọn cạnh chiều dài a, cạnh chiều rộng b rồi nhập diện tích S.',
+        geoUiUxFeedback: '',
+        geoGeneratedItem: null
       }
     };
 
     // ==========================================================================
-    // 5. GIAO DIỆN ĐĂNG NHẬP (2 PHẦN: HỌC SINH KHÔNG MẬT KHẨU & GIÁO VIÊN CÓ MẬT KHẨU)
+    // 3. GIAO DIỆN ĐĂNG NHẬP (TÁCH 2 CỔNG: HỌC SINH & GIÁO VIÊN)
     // ==========================================================================
     function renderLoginView() {
-      const isStudentTab = APP.loginTab === 'student';
-
+      const isStu = APP.loginTab === 'student';
       return `
         <div class="login-wrapper">
           <div class="login-box">
             <div style="text-align:center; margin-bottom:20px">
-              <div style="width:52px; height:52px; border-radius:16px; background:var(--primary); color:#fff; font-weight:900; font-size:22px; display:inline-flex; align-items:center; justify-content:center; margin-bottom:8px">
-                G6
-              </div>
-              <h1 style="font-size:22px; font-weight:900">QuestLearn Lớp 6</h1>
-              <p style="font-size:13px; color:var(--muted); font-weight:700">Toán 6 & Tiếng Anh 6 — Kết nối tri thức với cuộc sống</p>
+              <div style="width:52px; height:52px; border-radius:16px; background:var(--primary); color:#fff; font-weight:900; font-size:22px; display:inline-flex; align-items:center; justify-content:center; margin-bottom:8px">G6</div>
+              <h1 style="font-size:22px; font-weight:900">Hệ Thống Học Tập Lớp 6</h1>
+              <p style="font-size:13px; color:var(--muted); font-weight:700">Ôn Tập • Luyện Tập • Kiểm Tra</p>
             </div>
 
-            <!-- Nút chuyển 2 chế độ: Học (Học sinh) và Upload tài liệu (Giáo viên) -->
             <div class="role-switcher">
-              <button class="role-btn ${isStudentTab ? 'active' : ''}" data-action="switch-login-tab" data-tab="student">
-                🎓 Vào Học (Học sinh)
+              <button class="role-btn ${isStu ? 'active' : ''}" data-action="switch-login-tab" data-tab="student">
+                🎓 Học Sinh Làm Bài
               </button>
-              <button class="role-btn ${!isStudentTab ? 'active' : ''}" data-action="switch-login-tab" data-tab="teacher">
-                👨‍🏫 Upload Tài Liệu (GV)
+              <button class="role-btn ${!isStu ? 'active' : ''}" data-action="switch-login-tab" data-tab="teacher">
+                👨‍🏫 Giáo Viên Upload
               </button>
             </div>
 
             ${
               APP.loginError
-                ? `<div style="padding:12px 14px; border-radius:14px; background:var(--danger-light); border:1px solid #fecaca; color:var(--danger); font-size:13px; font-weight:800; margin-bottom:14px">
+                ? `<div style="padding:11px 14px; border-radius:12px; background:var(--danger-light); color:var(--danger); font-size:13px; font-weight:800; margin-bottom:14px">
                     ${escapeHtml(APP.loginError)}
                   </div>`
                 : ''
             }
 
             ${
-              isStudentTab
-                ? `<!-- PHẦN 1: HỌC SINH (CHỈ CẦN NHẬP TÊN, KHÔNG CẦN MẬT KHẨU) -->
-                  <div style="margin-bottom:16px">
-                    <label style="display:block; font-size:13px; font-weight:800; margin-bottom:6px">
-                      Nhập Họ và Tên + Lớp của em để lưu kết quả:
-                    </label>
-                    <input id="student-name-input" type="text" class="input-box" placeholder="Ví dụ: Nguyễn Minh Anh - 6A1" autofocus />
+              isStu
+                ? `<div style="margin-bottom:16px">
+                    <label style="display:block; font-size:13px; font-weight:800; margin-bottom:6px">Nhập Họ Tên & Lớp của em:</label>
+                    <input id="stu-name-input" type="text" class="input-box" placeholder="Ví dụ: Nguyễn Minh Anh - 6A1" autofocus />
                     <div style="font-size:12px; color:var(--muted); margin-top:6px">
-                      * Không cần mật khẩu. Hệ thống tự động lưu vào file riêng theo tên của em.
+                      * Không cần mật khẩu. Hệ thống hiện có <strong>${APP.curriculum.items.length}</strong> câu hỏi từ Giáo viên.
                     </div>
                   </div>
-                  <button class="btn btn-primary" style="width:100%; padding:15px; font-size:16px" data-action="login-student" ${APP.loginLoading ? 'disabled' : ''}>
-                    ${APP.loginLoading ? '⏳ Đang mở bài học...' : '🚀 Bắt Đầu Học Ngay'}
+                  <button class="btn btn-primary" style="width:100%; padding:14px; font-size:16px" data-action="login-student">
+                    🚀 Vào Làm Bài Ngay
                   </button>`
-                : `<!-- PHẦN 2: GIÁO VIÊN UPLOAD TÀI LIỆU & AI (CÓ MẬT KHẨU) -->
-                  <div style="margin-bottom:16px">
-                    <label style="display:block; font-size:13px; font-weight:800; margin-bottom:6px">
-                      Nhập Mật khẩu Giáo viên:
-                    </label>
-                    <input id="teacher-pwd-input" type="password" class="input-box" placeholder="Nhập mật khẩu giáo viên..." autofocus />
-                    <div style="font-size:12px; color:var(--muted); margin-top:6px">
-                      * Mật khẩu mặc định lần đầu: <strong>123456</strong> (Có thể đổi sau khi đăng nhập).
-                    </div>
+                : `<div style="margin-bottom:16px">
+                    <label style="display:block; font-size:13px; font-weight:800; margin-bottom:6px">Mật khẩu Giáo viên:</label>
+                    <input id="tea-pwd-input" type="password" class="input-box" placeholder="Nhập mật khẩu (mặc định: 123456)..." autofocus />
                   </div>
-                  <button class="btn btn-primary" style="width:100%; padding:15px; font-size:16px" data-action="login-teacher">
-                    🔓 Mở Trang Upload Tài Liệu & AI
+                  <button class="btn btn-primary" style="width:100%; padding:14px; font-size:16px" data-action="login-teacher">
+                    🔓 Mở Cổng Giáo Viên (Soạn & Upload Bài)
                   </button>`
             }
           </div>
@@ -921,657 +375,216 @@
     }
 
     // ==========================================================================
-    // 6. GIAO DIỆN HỌC SINH (CHỈ GIỮ 3 MỤC: LEARN - PRACTICE - FLASHCARDS)
+    // 4. CỔNG HỌC SINH: CHỈ TƯƠNG TÁC LÀM BÀI (3 TAB: ÔN TẬP - LUYỆN TẬP - KIỂM TRA)
     // ==========================================================================
-    function renderStudentPortalView() {
-      const st = APP.state;
-      let bodyHtml = '';
+    function renderStudentView() {
+      const st = APP.student;
+      const items = APP.curriculum.items.filter(
+        (x) => x.subject === st.subject && x.category === st.activeTab
+      );
 
-      if (APP.activeQuiz) {
-        bodyHtml = renderQuizView();
-      } else if (APP.studentTab === 'learn') {
-        bodyHtml = renderLearnTab();
-      } else if (APP.studentTab === 'practice') {
-        bodyHtml = renderPracticeTab();
-      } else if (APP.studentTab === 'flashcards') {
-        bodyHtml = renderFlashcardsTab();
-      }
+      // Gom nhóm câu hỏi theo Tên Bài / Chủ đề (topicTitle)
+      const groups = {};
+      items.forEach((item) => {
+        const key = item.topicTitle || 'Bài học chung';
+        if (!groups[key]) groups[key] = [];
+        groups[key].push(item);
+      });
+      const topicKeys = Object.keys(groups);
 
-      return `
-        <div class="container">
-          <!-- Thanh Header Tối Giản (Không Streak, Không Tim) -->
-          <header class="header-bar">
-            <div style="display:flex; align-items:center; gap:10px">
-              <div style="width:38px; height:38px; border-radius:12px; background:var(--primary); color:#fff; font-weight:900; display:flex; align-items:center; justify-content:center">
-                G6
-              </div>
-              <div>
-                <div style="font-weight:900; font-size:15px">👤 ${escapeHtml(st.studentName)}</div>
-                <div style="font-size:12px; color:var(--muted); font-weight:700">⭐ Điểm tích lũy: <strong style="color:var(--primary)">${st.xp} XP</strong></div>
-              </div>
-            </div>
-
-            <div style="display:flex; align-items:center; gap:8px">
-              <button class="btn btn-outline" style="padding:8px 12px; font-size:12px" data-action="sync-student-github">
-                ☁️ Lưu kết quả
-              </button>
-              <button class="btn btn-outline" style="padding:8px 12px; font-size:12px" data-action="logout">
-                🚪 Thoát
-              </button>
-            </div>
-          </header>
-
-          ${
-            APP.syncNotice
-              ? `<div style="margin-bottom:14px; padding:10px 14px; border-radius:14px; background:#f0f9ff; border:1px solid #bae6fd; color:#0369a1; font-size:13px; font-weight:800; display:flex; justify-content:space-between; align-items:center">
-                  <span>${escapeHtml(APP.syncNotice)}</span>
-                  <button data-action="clear-notice" style="font-weight:900; color:#0369a1">✕</button>
-                </div>`
-              : ''
-          }
-
-          <!-- Thanh 3 Tab Duy Nhất Khi Không Ở Trong Bài Kiểm Tra -->
-          ${
-            !APP.activeQuiz
-              ? `<nav class="nav-tabs">
-                  <button class="tab-btn ${APP.studentTab === 'learn' ? 'active' : ''}" data-action="student-tab" data-tab="learn">
-                    <span>🗺️</span> <span>Learn</span>
-                  </button>
-                  <button class="tab-btn ${APP.studentTab === 'practice' ? 'active' : ''}" data-action="student-tab" data-tab="practice">
-                    <span>⚡</span> <span>Practice</span>
-                  </button>
-                  <button class="tab-btn ${APP.studentTab === 'flashcards' ? 'active' : ''}" data-action="student-tab" data-tab="flashcards">
-                    <span>🗂️</span> <span>Flashcards</span>
-                  </button>
-                </nav>`
-              : ''
-          }
-
-          ${bodyHtml}
-        </div>
-      `;
-    }
-
-    function renderLearnTab() {
-      const st = APP.state;
-      const curr = getMergedCurriculum();
-      const chapters = curr.chapters.filter((c) => c.subject === st.selectedSubject);
-
-      const chaptersHtml = chapters
-        .map((ch) => {
-          const completedCount = ch.lessons.filter((l) => {
-            const s = st.progress[l.id]?.status;
-            return s === 'completed' || s === 'perfect';
-          }).length;
-          const pct = ch.lessons.length > 0 ? Math.round((completedCount / ch.lessons.length) * 100) : 0;
-
-          const lessonsHtml = ch.lessons
-            .map((lesson, idx) => {
-              const prog = st.progress[lesson.id] || {
-                status: idx === 0 ? 'available' : 'locked',
-                highScore: 0
-              };
-              const isLocked = prog.status === 'locked';
-              const isDone = prog.status === 'completed' || prog.status === 'perfect';
-
-              return `
-                <div class="lesson-node ${prog.status}">
-                  <div style="display:flex; align-items:center; gap:12px">
-                    <div class="node-icon" style="background:${isLocked ? '#e2e8f0; color:#64748b' : isDone ? '#16a34a; color:#fff' : '#4f46e5; color:#fff'}">
-                      ${isLocked ? '🔒' : isDone ? '✓' : idx + 1}
-                    </div>
-                    <div>
-                      <div style="font-weight:900; font-size:15px">${escapeHtml(lesson.title)}</div>
-                      <div style="font-size:13px; color:var(--muted)">${escapeHtml(lesson.description)}</div>
-                      ${
-                        prog.highScore > 0
-                          ? `<div style="font-size:12px; font-weight:800; color:var(--success); margin-top:2px">Điểm cao nhất: ${prog.highScore}%</div>`
-                          : ''
-                      }
-                    </div>
-                  </div>
-                  <button class="btn ${isLocked ? 'btn-outline' : 'btn-primary'}" data-action="start-lesson" data-lesson="${lesson.id}" data-title="${escapeHtml(lesson.title)}" ${isLocked ? 'disabled' : ''}>
-                    ${isLocked ? 'Khóa' : prog.highScore > 0 ? 'Làm lại' : 'Học bài'}
-                  </button>
-                </div>
-              `;
-            })
-            .join('');
-
-          return `
-            <div class="card">
-              <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px; margin-bottom:14px; padding-bottom:12px; border-bottom:1px solid var(--border)">
-                <div>
-                  <h2 style="font-size:18px; font-weight:900">${escapeHtml(ch.title)}</h2>
-                  <p style="font-size:13px; color:var(--muted)">${escapeHtml(ch.subtitle)}</p>
-                </div>
-                <div style="min-width:130px">
-                  <div style="font-size:12px; font-weight:800; color:var(--muted); text-align:right">Hoàn thành: ${pct}%</div>
-                  <div class="progress-track" style="margin-top:4px"><div class="progress-fill" style="width:${pct}%"></div></div>
-                </div>
-              </div>
-              ${lessonsHtml}
-            </div>
-          `;
-        })
-        .join('');
-
-      return `
-        <div style="display:flex; gap:10px; margin-bottom:16px">
-          <button class="btn ${st.selectedSubject === 'math' ? 'btn-success' : 'btn-outline'}" style="flex:1; padding:13px" data-action="switch-subject" data-subject="math">
-            📐 MÔN TOÁN LỚP 6
-          </button>
-          <button class="btn ${st.selectedSubject === 'english' ? 'btn-primary' : 'btn-outline'}" style="flex:1; padding:13px" data-action="switch-subject" data-subject="english">
-            🇬🇧 TIẾNG ANH LỚP 6
-          </button>
-        </div>
-        ${chaptersHtml}
-      `;
-    }
-
-    function renderPracticeTab() {
-      const sub = APP.practiceSubTab;
-      const activeMistakes = Object.values(APP.state.mistakes || {}).filter((m) => !m.mastered);
-
-      const subNavHtml = `
-        <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px">
-          <button class="btn ${sub === 'mental' ? 'btn-primary' : 'btn-outline'}" data-action="practice-subtab" data-sub="mental">
-            ⚡ Tính nhẩm
-          </button>
-          <button class="btn ${sub === 'geometry' ? 'btn-primary' : 'btn-outline'}" data-action="practice-subtab" data-sub="geometry">
-            📐 Hình chữ nhật SVG
-          </button>
-          <button class="btn ${sub === 'wordform' ? 'btn-primary' : 'btn-outline'}" data-action="practice-subtab" data-sub="wordform">
-            🔤 Word Form (Từ loại)
-          </button>
-          <button class="btn ${sub === 'mistakes' ? 'btn-primary' : 'btn-outline'}" data-action="practice-subtab" data-sub="mistakes">
-            🔄 Ôn câu sai (${activeMistakes.length})
-          </button>
-        </div>
-      `;
-
-      if (sub === 'mental') {
-        const ms = APP.mentalSession;
-        return `
-          ${subNavHtml}
-          <div class="card">
-            <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px; margin-bottom:14px">
-              <div>
-                <h2 style="font-size:18px; font-weight:900">⚡ Luyện Tính Nhẩm Nhanh</h2>
-                <p style="font-size:13px; color:var(--muted)">Điểm phiên này: <strong>${ms.score}</strong> • Đúng: <strong>${ms.correctCount}/${ms.totalAnswered}</strong></p>
-              </div>
-              <div style="display:flex; gap:6px">
-                ${[
-                  { id: 1, label: 'Dễ' },
-                  { id: 2, label: 'Vừa' },
-                  { id: 3, label: 'Khó' }
-                ]
-                  .map(
-                    (d) => `
-                    <button class="btn ${ms.difficulty === d.id ? 'btn-primary' : 'btn-outline'}" style="padding:7px 12px; font-size:12px" data-action="mm-set-diff" data-diff="${d.id}">
-                      ${d.label}
-                    </button>`
-                  )
-                  .join('')}
-              </div>
-            </div>
-
-            <div style="padding:24px; border-radius:18px; background:var(--primary-light); text-align:center; margin-bottom:14px">
-              <div style="font-size:12px; font-weight:800; color:var(--primary); text-transform:uppercase">${escapeHtml(ms.question.topicTag)}</div>
-              <div style="font-size:30px; font-weight:900; margin-top:4px">${escapeHtml(ms.question.prompt)}</div>
-            </div>
-
-            <div style="display:flex; gap:10px; margin-bottom:12px">
-              <input id="mm-input" type="number" class="input-box" style="text-align:center" placeholder="Nhập đáp án rồi nhấn Enter..." autofocus />
-              <button class="btn btn-primary" data-action="mm-submit">Kiểm tra</button>
-            </div>
-
-            ${
-              ms.feedback
-                ? `<div style="padding:12px 14px; border-radius:14px; font-size:14px; font-weight:700; background:${
-                    ms.feedback.ok ? '#f0fdf4' : '#fef2f2'
-                  }; color:${ms.feedback.ok ? '#14532d' : '#991b1b'}">
-                    ${escapeHtml(ms.feedback.text)}
-                  </div>`
-                : ''
-            }
-          </div>
-        `;
-      }
-
-      if (sub === 'geometry') {
-        return `
-          ${subNavHtml}
-          <div class="card">
-            <h2 style="font-size:18px; font-weight:900; margin-bottom:6px">📐 Thực hành Hình chữ nhật Tương tác SVG</h2>
-            <p style="font-size:13px; color:var(--muted); margin-bottom:16px">
-              Kéo thả nhãn [a], [b] vào cạnh hình chữ nhật ABCD, chọn các cặp cạnh bằng nhau và tính diện tích S = a × b.
-            </p>
-            <button class="btn btn-primary" data-action="start-dynamic-geo">
-              🎲 Bắt đầu bài tương tác Hình chữ nhật (Số đo ngẫu nhiên)
-            </button>
-          </div>
-        `;
-      }
-
-      if (sub === 'wordform') {
-        const wf = APP.wordFormSession;
-        const fam = WORD_FAMILIES[wf.familyIdx];
-        const q = fam.questions[wf.questionIdx];
-        return `
-          ${subNavHtml}
-          <div class="card">
-            <h2 style="font-size:18px; font-weight:900; margin-bottom:12px">🔤 Word Form (Cấu tạo từ Tiếng Anh 6)</h2>
-            <div class="grid-4" style="margin-bottom:14px; font-size:13px">
-              <div style="padding:10px; border-radius:12px; background:#f0f9ff"><strong>Noun:</strong> ${escapeHtml(fam.noun)}</div>
-              <div style="padding:10px; border-radius:12px; background:#f0fdf4"><strong>Verb:</strong> ${escapeHtml(fam.verb)}</div>
-              <div style="padding:10px; border-radius:12px; background:#fffbeb"><strong>Adj:</strong> ${escapeHtml(fam.adjective)}</div>
-              <div style="padding:10px; border-radius:12px; background:#faf5ff"><strong>Adv:</strong> ${escapeHtml(fam.adverb)}</div>
-            </div>
-            <div style="padding:16px; border-radius:16px; background:#f8fafc; border:1px solid var(--border); margin-bottom:12px">
-              <div style="font-size:12px; font-weight:800; color:var(--primary)">Từ gốc: ${escapeHtml(fam.rootWord)} • Cần điền: ${escapeHtml(q.targetPos)}</div>
-              <div style="font-size:17px; font-weight:900; margin-top:4px">${escapeHtml(q.sentence)}</div>
-            </div>
-            <div style="display:flex; gap:10px">
-              <input id="wf-input" type="text" class="input-box" value="${escapeHtml(wf.inputVal)}" placeholder="Nhập từ đúng..." ${wf.result ? 'disabled' : ''} />
-              ${
-                !wf.result
-                  ? `<button class="btn btn-primary" data-action="wf-check">Kiểm tra</button>`
-                  : `<button class="btn btn-success" data-action="wf-next">Câu tiếp →</button>`
-              }
-            </div>
-            ${
-              wf.result
-                ? `<div style="margin-top:12px; padding:12px; border-radius:14px; font-size:14px; font-weight:700; background:${
-                    wf.result.ok ? '#f0fdf4' : '#fef2f2'
-                  }; color:${wf.result.ok ? '#14532d' : '#991b1b'}">
-                    ${wf.result.ok ? '✓ Chính xác! (+15 XP)' : `✕ Đáp án đúng: "${escapeHtml(q.answer)}"`} — ${escapeHtml(wf.result.explanation)}
-                  </div>`
-                : ''
-            }
-          </div>
-        `;
-      }
-
-      return `
-        ${subNavHtml}
-        <div class="card">
-          <h2 style="font-size:18px; font-weight:900; margin-bottom:6px">🔄 Ôn tập các câu làm sai (${activeMistakes.length} câu)</h2>
-          <p style="font-size:13px; color:var(--muted); margin-bottom:16px">
-            Khi em trả lời đúng lại 2 lần liên tiếp, câu hỏi sẽ được xóa khỏi danh sách cần ôn.
-          </p>
-          <button class="btn btn-primary" data-action="start-mistake-review" ${activeMistakes.length === 0 ? 'disabled' : ''}>
-            ${activeMistakes.length === 0 ? '🎉 Em không có câu nào sai tồn đọng!' : '🚀 Bắt đầu ôn lại các câu sai'}
-          </button>
-        </div>
-      `;
-    }
-
-    function renderFlashcardsTab() {
-      const curr = getMergedCurriculum();
-      const vocabList = curr.vocabulary;
-      const fc = APP.flashcardSession;
-      const card = vocabList[fc.index % vocabList.length];
-      const learnedCount = Object.values(APP.state.flashcardSRS || {}).filter((x) => x.learned).length;
-
-      return `
-        <div style="max-width:580px; margin:0 auto">
-          <div class="card" style="padding:14px 18px; display:flex; justify-content:space-between; align-items:center">
-            <span style="font-weight:900; font-size:15px">🗂️ Thẻ từ vựng SGK Tiếng Anh 6</span>
-            <span style="font-size:13px; font-weight:900; color:var(--primary)">Đã thuộc: ${learnedCount} / ${vocabList.length} từ</span>
-          </div>
-
-          <div class="flashcard-box" data-action="fc-flip" style="margin-bottom:16px">
-            ${
-              !fc.flipped
-                ? `<span class="pill-tag" style="background:var(--primary-light); color:var(--primary); margin-bottom:12px">
-                    Chạm vào thẻ để lật xem nghĩa tiếng Việt
-                  </span>
-                  <h3 style="font-size:34px; font-weight:900; margin-bottom:14px">${escapeHtml(card.word)}</h3>
-                  <button class="btn btn-outline" style="padding:7px 14px; font-size:13px" data-action="fc-speak" data-word="${escapeHtml(card.word)}">
-                    🔊 Nghe phát âm
-                  </button>`
-                : `<div style="margin-bottom:8px">
-                    <span style="font-family:monospace; font-size:15px; color:var(--muted)">${escapeHtml(card.phonetic)}</span>
-                    <span class="pill-tag" style="background:#fef3c7; color:#92400e; margin-left:6px">${escapeHtml(card.pos)}</span>
-                  </div>
-                  <div style="font-size:26px; font-weight:900; color:var(--success); margin-bottom:12px">${escapeHtml(card.meaningVi)}</div>
-                  <div style="font-size:14px; font-style:italic; color:#334155">“${escapeHtml(card.example)}”</div>`
-            }
-          </div>
-
-          <div class="grid-2">
-            <button class="btn btn-outline" style="padding:14px; border-color:#fca5a5; color:#b91c1c" data-action="fc-rate" data-learned="0">
-              🔄 Chưa thuộc (Xem lại sau)
-            </button>
-            <button class="btn btn-success" style="padding:14px" data-action="fc-rate" data-learned="1">
-              ✓ Đã thuộc từ này (+5 XP)
-            </button>
-          </div>
-        </div>
-      `;
-    }
-
-    // ==========================================================================
-    // 7. CỔNG GIÁO VIÊN RIÊNG BIỆT (UPLOAD TÀI LIỆU & AI SINH CÂU HỎI)
-    // ==========================================================================
-    function renderTeacherPortalView() {
-      const cfg = APP.cloudConfig;
-      const ai = APP.aiStudio;
+      const catLabels = {
+        on_tap: { icon: '📖', title: 'Ôn Tập', desc: 'Củng cố kiến thức trọng tâm, xem gợi ý và giải thích ngay sau mỗi câu.' },
+        luyen_tap: { icon: '✍️', title: 'Luyện Tập', desc: 'Thực hành giải bài tập và tương tác trực tiếp trên hình học.' },
+        kiem_tra: { icon: '📝', title: 'Kiểm Tra', desc: 'Đánh giá năng lực và lưu điểm số về hồ sơ lớp học.' }
+      };
+      const curCat = catLabels[st.activeTab];
 
       return `
         <div class="container">
           <header class="header-bar">
             <div style="display:flex; align-items:center; gap:10px">
-              <div style="width:38px; height:38px; border-radius:12px; background:#0f172a; color:#fff; font-weight:900; display:flex; align-items:center; justify-content:center">
-                GV
-              </div>
+              <div style="width:38px; height:38px; border-radius:12px; background:var(--primary); color:#fff; font-weight:900; display:flex; align-items:center; justify-content:center">HS</div>
               <div>
-                <div style="font-weight:900; font-size:16px">👨‍🏫 Cổng Giáo Viên — Upload Tài Liệu & AI Tạo Bài</div>
-                <div style="font-size:12px; color:var(--muted)">Tự động sinh câu hỏi từ Sách Giáo Khoa & Quản lý file học sinh trên GitHub</div>
+                <div style="font-weight:900; font-size:15px">👤 ${escapeHtml(st.name)}</div>
+                <div style="font-size:12px; color:var(--muted); font-weight:700">Tổng điểm tích lũy: <strong style="color:var(--primary)">${st.score} điểm</strong></div>
               </div>
             </div>
-            <button class="btn btn-outline" data-action="logout">🚪 Đăng xuất về màn hình chính</button>
+            <div style="display:flex; gap:8px">
+              <button class="btn btn-outline" style="padding:7px 12px; font-size:12px" data-action="refresh-curriculum">🔄 Cập nhật đề mới</button>
+              <button class="btn btn-outline" style="padding:7px 12px; font-size:12px" data-action="logout">🚪 Thoát</button>
+            </div>
           </header>
 
           ${
-            ai.statusMsg
-              ? `<div style="padding:12px 16px; border-radius:14px; font-size:14px; font-weight:800; margin-bottom:16px; background:${
-                  ai.statusType === 'success' ? '#f0fdf4' : ai.statusType === 'error' ? '#fef2f2' : '#f0f9ff'
-                }; border:1px solid ${
-                  ai.statusType === 'success' ? '#86efac' : ai.statusType === 'error' ? '#fca5a5' : '#bae6fd'
-                }; color:${
-                  ai.statusType === 'success' ? '#14532d' : ai.statusType === 'error' ? '#991b1b' : '#0c4a6e'
-                }">
-                  ${escapeHtml(ai.statusMsg)}
-                </div>`
-              : ''
+            APP.quizSession
+              ? renderStudentQuizSession()
+              : `
+                <!-- Chọn Môn học -->
+                <div style="display:flex; gap:10px; margin-bottom:14px">
+                  <button class="btn ${st.subject === 'math' ? 'btn-success' : 'btn-outline'}" style="flex:1; padding:12px" data-action="stu-subject" data-subject="math">
+                    📐 MÔN TOÁN
+                  </button>
+                  <button class="btn ${st.subject === 'english' ? 'btn-primary' : 'btn-outline'}" style="flex:1; padding:12px" data-action="stu-subject" data-subject="english">
+                    🇬🇧 MÔN TIẾNG ANH
+                  </button>
+                </div>
+
+                <!-- 3 Tab đúng yêu cầu: Ôn tập - Luyện tập - Kiểm tra -->
+                <nav class="nav-tabs">
+                  <button class="tab-btn ${st.activeTab === 'on_tap' ? 'active' : ''}" data-action="stu-tab" data-tab="on_tap">
+                    <span>📖</span> <span>Ôn tập</span>
+                  </button>
+                  <button class="tab-btn ${st.activeTab === 'luyen_tap' ? 'active' : ''}" data-action="stu-tab" data-tab="luyen_tap">
+                    <span>✍️</span> <span>Luyện tập</span>
+                  </button>
+                  <button class="tab-btn ${st.activeTab === 'kiem_tra' ? 'active' : ''}" data-action="stu-tab" data-tab="kiem_tra">
+                    <span>📝</span> <span>Kiểm tra</span>
+                  </button>
+                </nav>
+
+                <div class="card" style="background:var(--primary-light); border-color:#c7d2fe; padding:16px 20px">
+                  <div style="font-weight:900; font-size:16px; color:#312e81">${curCat.icon} Khu vực ${curCat.title} (${st.subject === 'math' ? 'Toán' : 'Tiếng Anh'})</div>
+                  <div style="font-size:13px; color:#4338ca; margin-top:2px">${curCat.desc}</div>
+                </div>
+
+                ${
+                  topicKeys.length === 0
+                    ? `<div class="card" style="text-align:center; padding:36px 20px">
+                        <div style="font-size:36px; margin-bottom:8px">📭</div>
+                        <div style="font-weight:900; font-size:16px">Chưa có bài ${curCat.title} nào trong môn này</div>
+                        <p style="font-size:13px; color:var(--muted); margin-top:4px">
+                          Giáo viên sẽ soạn và upload câu hỏi hoặc bài hình học tương tác lên đây. Em có thể bấm nút "🔄 Cập nhật đề mới" ở góc trên nhé!
+                        </p>
+                      </div>`
+                    : topicKeys
+                        .map((topic) => {
+                          const qList = groups[topic];
+                          const best = st.history[topic];
+                          return `
+                            <div class="card" style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px">
+                              <div>
+                                <div style="font-weight:900; font-size:17px">${escapeHtml(topic)}</div>
+                                <div style="font-size:13px; color:var(--muted); margin-top:2px">
+                                  Số lượng: <strong>${qList.length} câu hỏi</strong>
+                                  ${best !== undefined ? ` • Kết quả cao nhất: <strong style="color:var(--success)">${best}%</strong>` : ''}
+                                </div>
+                              </div>
+                              <button class="btn btn-primary" data-action="stu-start-topic" data-topic="${escapeHtml(topic)}">
+                                ${best !== undefined ? 'Làm lại bài' : 'Bắt đầu làm bài →'}
+                              </button>
+                            </div>
+                          `;
+                        })
+                        .join('')
+                }
+              `
           }
-
-          <!-- KHỐI 1: UPLOAD TÀI LIỆU SGK ĐỂ AI TỰ ĐỘNG TẠO BÀI HỌC -->
-          <div class="card">
-            <h2 style="font-size:18px; font-weight:900; margin-bottom:6px">🪄 1. Upload Tài Liệu Sách Giáo Khoa → AI Tự Động Tạo Bài Học</h2>
-            <p style="font-size:13px; color:var(--muted); margin-bottom:16px">
-              Dán nội dung bài học hoặc tải ảnh trang sách lên, AI sẽ tự động soạn câu hỏi trắc nghiệm, tự luận và lưu thẳng vào lộ trình học của học sinh.
-            </p>
-
-            <div class="grid-2" style="margin-bottom:12px">
-              <div>
-                <label style="display:block; font-size:12px; font-weight:800; margin-bottom:4px">Chọn Môn:</label>
-                <select id="ai-subject" class="input-box" style="padding:10px 14px">
-                  <option value="math" ${ai.subject === 'math' ? 'selected' : ''}>📐 Toán Lớp 6</option>
-                  <option value="english" ${ai.subject === 'english' ? 'selected' : ''}>🇬🇧 Tiếng Anh Lớp 6</option>
-                </select>
-              </div>
-              <div>
-                <label style="display:block; font-size:12px; font-weight:800; margin-bottom:4px">Số câu hỏi muốn tạo:</label>
-                <input id="ai-qcount" type="number" min="3" max="15" class="input-box" style="padding:10px 14px" value="${ai.questionCount}" />
-              </div>
-            </div>
-
-            <div class="grid-2" style="margin-bottom:12px">
-              <div>
-                <label style="display:block; font-size:12px; font-weight:800; margin-bottom:4px">Tên Chương / Unit:</label>
-                <input id="ai-chapter" type="text" class="input-box" style="padding:10px 14px" value="${escapeHtml(ai.chapterTitle)}" />
-              </div>
-              <div>
-                <label style="display:block; font-size:12px; font-weight:800; margin-bottom:4px">Tên Bài học:</label>
-                <input id="ai-lesson" type="text" class="input-box" style="padding:10px 14px" value="${escapeHtml(ai.lessonTitle)}" />
-              </div>
-            </div>
-
-            <div style="margin-bottom:12px">
-              <label style="display:block; font-size:12px; font-weight:800; margin-bottom:4px">Nội dung tài liệu (Dán văn bản từ sách vào đây):</label>
-              <textarea id="ai-source-text" rows="4" class="input-box" style="font-size:14px" placeholder="Dán nội dung bài học hoặc bài tập trong sách vào đây...">${escapeHtml(ai.sourceText)}</textarea>
-            </div>
-
-            <div style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px">
-              <label class="btn btn-outline" style="cursor:pointer">
-                📷 Tải ảnh trang sách lên ${ai.imageFileName ? `(${escapeHtml(ai.imageFileName)})` : ''}
-                <input id="ai-image-upload" type="file" accept="image/*" style="display:none" />
-              </label>
-              <button class="btn btn-primary" data-action="ai-generate" ${ai.generating ? 'disabled' : ''}>
-                ${ai.generating ? '⏳ AI đang tạo câu hỏi...' : '🪄 AI Sinh Câu Hỏi Từ Tài Liệu'}
-              </button>
-            </div>
-          </div>
-
-          ${
-            ai.generatedPreview
-              ? `<div class="card" style="border:2px solid var(--success); background:var(--success-light)">
-                  <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px; margin-bottom:12px">
-                    <h3 style="font-size:16px; font-weight:900; color:#14532d">
-                      ✅ Đã tạo xong ${ai.generatedPreview.questions.length} câu hỏi! Bấm Lưu để cập nhật cho học sinh:
-                    </h3>
-                    <button class="btn btn-success" data-action="ai-publish-curriculum">
-                      ☁️ Lưu & Xuất Bản Cho Học Sinh
-                    </button>
-                  </div>
-                  <div style="display:flex; flex-direction:column; gap:8px">
-                    ${ai.generatedPreview.questions
-                      .map(
-                        (q, i) => `
-                        <div style="padding:10px 12px; border-radius:12px; background:#fff; font-size:13px">
-                          <strong>Câu ${i + 1}:</strong> ${escapeHtml(q.prompt)} <br/>
-                          <span style="color:var(--success); font-weight:800">Đáp án: ${escapeHtml(q.correctAnswer)}</span>
-                        </div>`
-                      )
-                      .join('')}
-                  </div>
-                </div>`
-              : ''
-          }
-
-          <!-- KHỐI 2: CẤU HÌNH GITHUB, GEMINI API & MẬT KHẨU GIÁO VIÊN -->
-          <div class="card">
-            <h2 style="font-size:18px; font-weight:900; margin-bottom:12px">⚙️ 2. Cấu hình GitHub, Gemini API Key & Mật khẩu Giáo viên</h2>
-
-            <div class="grid-2" style="margin-bottom:12px">
-              <div>
-                <label style="display:block; font-size:12px; font-weight:800; margin-bottom:4px">GitHub Username:</label>
-                <input id="cfg-gh-owner" type="text" class="input-box" style="padding:10px 14px" value="${escapeHtml(cfg.githubOwner)}" placeholder="Ví dụ: nguyenvana" />
-              </div>
-              <div>
-                <label style="display:block; font-size:12px; font-weight:800; margin-bottom:4px">GitHub Repository Name:</label>
-                <input id="cfg-gh-repo" type="text" class="input-box" style="padding:10px 14px" value="${escapeHtml(cfg.githubRepo)}" placeholder="Ví dụ: lop6" />
-              </div>
-            </div>
-
-            <div class="grid-2" style="margin-bottom:12px">
-              <div>
-                <label style="display:block; font-size:12px; font-weight:800; margin-bottom:4px">GitHub Personal Access Token:</label>
-                <input id="cfg-gh-token" type="password" class="input-box" style="padding:10px 14px" value="${escapeHtml(cfg.githubToken)}" placeholder="github_pat_..." />
-              </div>
-              <div>
-                <label style="display:block; font-size:12px; font-weight:800; margin-bottom:4px">Gemini API Key (aistudio.google.com):</label>
-                <input id="cfg-gemini-key" type="password" class="input-box" style="padding:10px 14px" value="${escapeHtml(cfg.geminiApiKey)}" placeholder="AIzaSy..." />
-              </div>
-            </div>
-
-            <div style="margin-bottom:14px">
-              <label style="display:block; font-size:12px; font-weight:800; margin-bottom:4px">Đổi Mật khẩu Giáo viên:</label>
-              <input id="cfg-teacher-pwd" type="text" class="input-box" style="padding:10px 14px; max-width:280px" value="${escapeHtml(cfg.teacherPassword)}" />
-            </div>
-
-            <div style="display:flex; flex-wrap:wrap; gap:10px">
-              <button class="btn btn-success" data-action="save-cloud-config">💾 Lưu Cấu Hình</button>
-              <button class="btn btn-outline" data-action="load-class-roster">📂 Xem File Kết Quả Học Sinh Trên GitHub</button>
-            </div>
-
-            ${
-              ai.classRoster.length > 0
-                ? `<div style="margin-top:14px; padding-top:12px; border-top:1px solid var(--border)">
-                    <div style="font-weight:900; font-size:13px; margin-bottom:8px">Danh sách file học sinh đã lưu trên GitHub (${ai.classRoster.length} học sinh):</div>
-                    <div class="grid-2">
-                      ${ai.classRoster
-                        .map(
-                          (f) => `
-                          <a href="${escapeHtml(f.html_url)}" target="_blank" style="padding:9px 12px; border-radius:10px; background:#f8fafc; border:1px solid var(--border); font-size:13px; font-weight:800; color:var(--primary); text-decoration:none; display:flex; justify-content:space-between">
-                            <span>📄 students/${escapeHtml(f.name)}</span>
-                            <span>Mở file ↗</span>
-                          </a>`
-                        )
-                        .join('')}
-                    </div>
-                  </div>`
-                : ''
-            }
-          </div>
         </div>
       `;
     }
 
-    // ==========================================================================
-    // 8. GIAO DIỆN LÀM BÀI QUIZ & HÌNH HỌC TƯƠNG TÁC SVG (TỐI GIẢN, DỄ DÙNG)
-    // ==========================================================================
-    function createInitialGeoState() {
-      return {
-        phase: 'drag_labels',
-        assignedA: false, assignedB: false, selectedTouchLabel: null,
-        clickedSidesA: [], clickedSidesB: [],
-        feedbackType: 'info',
-        feedbackMsg: 'Bước 1/4: Kéo thả nhãn [a] vào cạnh dài và [b] vào cạnh rộng (hoặc chạm nhãn rồi chạm cạnh).',
-        shake: false, calcInput: ''
-      };
-    }
-
-    function startQuizSession(title, questions, lessonId) {
-      APP.activeQuiz = {
-        title, questions, lessonId: lessonId || null,
-        currentIndex: 0, selectedOption: '', inputVal: '', orderedWords: [],
-        answered: false, isCorrect: null, correctCount: 0, earnedXP: 0,
-        finished: false, geoState: createInitialGeoState()
-      };
-      renderApp();
-    }
-
-    function renderQuizView() {
-      const qz = APP.activeQuiz;
-      if (!qz) return '';
-
-      if (qz.finished) {
-        const accuracy = Math.round((qz.correctCount / qz.questions.length) * 100);
+    function renderStudentQuizSession() {
+      const qs = APP.quizSession;
+      if (qs.finished) {
+        const pct = Math.round((qs.correctCount / qs.questions.length) * 100);
         return `
-          <div class="card" style="max-width:520px; margin:0 auto; text-align:center; padding:28px">
-            <div style="font-size:44px; margin-bottom:6px">🎉</div>
-            <h2 style="font-size:24px; font-weight:900; margin-bottom:4px">Hoàn thành bài học!</h2>
-            <p style="font-size:14px; color:var(--muted); margin-bottom:18px">${escapeHtml(qz.title)}</p>
-            <div class="grid-2" style="margin-bottom:20px">
-              <div style="padding:14px; border-radius:16px; background:#f0fdf4; border:1px solid #bbf7d0">
-                <div style="font-size:12px; font-weight:800; color:#15803d">SỐ CÂU ĐÚNG</div>
-                <div style="font-size:24px; font-weight:900; color:#14532d">${qz.correctCount}/${qz.questions.length} (${accuracy}%)</div>
-              </div>
-              <div style="padding:14px; border-radius:16px; background:#eef2ff; border:1px solid #c7d2fe">
-                <div style="font-size:12px; font-weight:800; color:#4338ca">ĐIỂM THƯỞNG</div>
-                <div style="font-size:24px; font-weight:900; color:#312e81">+${qz.earnedXP} XP</div>
-              </div>
-            </div>
-            <button class="btn btn-primary" style="width:100%; padding:14px; font-size:16px" data-action="quiz-exit">
-              Quay về danh sách bài học →
-            </button>
+          <div class="card" style="text-align:center; padding:30px">
+            <div style="font-size:44px; margin-bottom:8px">🏆</div>
+            <h2 style="font-size:22px; font-weight:900; margin-bottom:4px">Hoàn thành: ${escapeHtml(qs.topicTitle)}</h2>
+            <p style="font-size:14px; color:var(--muted); margin-bottom:18px">
+              Số câu đúng: <strong>${qs.correctCount}/${qs.questions.length} (${pct}%)</strong>
+            </p>
+            <button class="btn btn-primary" data-action="stu-quit-quiz">Quay về danh sách bài →</button>
           </div>
         `;
       }
 
-      const currentQ = qz.questions[qz.currentIndex];
-      const pct = Math.round(((qz.currentIndex + (qz.answered ? 1 : 0)) / qz.questions.length) * 100);
+      const q = qs.questions[qs.index];
+      const pct = Math.round(((qs.index + (qs.answered ? 1 : 0)) / qs.questions.length) * 100);
 
-      let questionBodyHtml = '';
-      if (currentQ.type === 'multiple_choice' || currentQ.type === 'true_false') {
-        questionBodyHtml = `
+      let interactionHtml = '';
+      // Nếu câu hỏi có Hình học tương tác SVG do AI thiết kế/chỉnh sửa UI-UX
+      if (q.interactiveSvgHtml) {
+        interactionHtml += `
+          <div class="geo-sandbox" id="student-geo-sandbox">
+            ${q.interactiveSvgHtml}
+          </div>
+        `;
+      }
+
+      if (q.type === 'multiple_choice' && Array.isArray(q.options) && q.options.length > 0) {
+        interactionHtml += `
           <div class="grid-2" style="margin-top:14px">
-            ${(currentQ.options || [])
+            ${q.options
               .map(
                 (opt) => `
-                <button class="option-btn ${qz.selectedOption === opt ? 'selected' : ''}" data-action="quiz-select-opt" data-opt="${escapeHtml(opt)}" ${qz.answered ? 'disabled' : ''}>
+                <button class="option-btn ${qs.userAnswer === opt ? 'selected' : ''}" data-action="quiz-pick-opt" data-opt="${escapeHtml(opt)}" ${qs.answered ? 'disabled' : ''}>
                   <span>${escapeHtml(opt)}</span>
-                  <span>${qz.selectedOption === opt ? '●' : '○'}</span>
+                  <span>${qs.userAnswer === opt ? '●' : '○'}</span>
                 </button>`
               )
               .join('')}
           </div>
         `;
-      } else if (currentQ.type === 'number_input' || currentQ.type === 'text_input') {
-        questionBodyHtml = `
+      } else {
+        interactionHtml += `
           <div style="margin-top:14px">
-            <input id="quiz-input" type="${currentQ.type === 'number_input' ? 'number' : 'text'}" class="input-box" value="${escapeHtml(qz.inputVal)}" placeholder="Nhập câu trả lời..." ${qz.answered ? 'disabled' : ''} autofocus />
+            <input id="stu-quiz-input" type="text" class="input-box" value="${escapeHtml(qs.userAnswer)}" placeholder="Nhập đáp án của em vào đây..." ${qs.answered ? 'disabled' : ''} autofocus />
           </div>
         `;
-      } else if (currentQ.type === 'ordering') {
-        const chosenHtml =
-          qz.orderedWords.length === 0
-            ? `<span style="color:#94a3b8; font-size:14px; font-weight:700">Chạm vào các từ bên dưới để sắp xếp thành câu...</span>`
-            : qz.orderedWords
-                .map(
-                  (w, idx) => `
-                  <button class="btn btn-primary" style="padding:7px 12px" data-action="quiz-remove-word" data-idx="${idx}" ${qz.answered ? 'disabled' : ''}>
-                    ${escapeHtml(w)}
-                  </button>`
-                )
-                .join('');
-        const poolHtml = (currentQ.options || [])
-          .map((w) => {
-            const usedCount = qz.orderedWords.filter((x) => x === w).length;
-            const totalCount = currentQ.options.filter((x) => x === w).length;
-            return `
-              <button class="btn btn-outline" style="padding:7px 12px" data-action="quiz-add-word" data-word="${escapeHtml(w)}" ${qz.answered || usedCount >= totalCount ? 'disabled' : ''}>
-                ${escapeHtml(w)}
-              </button>
-            `;
-          })
-          .join('');
-        questionBodyHtml = `
-          <div style="margin-top:14px">
-            <div style="min-height:54px; padding:10px; border-radius:14px; background:#f8fafc; border:2px dashed #cbd5e1; display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:10px">
-              ${chosenHtml}
-            </div>
-            <div style="display:flex; flex-wrap:wrap; gap:8px">${poolHtml}</div>
-          </div>
-        `;
-      } else if (currentQ.type === 'geometry_interaction' && currentQ.geometryConfig) {
-        questionBodyHtml = renderInteractiveGeometrySvg(currentQ.geometryConfig, qz.geoState, qz.answered);
       }
-
-      const canSubmit =
-        !qz.answered &&
-        currentQ.type !== 'geometry_interaction' &&
-        (((currentQ.type === 'multiple_choice' || currentQ.type === 'true_false') && qz.selectedOption) ||
-          ((currentQ.type === 'number_input' || currentQ.type === 'text_input') && String(qz.inputVal).trim() !== '') ||
-          (currentQ.type === 'ordering' && qz.orderedWords.length > 0));
 
       return `
         <div>
           <div class="card" style="padding:12px 16px; display:flex; align-items:center; gap:12px">
-            <button class="btn btn-outline" style="padding:6px 12px; font-size:12px" data-action="quiz-exit">✕ Quay lại</button>
-            <div style="flex:1">
-              <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
-            </div>
-            <span style="font-size:13px; font-weight:800; color:var(--muted)">Câu ${qz.currentIndex + 1}/${qz.questions.length}</span>
+            <button class="btn btn-outline" style="padding:6px 12px; font-size:12px" data-action="stu-quit-quiz">✕ Thoát</button>
+            <div style="flex:1"><div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div></div>
+            <span style="font-size:13px; font-weight:800; color:var(--muted)">Câu ${qs.index + 1}/${qs.questions.length}</span>
           </div>
 
           <div class="card">
-            <div style="font-size:12px; font-weight:800; color:var(--primary); margin-bottom:6px">${escapeHtml(currentQ.topicTag)}</div>
-            <h3 style="font-size:19px; font-weight:900; line-height:1.4">${escapeHtml(currentQ.prompt)}</h3>
-            ${questionBodyHtml}
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px">
+              <span class="pill-tag" style="background:var(--primary-light); color:var(--primary)">${escapeHtml(qs.topicTitle)}</span>
+              ${
+                q.hint && APP.student.activeTab !== 'kiem_tra'
+                  ? `<button data-action="quiz-toggle-hint" style="font-size:12px; font-weight:800; color:var(--warning)">💡 Xem gợi ý</button>`
+                  : ''
+              }
+            </div>
+
+            <h3 style="font-size:18px; font-weight:900; line-height:1.45">${escapeHtml(q.prompt)}</h3>
+
             ${
-              !qz.answered && currentQ.type !== 'geometry_interaction'
-                ? `<button id="quiz-submit-btn" class="btn btn-primary" style="width:100%; margin-top:16px; padding:14px; font-size:15px" data-action="quiz-submit" ${canSubmit ? '' : 'disabled'}>
-                    Kiểm tra đáp án
+              qs.showHint && q.hint
+                ? `<div style="margin-top:10px; padding:10px 14px; border-radius:12px; background:var(--warning-light); color:#92400e; font-size:13px; font-weight:700">
+                    💡 Gợi ý: ${escapeHtml(q.hint)}
+                  </div>`
+                : ''
+            }
+
+            ${interactionHtml}
+
+            ${
+              !qs.answered
+                ? `<button class="btn btn-primary" style="width:100%; margin-top:16px; padding:14px; font-size:15px" data-action="quiz-check-answer">
+                    Chốt đáp án
                   </button>`
                 : ''
             }
           </div>
 
           ${
-            qz.answered
-              ? `<div class="card" style="background:${qz.isCorrect ? '#f0fdf4' : '#fef2f2'}; border-color:${qz.isCorrect ? '#86efac' : '#fca5a5'}">
-                  <div style="font-size:17px; font-weight:900; color:${qz.isCorrect ? '#14532d' : '#991b1b'}; margin-bottom:6px">
-                    ${qz.isCorrect ? `✓ Chính xác! (+${currentQ.xp} XP)` : '✕ Chưa đúng'}
+            qs.answered
+              ? `<div class="card" style="background:${qs.isCorrect ? 'var(--success-light)' : 'var(--danger-light)'}; border-color:${qs.isCorrect ? '#86efac' : '#fca5a5'}">
+                  <div style="font-weight:900; font-size:16px; color:${qs.isCorrect ? '#14532d' : '#991b1b'}; margin-bottom:6px">
+                    ${qs.isCorrect ? '✓ Chính xác! (+10 điểm)' : `✕ Chưa đúng! Đáp án đúng là: ${escapeHtml(q.correctAnswer)}`}
                   </div>
-                  <div style="font-size:14px; font-weight:700; margin-bottom:14px">
-                    💡 <strong>Giải thích:</strong> ${escapeHtml(currentQ.explanation)}
-                  </div>
-                  <button class="btn ${qz.isCorrect ? 'btn-success' : 'btn-danger'}" style="width:100%; padding:13px; font-size:15px" data-action="quiz-next">
+                  ${
+                    q.explanation
+                      ? `<div style="font-size:14px; font-weight:700; margin-bottom:12px">💡 Giải thích: ${escapeHtml(q.explanation)}</div>`
+                      : ''
+                  }
+                  <button class="btn ${qs.isCorrect ? 'btn-success' : 'btn-danger'}" style="width:100%; padding:13px" data-action="quiz-next-question">
                     Câu tiếp theo →
                   </button>
                 </div>`
@@ -1581,273 +594,343 @@
       `;
     }
 
-    function renderInteractiveGeometrySvg(cfg, gs, disabled) {
-      const getStroke = (sideId) => {
-        const role = cfg.sides[sideId];
-        if (gs.phase === 'calculate') return role === 'a' ? '#16a34a' : '#2563eb';
-        if (gs.phase === 'click_sides_a' && gs.clickedSidesA.includes(sideId)) return '#16a34a';
-        if (gs.phase === 'click_sides_b' && (gs.clickedSidesB.includes(sideId) || gs.clickedSidesA.includes(sideId))) {
-          return role === 'a' ? '#16a34a' : '#2563eb';
-        }
-        if (gs.phase === 'drag_labels') {
-          if (role === 'a' && gs.assignedA) return '#16a34a';
-          if (role === 'b' && gs.assignedB) return '#2563eb';
-        }
-        return '#334155';
-      };
+    // ==========================================================================
+    // 5. CỔNG GIÁO VIÊN: UPLOAD CÂU HỎI + STUDIO AI SỬA UI/UX HÌNH HỌC + NHÁNH GITHUB
+    // ==========================================================================
+    function renderTeacherView() {
+      const t = APP.teacher;
+      const cfg = APP.config;
 
       return `
-        <div style="margin-top:14px">
-          <div style="padding:11px 14px; border-radius:14px; font-size:13px; font-weight:800; margin-bottom:10px; background:#f0f9ff; border:1px solid #bae6fd; color:#0c4a6e">
-            ${escapeHtml(gs.feedbackMsg)}
+        <div class="container">
+          <header class="header-bar">
+            <div>
+              <div style="font-weight:900; font-size:17px">👨‍🏫 Cổng Giáo Viên — Soạn & Upload Giáo Trình</div>
+              <div style="font-size:12px; color:var(--muted)">
+                Tổng câu hỏi hiện có: <strong>${APP.curriculum.items.length} câu</strong> • Nhánh GitHub đang chọn: <code style="color:var(--primary); font-weight:900">${escapeHtml(cfg.githubBranch || 'main')}</code>
+              </div>
+            </div>
+            <div style="display:flex; gap:8px">
+              <button class="btn btn-success" style="padding:8px 14px; font-size:13px" data-action="tea-push-github">
+                ☁️ Xuất bản lên GitHub
+              </button>
+              <button class="btn btn-outline" style="padding:8px 14px; font-size:13px" data-action="logout">🚪 Thoát</button>
+            </div>
+          </header>
+
+          <!-- 4 Tab Công cụ của Giáo viên -->
+          <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:18px">
+            <button class="btn ${t.subTab === 'upload_questions' ? 'btn-primary' : 'btn-outline'}" data-action="tea-subtab" data-sub="upload_questions">
+              📤 1. Upload Câu Hỏi Giáo Trình
+            </button>
+            <button class="btn ${t.subTab === 'geo_builder' ? 'btn-primary' : 'btn-outline'}" data-action="tea-subtab" data-sub="geo_builder">
+              📐 2. Studio Hình Học Tương Tác (AI sửa UI/UX)
+            </button>
+            <button class="btn ${t.subTab === 'manage_bank' ? 'btn-primary' : 'btn-outline'}" data-action="tea-subtab" data-sub="manage_bank">
+              📚 3. Kho Câu Hỏi Đã Tạo (${APP.curriculum.items.length})
+            </button>
+            <button class="btn ${t.subTab === 'github_settings' ? 'btn-primary' : 'btn-outline'}" data-action="tea-subtab" data-sub="github_settings">
+              ⚙️ 4. Cấu Hình GitHub & Nhánh (Branch)
+            </button>
           </div>
+
           ${
-            gs.phase === 'drag_labels'
-              ? `<div style="padding:10px; border-radius:14px; background:#f8fafc; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; gap:12px; margin-bottom:10px">
-                  <span style="font-size:12px; font-weight:800; color:var(--muted)">Chạm hoặc Kéo nhãn vào cạnh:</span>
-                  <div draggable="${!gs.assignedA && !disabled}" data-drag-label="a" data-action="geo-select-label" data-label="a" class="drag-chip ${gs.assignedA ? 'done' : gs.selectedTouchLabel === 'a' ? 'selected' : ''}">[a]</div>
-                  <div draggable="${!gs.assignedB && !disabled}" data-drag-label="b" data-action="geo-select-label" data-label="b" class="drag-chip ${gs.assignedB ? 'done' : gs.selectedTouchLabel === 'b' ? 'selected' : ''}">[b]</div>
+            t.statusMsg
+              ? `<div style="padding:12px 16px; border-radius:14px; font-size:13px; font-weight:800; margin-bottom:16px; background:${
+                  t.statusType === 'success' ? 'var(--success-light)' : t.statusType === 'error' ? 'var(--danger-light)' : '#f0f9ff'
+                }; color:${t.statusType === 'success' ? '#14532d' : t.statusType === 'error' ? '#991b1b' : '#0369a1'}">
+                  ${escapeHtml(t.statusMsg)}
                 </div>`
               : ''
           }
-          <div class="${gs.shake ? 'shake' : ''}" style="background:#fff; border:2px solid var(--border); border-radius:18px; padding:12px; display:flex; justify-content:center">
-            <svg viewBox="0 0 480 260" style="width:100%; max-width:440px; height:auto; user-select:none">
-              <rect x="90" y="50" width="300" height="160" fill="rgba(241,245,249,0.75)" />
-              <g data-side-drop="AB" data-action="geo-click-side" data-side="AB" style="cursor:pointer">
-                <line x1="90" y1="50" x2="390" y2="50" stroke="transparent" stroke-width="28" />
-                <line x1="90" y1="50" x2="390" y2="50" stroke="${getStroke('AB')}" stroke-width="7" stroke-linecap="round" />
-              </g>
-              <g data-side-drop="BC" data-action="geo-click-side" data-side="BC" style="cursor:pointer">
-                <line x1="390" y1="50" x2="390" y2="210" stroke="transparent" stroke-width="28" />
-                <line x1="390" y1="50" x2="390" y2="210" stroke="${getStroke('BC')}" stroke-width="7" stroke-linecap="round" />
-              </g>
-              <g data-side-drop="CD" data-action="geo-click-side" data-side="CD" style="cursor:pointer">
-                <line x1="390" y1="210" x2="90" y2="210" stroke="transparent" stroke-width="28" />
-                <line x1="390" y1="210" x2="90" y2="210" stroke="${getStroke('CD')}" stroke-width="7" stroke-linecap="round" />
-              </g>
-              <g data-side-drop="DA" data-action="geo-click-side" data-side="DA" style="cursor:pointer">
-                <line x1="90" y1="210" x2="90" y2="50" stroke="transparent" stroke-width="28" />
-                <line x1="90" y1="210" x2="90" y2="50" stroke="${getStroke('DA')}" stroke-width="7" stroke-linecap="round" />
-              </g>
-              <text x="68" y="45" font-weight="900" font-size="17">A</text>
-              <text x="398" y="45" font-weight="900" font-size="17">B</text>
-              <text x="398" y="232" font-weight="900" font-size="17">C</text>
-              <text x="68" y="232" font-weight="900" font-size="17">D</text>
-              ${
-                gs.assignedA
-                  ? `<text x="240" y="34" text-anchor="middle" font-weight="900" font-size="15" fill="#15803d">${gs.phase === 'calculate' ? `a = ${cfg.lengthA} cm` : 'a (chiều dài)'}</text>`
-                  : ''
-              }
-              ${
-                gs.assignedB
-                  ? `<text x="435" y="135" text-anchor="middle" font-weight="900" font-size="15" fill="#1d4ed8">${gs.phase === 'calculate' ? `b = ${cfg.widthB} cm` : 'b (rộng)'}</text>`
-                  : ''
-              }
-              <text x="240" y="136" text-anchor="middle" font-weight="900" font-size="20" fill="#334155">S = a × b</text>
-            </svg>
+
+          ${t.subTab === 'upload_questions' ? renderTeacherUploadQuestions() : ''}
+          ${t.subTab === 'geo_builder' ? renderTeacherGeoBuilder() : ''}
+          ${t.subTab === 'manage_bank' ? renderTeacherManageBank() : ''}
+          ${t.subTab === 'github_settings' ? renderTeacherGithubSettings() : ''}
+        </div>
+      `;
+    }
+
+    function renderTeacherUploadQuestions() {
+      const t = APP.teacher;
+      return `
+        <div class="card">
+          <h2 style="font-size:18px; font-weight:900; margin-bottom:6px">📤 Upload Câu Hỏi Giáo Trình (Ôn tập / Luyện tập / Kiểm tra)</h2>
+          <p style="font-size:13px; color:var(--muted); margin-bottom:16px">
+            Dán văn bản đề bài, nội dung sách giáo khoa hoặc tải ảnh chụp trang sách lên. AI sẽ tự động chuyển thành câu hỏi tương tác cho học sinh.
+          </p>
+
+          <div class="grid-3" style="margin-bottom:12px">
+            <div>
+              <label style="display:block; font-size:12px; font-weight:800; margin-bottom:4px">1. Chọn Môn:</label>
+              <select id="tea-subject" class="input-box">
+                <option value="math" ${t.subject === 'math' ? 'selected' : ''}>📐 Toán Lớp 6</option>
+                <option value="english" ${t.subject === 'english' ? 'selected' : ''}>🇬🇧 Tiếng Anh Lớp 6</option>
+              </select>
+            </div>
+            <div>
+              <label style="display:block; font-size:12px; font-weight:800; margin-bottom:4px">2. Chọn Tab hiển thị cho Học sinh:</label>
+              <select id="tea-category" class="input-box">
+                <option value="on_tap" ${t.category === 'on_tap' ? 'selected' : ''}>📖 Ôn tập</option>
+                <option value="luyen_tap" ${t.category === 'luyen_tap' ? 'selected' : ''}>✍️ Luyện tập</option>
+                <option value="kiem_tra" ${t.category === 'kiem_tra' ? 'selected' : ''}>📝 Kiểm tra</option>
+              </select>
+            </div>
+            <div>
+              <label style="display:block; font-size:12px; font-weight:800; margin-bottom:4px">3. Số câu muốn tạo:</label>
+              <input id="tea-qcount" type="number" min="1" max="20" class="input-box" value="${t.questionCount}" />
+            </div>
           </div>
-          ${
-            gs.phase === 'calculate'
-              ? `<div style="margin-top:12px; padding:14px; border-radius:16px; background:var(--primary-light); display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px">
-                  <div style="font-weight:800; font-size:14px">Cho a = ${cfg.lengthA} cm, b = ${cfg.widthB} cm. Tính diện tích S (cm²):</div>
-                  <div style="display:flex; gap:8px">
-                    <input id="geo-calc-input" type="number" class="input-box" style="width:100px; text-align:center" value="${escapeHtml(gs.calcInput)}" placeholder="S = ?" ${disabled ? 'disabled' : ''} />
-                    <button class="btn btn-primary" data-action="geo-submit-calc" ${disabled ? 'disabled' : ''}>Chốt đáp án</button>
+
+          <div style="margin-bottom:12px">
+            <label style="display:block; font-size:12px; font-weight:800; margin-bottom:4px">Tên Bài học / Đề bài (Hiển thị trên danh sách của học sinh):</label>
+            <input id="tea-topic" type="text" class="input-box" value="${escapeHtml(t.topicTitle)}" placeholder="Ví dụ: Chương 1 - Bài 1: Tập hợp các số tự nhiên" />
+          </div>
+
+          <div style="margin-bottom:12px">
+            <label style="display:block; font-size:12px; font-weight:800; margin-bottom:4px">Nội dung câu hỏi hoặc kiến thức SGK cần chuyển thành bài tập:</label>
+            <textarea id="tea-raw-text" rows="5" class="input-box" placeholder="Dán câu hỏi hoặc nội dung bài học vào đây...">${escapeHtml(t.rawInputText)}</textarea>
+          </div>
+
+          <div style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px">
+            <label class="btn btn-outline" style="cursor:pointer">
+              📷 Tải ảnh chụp trang sách / đề bài ${t.imageName ? `(${escapeHtml(t.imageName)})` : ''}
+              <input id="tea-img-input" type="file" accept="image/*" style="display:none" />
+            </label>
+            <button class="btn btn-primary" data-action="tea-ai-generate-questions" ${t.loading ? 'disabled' : ''}>
+              ${t.loading ? '⏳ AI đang soạn câu hỏi...' : '🪄 AI Tạo Câu Hỏi Từ Nội Dung Trên'}
+            </button>
+          </div>
+        </div>
+
+        ${
+          t.previewQuestions.length > 0
+            ? `<div class="card" style="border:2px solid var(--success); background:var(--success-light)">
+                <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px; margin-bottom:12px">
+                  <h3 style="font-size:16px; font-weight:900; color:#14532d">
+                    ✅ Xem trước ${t.previewQuestions.length} câu hỏi vừa tạo:
+                  </h3>
+                  <button class="btn btn-success" data-action="tea-confirm-save-questions">
+                    ➕ Đưa vào Giáo trình & Lưu lên GitHub
+                  </button>
+                </div>
+                <div style="display:flex; flex-direction:column; gap:8px">
+                  ${t.previewQuestions
+                    .map(
+                      (q, idx) => `
+                      <div style="padding:10px 14px; border-radius:12px; background:#fff; font-size:13px">
+                        <strong>Câu ${idx + 1}:</strong> ${escapeHtml(q.prompt)}<br/>
+                        <span style="color:var(--success); font-weight:800">Đáp án: ${escapeHtml(q.correctAnswer)}</span>
+                      </div>`
+                    )
+                    .join('')}
+                </div>
+              </div>`
+            : ''
+        }
+      `;
+    }
+
+    // STUDIO HÌNH HỌC TƯƠNG TÁC: CHO PHÉP AI TỰ ĐỘNG TẠO VÀ SỬA UI/UX TRỰC TIẾP
+    function renderTeacherGeoBuilder() {
+      const t = APP.teacher;
+      return `
+        <div class="card">
+          <h2 style="font-size:18px; font-weight:900; margin-bottom:6px">📐 Studio Hình Học Tương Tác — AI Tự Động Thiết Kế & Sửa UI/UX</h2>
+          <p style="font-size:13px; color:var(--muted); margin-bottom:16px">
+            Mô tả hình học tương tác bạn muốn tạo (Hình chữ nhật, Hình thoi, Tam giác đều, Lục giác đều, Hình thang cân, Đối xứng...). Nếu giao diện chưa ưng ý, bạn chỉ cần nhập yêu cầu chỉnh sửa UI/UX để AI tự động viết lại code giao diện ngay lập tức!
+          </p>
+
+          <div class="grid-2" style="margin-bottom:12px">
+            <div>
+              <label style="display:block; font-size:12px; font-weight:800; margin-bottom:4px">Chọn Tab hiển thị:</label>
+              <select id="geo-category" class="input-box">
+                <option value="on_tap" ${t.geoCategory === 'on_tap' ? 'selected' : ''}>📖 Ôn tập</option>
+                <option value="luyen_tap" ${t.geoCategory === 'luyen_tap' ? 'selected' : ''}>✍️ Luyện tập</option>
+                <option value="kiem_tra" ${t.geoCategory === 'kiem_tra' ? 'selected' : ''}>📝 Kiểm tra</option>
+              </select>
+            </div>
+            <div>
+              <label style="display:block; font-size:12px; font-weight:800; margin-bottom:4px">Tên Bài Hình học:</label>
+              <input id="geo-topic" type="text" class="input-box" value="${escapeHtml(t.geoTopicTitle)}" />
+            </div>
+          </div>
+
+          <div style="margin-bottom:12px">
+            <label style="display:block; font-size:12px; font-weight:800; margin-bottom:4px">1. Mô tả Bài toán & Tương tác Hình học mong muốn:</label>
+            <textarea id="geo-desc" rows="3" class="input-box" placeholder="Ví dụ: Vẽ hình thang cân ABCD có đáy nhỏ AB = 6cm, đáy lớn CD = 10cm, chiều cao AH = 4cm. Cho phép học sinh click vào đáy nhỏ, đáy lớn, đường cao để đổi màu và tính diện tích...">${escapeHtml(t.geoDescription)}</textarea>
+          </div>
+
+          <div style="margin-bottom:14px">
+            <label style="display:block; font-size:12px; font-weight:800; color:var(--primary); margin-bottom:4px">
+              🎨 2. Yêu cầu AI tự động sửa UI/UX (Màu sắc, bố cục, độ dày nét vẽ, nút bấm, hiệu ứng...):
+            </label>
+            <input id="geo-uiux" type="text" class="input-box" value="${escapeHtml(t.geoUiUxFeedback)}" placeholder="Ví dụ: Đổi nền hình sang màu pastel dịu mắt, làm chữ to hơn, thêm hiệu ứng sáng xanh khi học sinh click vào cạnh..." />
+          </div>
+
+          <div style="display:flex; flex-wrap:wrap; gap:10px">
+            <button class="btn btn-primary" data-action="tea-ai-build-geo" ${t.loading ? 'disabled' : ''}>
+              ${t.loading ? '⏳ AI đang thiết kế & tối ưu UI/UX...' : '🪄 AI Tạo / Tự Động Sửa UI-UX Hình Học'}
+            </button>
+          </div>
+        </div>
+
+        ${
+          t.geoGeneratedItem
+            ? `<div class="card" style="border:2px solid var(--primary)">
+                <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px; margin-bottom:12px">
+                  <div>
+                    <h3 style="font-size:16px; font-weight:900">👁️ Bản Xem Trước Trực Tiếp (Live UI/UX Preview)</h3>
+                    <p style="font-size:12px; color:var(--muted)">Bạn có thể click thử vào hình bên dưới. Nếu muốn sửa thêm giao diện, hãy gõ vào ô số 2 ở trên rồi bấm nút AI lần nữa!</p>
                   </div>
+                  <button class="btn btn-success" data-action="tea-save-geo-item">
+                    ☁️ Duyệt & Upload Hình Học Này Lên Giáo Trình
+                  </button>
+                </div>
+
+                <div style="padding:14px; border-radius:16px; background:#f8fafc; border:1px solid var(--border)">
+                  <div style="font-weight:900; font-size:16px; margin-bottom:10px">${escapeHtml(t.geoGeneratedItem.prompt)}</div>
+                  <div class="geo-sandbox">${t.geoGeneratedItem.interactiveSvgHtml}</div>
+                  <div style="margin-top:10px; font-size:13px; color:var(--success); font-weight:800">
+                    ✓ Đáp án chuẩn: ${escapeHtml(t.geoGeneratedItem.correctAnswer)} — Giải thích: ${escapeHtml(t.geoGeneratedItem.explanation)}
+                  </div>
+                </div>
+              </div>`
+            : ''
+        }
+      `;
+    }
+
+    function renderTeacherManageBank() {
+      const items = APP.curriculum.items;
+      return `
+        <div class="card">
+          <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px; margin-bottom:14px">
+            <h2 style="font-size:18px; font-weight:900">📚 Kho Câu Hỏi Giáo Trình Hiện Tại (${items.length} câu)</h2>
+            <div style="display:flex; gap:8px">
+              <button class="btn btn-outline" style="font-size:12px; padding:8px 12px" data-action="tea-export-json">💾 Tải file curriculum.json</button>
+              <button class="btn btn-danger" style="font-size:12px; padding:8px 12px" data-action="tea-clear-all" ${items.length === 0 ? 'disabled' : ''}>🗑️ Xóa toàn bộ</button>
+            </div>
+          </div>
+
+          ${
+            items.length === 0
+              ? `<p style="font-size:14px; color:var(--muted)">Kho câu hỏi đang trống. Hãy sang mục 1 hoặc mục 2 để tạo và upload bài học.</p>`
+              : `<div style="display:flex; flex-direction:column; gap:8px">
+                  ${items
+                    .map(
+                      (item, idx) => `
+                      <div style="padding:12px 14px; border-radius:14px; border:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; gap:10px">
+                        <div style="font-size:13px">
+                          <span class="pill-tag" style="background:#f1f5f9">${item.subject === 'math' ? 'Toán' : 'Tiếng Anh'} • ${item.category}</span>
+                          <strong style="margin-left:6px">${escapeHtml(item.topicTitle)}</strong>
+                          <div style="margin-top:4px; color:#334155">${escapeHtml(item.prompt)}</div>
+                        </div>
+                        <button class="btn btn-outline" style="padding:6px 10px; font-size:12px; color:var(--danger)" data-action="tea-delete-item" data-idx="${idx}">Xóa</button>
+                      </div>`
+                    )
+                    .join('')}
                 </div>`
-              : ''
           }
         </div>
       `;
     }
 
+    function renderTeacherGithubSettings() {
+      const cfg = APP.config;
+      return `
+        <div class="card">
+          <h2 style="font-size:18px; font-weight:900; margin-bottom:6px">⚙️ Cấu Hình GitHub, Nhánh Bản Vá (Branch) & Gemini API Key</h2>
+          <p style="font-size:13px; color:var(--muted); margin-bottom:16px">
+            Bạn có thể chọn nhánh <code>main</code> (chính thức) hoặc nhánh <code>ban-va</code> / <code>dev</code> để kiểm thử bản vá trước khi áp dụng cho học sinh.
+          </p>
+
+          <div class="grid-3" style="margin-bottom:12px">
+            <div>
+              <label style="display:block; font-size:12px; font-weight:800; margin-bottom:4px">GitHub Username:</label>
+              <input id="cfg-owner" type="text" class="input-box" value="${escapeHtml(cfg.githubOwner)}" placeholder="Ví dụ: nguyenvana" />
+            </div>
+            <div>
+              <label style="display:block; font-size:12px; font-weight:800; margin-bottom:4px">GitHub Repository:</label>
+              <input id="cfg-repo" type="text" class="input-box" value="${escapeHtml(cfg.githubRepo)}" placeholder="Ví dụ: lop6" />
+            </div>
+            <div>
+              <label style="display:block; font-size:12px; font-weight:800; color:var(--primary); margin-bottom:4px">Nhánh GitHub (Branch):</label>
+              <input id="cfg-branch" type="text" class="input-box" value="${escapeHtml(cfg.githubBranch || 'main')}" placeholder="main hoặc ban-va" />
+            </div>
+          </div>
+
+          <div class="grid-2" style="margin-bottom:12px">
+            <div>
+              <label style="display:block; font-size:12px; font-weight:800; margin-bottom:4px">GitHub Personal Access Token:</label>
+              <input id="cfg-token" type="password" class="input-box" value="${escapeHtml(cfg.githubToken)}" placeholder="github_pat_..." />
+            </div>
+            <div>
+              <label style="display:block; font-size:12px; font-weight:800; margin-bottom:4px">Gemini API Key (aistudio.google.com):</label>
+              <input id="cfg-gemini" type="password" class="input-box" value="${escapeHtml(cfg.geminiApiKey)}" placeholder="AIzaSy..." />
+            </div>
+          </div>
+
+          <div style="margin-bottom:16px">
+            <label style="display:block; font-size:12px; font-weight:800; margin-bottom:4px">Đổi Mật khẩu Giáo viên:</label>
+            <input id="cfg-pwd" type="text" class="input-box" style="max-width:260px" value="${escapeHtml(cfg.teacherPassword)}" />
+          </div>
+
+          <button class="btn btn-success" data-action="tea-save-config">💾 Lưu Cấu Hình</button>
+        </div>
+      `;
+    }
+
     // ==========================================================================
-    // 9. XỬ LÝ SỰ KIỆN & AI GENERATOR
+    // 6. GỌI GEMINI AI ĐỂ SOẠN CÂU HỎI & TỰ ĐỘNG SỬA CODE UI/UX HÌNH HỌC
     // ==========================================================================
-    function renderApp() {
-      const root = document.getElementById('app');
-      if (!root) return;
-      if (APP.mode === 'login') {
-        root.innerHTML = renderLoginView();
-      } else if (APP.mode === 'teacher') {
-        root.innerHTML = renderTeacherPortalView();
-      } else {
-        root.innerHTML = renderStudentPortalView();
-      }
-      attachDynamicListeners();
-    }
-
-    function handleGeometryAssign(sideId, label) {
-      const qz = APP.activeQuiz;
-      if (!qz || qz.answered) return;
-      const cfg = qz.questions[qz.currentIndex].geometryConfig;
-      const gs = qz.geoState;
-      if (!cfg || gs.phase !== 'drag_labels') return;
-
-      if (cfg.sides[sideId] === label) {
-        if (label === 'a') gs.assignedA = true;
-        if (label === 'b') gs.assignedB = true;
-        gs.selectedTouchLabel = null;
-        gs.shake = false;
-        if (gs.assignedA && gs.assignedB) {
-          gs.phase = 'click_sides_a';
-          gs.feedbackMsg = 'Bước 2/4: Chính xác! Hãy CLICK vào cả HAI cạnh dài bằng a (AB và CD).';
-        } else {
-          gs.feedbackMsg = 'Đúng rồi! Hãy gán tiếp nhãn còn lại vào đúng cạnh.';
-        }
-      } else {
-        gs.shake = true;
-        gs.feedbackMsg = 'Chưa đúng cạnh! Nhãn [a] là cạnh ngang dài, nhãn [b] là cạnh dọc ngắn.';
-      }
-      renderApp();
-    }
-
-    function handleGeometrySideClick(sideId) {
-      const qz = APP.activeQuiz;
-      if (!qz || qz.answered) return;
-      const cfg = qz.questions[qz.currentIndex].geometryConfig;
-      const gs = qz.geoState;
-      if (!cfg) return;
-
-      if (gs.phase === 'drag_labels' && gs.selectedTouchLabel) {
-        handleGeometryAssign(sideId, gs.selectedTouchLabel);
-        return;
-      }
-      if (gs.phase === 'click_sides_a') {
-        if (cfg.sides[sideId] === 'a') {
-          if (!gs.clickedSidesA.includes(sideId)) gs.clickedSidesA.push(sideId);
-          if (gs.clickedSidesA.length >= 2) {
-            gs.phase = 'click_sides_b';
-            gs.feedbackMsg = 'Bước 3/4: Tuyệt vời! Bây giờ hãy CLICK vào cả HAI cạnh rộng bằng b (BC và DA).';
-          } else {
-            gs.feedbackMsg = 'Đã chọn 1 cạnh dài! Hãy click thêm cạnh đối diện.';
-          }
-        } else {
-          gs.shake = true;
-          gs.feedbackMsg = 'Hãy click vào hai cạnh dài nằm ngang (AB và CD).';
-        }
+    async function generateQuestionsWithAI() {
+      const t = APP.teacher;
+      const key = (APP.config.geminiApiKey || '').trim();
+      if (!key) {
+        t.statusType = 'error';
+        t.statusMsg = '❌ Vui lòng nhập Gemini API Key ở mục "4. Cấu Hình GitHub & Nhánh" trước!';
         renderApp();
         return;
       }
-      if (gs.phase === 'click_sides_b') {
-        if (cfg.sides[sideId] === 'b') {
-          if (!gs.clickedSidesB.includes(sideId)) gs.clickedSidesB.push(sideId);
-          if (gs.clickedSidesB.length >= 2) {
-            gs.phase = 'calculate';
-            gs.feedbackMsg = `Bước 4/4: Cho a = ${cfg.lengthA} cm, b = ${cfg.widthB} cm. Hãy nhập diện tích S = a × b.`;
-          } else {
-            gs.feedbackMsg = 'Đã chọn 1 cạnh rộng! Hãy click thêm cạnh đối diện.';
-          }
-        } else {
-          gs.shake = true;
-          gs.feedbackMsg = 'Hãy click vào hai cạnh rộng nằm dọc (BC và DA).';
-        }
-        renderApp();
-      }
-    }
-
-    function evaluateCurrentQuizQuestion(customAnswer) {
-      const qz = APP.activeQuiz;
-      if (!qz || qz.answered) return;
-      const currentQ = qz.questions[qz.currentIndex];
-
-      let userAns = customAnswer;
-      if (userAns === undefined) {
-        if (currentQ.type === 'multiple_choice' || currentQ.type === 'true_false') userAns = qz.selectedOption;
-        else if (currentQ.type === 'ordering') userAns = qz.orderedWords;
-        else userAns = qz.inputVal;
-      }
-
-      let isOk = false;
-      if (currentQ.type === 'number_input' || currentQ.type === 'geometry_interaction') {
-        isOk = Number(String(userAns).trim()) === Number(currentQ.correctAnswer);
-      } else if (currentQ.type === 'ordering') {
-        isOk = Array.isArray(userAns) && userAns.length === currentQ.correctAnswer.length &&
-          userAns.every((w, i) => w.toLowerCase() === currentQ.correctAnswer[i].toLowerCase());
-      } else {
-        isOk = String(userAns).trim().toLowerCase() === String(currentQ.correctAnswer).trim().toLowerCase();
-      }
-
-      qz.answered = true;
-      qz.isCorrect = isOk;
-
-      if (isOk) {
-        qz.correctCount += 1;
-        qz.earnedXP += currentQ.xp;
-        APP.state.xp += currentQ.xp;
-        if (APP.state.mistakes[currentQ.id]) {
-          APP.state.mistakes[currentQ.id].consecutiveCorrect += 1;
-          if (APP.state.mistakes[currentQ.id].consecutiveCorrect >= 2) {
-            APP.state.mistakes[currentQ.id].mastered = true;
-          }
-        }
-      } else {
-        APP.state.mistakes[currentQ.id] = {
-          question: currentQ,
-          consecutiveCorrect: 0,
-          mastered: false
-        };
-      }
-      saveStudentToLocal();
-      renderApp();
-    }
-
-    async function runGeminiCurriculumGenerator() {
-      const st = APP.aiStudio;
-      const apiKey = (APP.cloudConfig.geminiApiKey || '').trim();
-      if (!apiKey) {
-        st.statusType = 'error';
-        st.statusMsg = '❌ Vui lòng nhập Gemini API Key ở mục Cấu hình bên dưới trước!';
-        renderApp();
-        return;
-      }
-      if (!st.sourceText.trim() && !st.imageBase64) {
-        st.statusType = 'error';
-        st.statusMsg = '❌ Vui lòng dán văn bản tài liệu hoặc tải ảnh trang sách lên!';
+      if (!t.topicTitle.trim()) {
+        t.statusType = 'error';
+        t.statusMsg = '❌ Vui lòng nhập Tên Bài học / Đề bài!';
         renderApp();
         return;
       }
 
-      st.generating = true;
-      st.statusType = 'info';
-      st.statusMsg = '⏳ AI Gemini đang phân tích tài liệu và tạo bộ câu hỏi...';
+      t.loading = true;
+      t.statusType = 'info';
+      t.statusMsg = '⏳ AI đang phân tích nội dung và soạn câu hỏi...';
       renderApp();
 
-      const promptText = `Bạn là giáo viên Lớp 6. Hãy tạo ${st.questionCount} câu hỏi tương tác từ tài liệu dưới đây cho môn "${st.subject === 'math' ? 'Toán 6' : 'Tiếng Anh 6'}", chương "${st.chapterTitle}", bài "${st.lessonTitle}".
-Trả về đúng định dạng JSON thuần túy:
+      const prompt = `Bạn là giáo viên Lớp 6. Hãy tạo ${t.questionCount} câu hỏi cho môn "${t.subject === 'math' ? 'Toán 6' : 'Tiếng Anh 6'}", mục "${t.category}", chủ đề "${t.topicTitle}".
+Trả về đúng JSON thuần túy:
 {
   "questions": [
     {
-      "topicTag": "Chủ đề ngắn",
-      "type": "multiple_choice | number_input | text_input | true_false",
-      "prompt": "Câu hỏi",
-      "options": ["A", "B", "C", "D"],
-      "correctAnswer": "Đáp án đúng (khớp 1 phần tử trong options nếu là multiple_choice)",
-      "explanation": "Giải thích chi tiết",
-      "xp": 15
-    }
-  ],
-  "vocabulary": [
-    {
-      "word": "từ vựng (nếu môn Tiếng Anh)",
-      "phonetic": "/IPA/",
-      "pos": "noun | verb | adjective",
-      "meaningVi": "nghĩa tiếng Việt",
-      "example": "Câu ví dụ"
+      "type": "multiple_choice | text_input",
+      "prompt": "Nội dung câu hỏi",
+      "options": ["Lựa chọn A", "Lựa chọn B", "Lựa chọn C", "Lựa chọn D"],
+      "correctAnswer": "Đáp án đúng (khớp chính xác 1 lựa chọn nếu là multiple_choice)",
+      "hint": "Gợi ý ngắn",
+      "explanation": "Giải thích chi tiết"
     }
   ]
 }
-TÀI LIỆU:
-${st.sourceText}`;
+NỘI DUNG TÀI LIỆU:
+${t.rawInputText}`;
 
-      const parts = [{ text: promptText }];
-      if (st.imageBase64 && st.imageMimeType) {
-        parts.push({ inline_data: { mime_type: st.imageMimeType, data: st.imageBase64 } });
+      const parts = [{ text: prompt }];
+      if (t.imageBase64 && t.imageMime) {
+        parts.push({ inline_data: { mime_type: t.imageMime, data: t.imageBase64 } });
       }
 
       try {
         const res = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(apiKey)}`,
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(key)}`,
           {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -1861,220 +944,159 @@ ${st.sourceText}`;
         const data = await res.json();
         const raw = data.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
         const parsed = JSON.parse(raw.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim());
-        st.generatedPreview = parsed;
-        st.generating = false;
-        st.statusType = 'success';
-        st.statusMsg = `✅ AI đã tạo ${parsed.questions.length} câu hỏi! Hãy bấm nút "Lưu & Xuất Bản Cho Học Sinh".`;
-        renderApp();
-      } catch (e) {
-        st.generating = false;
-        st.statusType = 'error';
-        st.statusMsg = '❌ Lỗi gọi AI: ' + e.message;
-        renderApp();
-      }
-    }
-
-    async function publishGeneratedCurriculum() {
-      const st = APP.aiStudio;
-      if (!st.generatedPreview) return;
-      const curr = getMergedCurriculum();
-      const custom = curr.customRaw || { chapters: [], questions: [], vocabulary: [] };
-
-      const chapterId = 'ch-' + slugifyStudentName(st.subject + '-' + st.chapterTitle);
-      const lessonId = 'les-' + slugifyStudentName(st.lessonTitle) + '-' + Date.now().toString().slice(-4);
-
-      let ch = custom.chapters.find((c) => c.id === chapterId);
-      if (!ch) {
-        ch = { id: chapterId, subject: st.subject, title: st.chapterTitle.trim(), subtitle: 'Tài liệu giáo viên cập nhật', lessons: [] };
-        custom.chapters.push(ch);
-      }
-      ch.lessons.push({
-        id: lessonId,
-        title: st.lessonTitle.trim(),
-        type: 'lesson',
-        description: `${st.generatedPreview.questions.length} câu hỏi tương tác`
-      });
-
-      st.generatedPreview.questions.forEach((q, idx) => {
-        custom.questions.push({
-          id: `ai-q-${Date.now()}-${idx}`,
-          subject: st.subject,
-          lesson: lessonId,
-          topicTag: q.topicTag || st.lessonTitle,
+        t.previewQuestions = (parsed.questions || []).map((q) => ({
+          id: 'q-' + Date.now() + '-' + Math.random().toString(36).slice(2, 6),
+          subject: t.subject,
+          category: t.category,
+          topicTitle: t.topicTitle.trim(),
           type: q.type || 'multiple_choice',
           prompt: q.prompt,
-          options: q.options || ['Đúng', 'Sai'],
-          correctAnswer: q.type === 'number_input' ? Number(q.correctAnswer) : q.correctAnswer,
-          explanation: q.explanation || '',
-          xp: Number(q.xp) || 15
-        });
-      });
-
-      (st.generatedPreview.vocabulary || []).forEach((v, idx) => {
-        if (v.word && v.meaningVi) {
-          custom.vocabulary.push({
-            id: `ai-v-${Date.now()}-${idx}`,
-            word: v.word,
-            phonetic: v.phonetic || '',
-            pos: v.pos || 'noun',
-            meaningVi: v.meaningVi,
-            example: v.example || ''
-          });
-        }
-      });
-
-      const res = await saveCustomCurriculumToGitHub(custom);
-      st.generatedPreview = null;
-      st.statusType = res.ok ? 'success' : 'info';
-      st.statusMsg = res.msg;
-      renderApp();
+          options: q.options || [],
+          correctAnswer: String(q.correctAnswer || '').trim(),
+          hint: q.hint || '',
+          explanation: q.explanation || ''
+        }));
+        t.loading = false;
+        t.statusType = 'success';
+        t.statusMsg = `✅ AI đã soạn xong ${t.previewQuestions.length} câu hỏi! Kiểm tra bên dưới rồi bấm Lưu.`;
+        renderApp();
+      } catch (e) {
+        t.loading = false;
+        t.statusType = 'error';
+        t.statusMsg = '❌ Lỗi gọi AI: ' + e.message;
+        renderApp();
+      }
     }
 
-    async function handleStudentLogin() {
-      const el = document.getElementById('student-name-input');
-      const name = el ? el.value.trim() : '';
-      if (!name) {
-        APP.loginError = 'Vui lòng nhập Họ và Tên của em để vào học nhé!';
+    // AI tự động sinh và chỉnh sửa trực tiếp UI/UX của Hình học tương tác SVG
+    async function buildOrRefineInteractiveGeometryWithAI() {
+      const t = APP.teacher;
+      const key = (APP.config.geminiApiKey || '').trim();
+      if (!key) {
+        t.statusType = 'error';
+        t.statusMsg = '❌ Vui lòng nhập Gemini API Key ở mục "4. Cấu Hình GitHub & Nhánh" trước!';
         renderApp();
         return;
       }
-      APP.loginError = '';
-      APP.loginLoading = true;
-      renderApp();
-      APP.state = await loadStudentFileFromGitHub(name);
-      saveStudentToLocal();
-      APP.loginLoading = false;
-      APP.mode = 'student';
-      APP.studentTab = 'learn';
-      renderApp();
-    }
 
-    function handleTeacherLogin() {
-      const el = document.getElementById('teacher-pwd-input');
-      const pwd = el ? el.value.trim() : '';
-      if (pwd !== (APP.cloudConfig.teacherPassword || '123456')) {
-        APP.loginError = 'Mật khẩu Giáo viên chưa đúng! (Mặc định: 123456)';
+      t.loading = true;
+      t.statusType = 'info';
+      t.statusMsg = '⏳ AI đang thiết kế mã SVG tương tác và tinh chỉnh UI/UX theo yêu cầu của bạn...';
+      renderApp();
+
+      const previousCodeContext = t.geoGeneratedItem
+        ? `\nCODE SVG HIỆN TẠI CẦN NÂNG CẤP UI/UX:\n${t.geoGeneratedItem.interactiveSvgHtml}\n`
+        : '';
+
+      const prompt = `Bạn là Senior UI/UX Designer & Chuyên gia Hình học tương tác SVG cho học sinh Lớp 6.
+Hãy thiết kế (hoặc nâng cấp UI/UX) một widget Hình học tương tác bằng HTML + SVG trực quan, đẹp mắt, hỗ trợ click tương tác trực tiếp trên các cạnh/đỉnh/đường đối xứng của hình.
+- Mô tả bài toán hình học: ${t.geoDescription}
+- Yêu cầu tinh chỉnh UI/UX của giáo viên: ${t.geoUiUxFeedback || 'Thiết kế hiện đại, màu sắc rõ ràng, chữ to dễ đọc, khi học sinh click vào cạnh/đỉnh hoặc nút tương tác trên hình thì đổi màu highlight trực quan bằng thuộc tính onclick nội tuyến.'}
+${previousCodeContext}
+
+Trả về đúng định dạng JSON thuần túy:
+{
+  "prompt": "Câu hỏi hướng dẫn học sinh tương tác trên hình và tính toán",
+  "interactiveSvgHtml": "Mã HTML + <svg viewBox='0 0 500 280' style='width:100%;max-width:480px;display:block;margin:0 auto'>...</svg> kèm chú thích UI/UX tương tác trực tiếp (sử dụng inline onclick như this.classList.toggle('geo-target') hoặc đổi màu stroke/fill để học sinh click tương tác mượt mà)",
+  "type": "multiple_choice | text_input",
+  "options": ["Đáp án A", "Đáp án B", "Đáp án C", "Đáp án D"],
+  "correctAnswer": "Đáp án đúng",
+  "hint": "Gợi ý công thức/tính chất hình học",
+  "explanation": "Giải thích chi tiết cách làm"
+}`;
+
+      try {
+        const res = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(key)}`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: prompt }] }],
+              generationConfig: { temperature: 0.35, responseMimeType: 'application/json' }
+            })
+          }
+        );
+        if (!res.ok) throw new Error(res.statusText);
+        const data = await res.json();
+        const raw = data.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
+        const parsed = JSON.parse(raw.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim());
+
+        t.geoGeneratedItem = {
+          id: 'geo-' + Date.now(),
+          subject: 'math',
+          category: t.geoCategory,
+          topicTitle: t.geoTopicTitle.trim() || 'Hình học tương tác',
+          type: parsed.type || 'text_input',
+          prompt: parsed.prompt || t.geoDescription,
+          interactiveSvgHtml: parsed.interactiveSvgHtml || '',
+          options: parsed.options || [],
+          correctAnswer: String(parsed.correctAnswer || '').trim(),
+          hint: parsed.hint || '',
+          explanation: parsed.explanation || ''
+        };
+        t.loading = false;
+        t.statusType = 'success';
+        t.statusMsg = '✅ AI đã thiết kế/cập nhật xong UI/UX Hình học tương tác! Hãy thử tương tác ở khung Xem trước bên dưới.';
         renderApp();
-        return;
+      } catch (e) {
+        t.loading = false;
+        t.statusType = 'error';
+        t.statusMsg = '❌ Lỗi gọi AI: ' + e.message;
+        renderApp();
       }
-      APP.loginError = '';
-      APP.mode = 'teacher';
-      renderApp();
     }
 
-    function attachDynamicListeners() {
-      const sInput = document.getElementById('student-name-input');
-      if (sInput) {
-        sInput.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter') handleStudentLogin();
-        });
-      }
-      const tInput = document.getElementById('teacher-pwd-input');
-      if (tInput) {
-        tInput.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter') handleTeacherLogin();
+    // ==========================================================================
+    // 7. KẾT NỐI SỰ KIỆN GIAO DIỆN
+    // ==========================================================================
+    function renderApp() {
+      const root = document.getElementById('app');
+      if (!root) return;
+      if (APP.mode === 'login') root.innerHTML = renderLoginView();
+      else if (APP.mode === 'teacher') root.innerHTML = renderTeacherView();
+      else root.innerHTML = renderStudentView();
+      bindInputs();
+    }
+
+    function bindInputs() {
+      const bindVal = (id, cb) => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('input', (e) => cb(e.target.value));
+      };
+      bindVal('tea-subject', (v) => { APP.teacher.subject = v; });
+      bindVal('tea-category', (v) => { APP.teacher.category = v; });
+      bindVal('tea-qcount', (v) => { APP.teacher.questionCount = Number(v) || 5; });
+      bindVal('tea-topic', (v) => { APP.teacher.topicTitle = v; });
+      bindVal('tea-raw-text', (v) => { APP.teacher.rawInputText = v; });
+
+      bindVal('geo-category', (v) => { APP.teacher.geoCategory = v; });
+      bindVal('geo-topic', (v) => { APP.teacher.geoTopicTitle = v; });
+      bindVal('geo-desc', (v) => { APP.teacher.geoDescription = v; });
+      bindVal('geo-uiux', (v) => { APP.teacher.geoUiUxFeedback = v; });
+
+      const stuQuizInput = document.getElementById('stu-quiz-input');
+      if (stuQuizInput) {
+        stuQuizInput.addEventListener('input', (e) => {
+          if (APP.quizSession) APP.quizSession.userAnswer = e.target.value;
         });
       }
 
-      const aiSub = document.getElementById('ai-subject');
-      if (aiSub) aiSub.addEventListener('change', (e) => { APP.aiStudio.subject = e.target.value; });
-      const aiCount = document.getElementById('ai-qcount');
-      if (aiCount) aiCount.addEventListener('input', (e) => { APP.aiStudio.questionCount = Number(e.target.value) || 5; });
-      const aiChap = document.getElementById('ai-chapter');
-      if (aiChap) aiChap.addEventListener('input', (e) => { APP.aiStudio.chapterTitle = e.target.value; });
-      const aiLes = document.getElementById('ai-lesson');
-      if (aiLes) aiLes.addEventListener('input', (e) => { APP.aiStudio.lessonTitle = e.target.value; });
-      const aiSrc = document.getElementById('ai-source-text');
-      if (aiSrc) aiSrc.addEventListener('input', (e) => { APP.aiStudio.sourceText = e.target.value; });
-
-      const aiImg = document.getElementById('ai-image-upload');
-      if (aiImg) {
-        aiImg.addEventListener('change', (e) => {
-          const file = e.target.files?.[0];
-          if (!file) return;
-          const reader = new FileReader();
-          reader.onload = (ev) => {
-            const dataUrl = String(ev.target.result);
-            APP.aiStudio.imageBase64 = dataUrl.split(',')[1];
-            APP.aiStudio.imageMimeType = file.type || 'image/jpeg';
-            APP.aiStudio.imageFileName = file.name;
+      const imgInput = document.getElementById('tea-img-input');
+      if (imgInput) {
+        imgInput.addEventListener('change', (e) => {
+          const f = e.target.files?.[0];
+          if (!f) return;
+          const r = new FileReader();
+          r.onload = (ev) => {
+            APP.teacher.imageBase64 = String(ev.target.result).split(',')[1];
+            APP.teacher.imageMime = f.type || 'image/jpeg';
+            APP.teacher.imageName = f.name;
             renderApp();
           };
-          reader.readAsDataURL(file);
+          r.readAsDataURL(f);
         });
       }
-
-      const qInput = document.getElementById('quiz-input');
-      if (qInput) {
-        qInput.addEventListener('input', (e) => {
-          if (APP.activeQuiz) {
-            APP.activeQuiz.inputVal = e.target.value;
-            const btn = document.getElementById('quiz-submit-btn');
-            if (btn) btn.disabled = String(e.target.value).trim() === '';
-          }
-        });
-        qInput.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' && APP.activeQuiz && String(APP.activeQuiz.inputVal).trim() !== '') {
-            evaluateCurrentQuizQuestion();
-          }
-        });
-      }
-
-      const geoInput = document.getElementById('geo-calc-input');
-      if (geoInput) {
-        geoInput.addEventListener('input', (e) => {
-          if (APP.activeQuiz) APP.activeQuiz.geoState.calcInput = e.target.value;
-        });
-      }
-
-      const mmInput = document.getElementById('mm-input');
-      if (mmInput) {
-        mmInput.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter') {
-            e.preventDefault();
-            submitMentalMath(mmInput.value);
-          }
-        });
-      }
-
-      const wfInput = document.getElementById('wf-input');
-      if (wfInput) {
-        wfInput.addEventListener('input', (e) => { APP.wordFormSession.inputVal = e.target.value; });
-      }
-
-      document.querySelectorAll('[data-drag-label]').forEach((el) => {
-        el.addEventListener('dragstart', (e) => {
-          e.dataTransfer.setData('text/plain', el.getAttribute('data-drag-label'));
-        });
-      });
-
-      document.querySelectorAll('[data-side-drop]').forEach((el) => {
-        el.addEventListener('dragover', (e) => e.preventDefault());
-        el.addEventListener('drop', (e) => {
-          e.preventDefault();
-          const label = e.dataTransfer.getData('text/plain');
-          const sideId = el.getAttribute('data-side-drop');
-          if (label === 'a' || label === 'b') handleGeometryAssign(sideId, label);
-        });
-      });
-    }
-
-    function submitMentalMath(rawVal) {
-      if (String(rawVal).trim() === '') return;
-      const ms = APP.mentalSession;
-      const isOk = Number(String(rawVal).trim()) === Number(ms.question.correctAnswer);
-      ms.totalAnswered += 1;
-      if (isOk) {
-        ms.correctCount += 1;
-        ms.score += ms.difficulty * 10;
-        APP.state.xp += 10;
-        saveStudentToLocal();
-        ms.feedback = { ok: true, text: `✓ Chính xác! (+10 XP) ${ms.question.explanation}` };
-      } else {
-        ms.feedback = { ok: false, text: `✕ Đáp án đúng là ${ms.question.correctAnswer}. ${ms.question.explanation}` };
-      }
-      ms.question = generateMentalMathQuestion(ms.difficulty);
-      renderApp();
     }
 
     document.addEventListener('click', async (e) => {
@@ -2088,280 +1110,230 @@ ${st.sourceText}`;
         renderApp();
         return;
       }
+
       if (action === 'login-student') {
-        handleStudentLogin();
+        const el = document.getElementById('stu-name-input');
+        const name = el ? el.value.trim() : '';
+        if (!name) {
+          APP.loginError = 'Vui lòng nhập Họ Tên & Lớp của em!';
+          renderApp();
+          return;
+        }
+        const slug = slugify(name);
+        let saved = null;
+        try {
+          const raw = localStorage.getItem('questlearn_stu_' + slug);
+          if (raw) saved = JSON.parse(raw);
+        } catch (err) {}
+        APP.student = Object.assign(
+          { name, slug, subject: 'math', activeTab: 'on_tap', score: 0, history: {} },
+          saved || { name, slug }
+        );
+        APP.mode = 'student';
+        fetchCurriculumFromGitHub();
+        renderApp();
         return;
       }
+
       if (action === 'login-teacher') {
-        handleTeacherLogin();
+        const el = document.getElementById('tea-pwd-input');
+        const pwd = el ? el.value.trim() : '';
+        if (pwd !== (APP.config.teacherPassword || '123456')) {
+          APP.loginError = 'Mật khẩu Giáo viên chưa đúng!';
+          renderApp();
+          return;
+        }
+        APP.mode = 'teacher';
+        renderApp();
         return;
       }
+
       if (action === 'logout') {
-        APP.activeQuiz = null;
+        APP.quizSession = null;
         APP.mode = 'login';
         renderApp();
         return;
       }
-      if (action === 'clear-notice') {
-        APP.syncNotice = '';
+
+      if (action === 'refresh-curriculum') {
+        await fetchCurriculumFromGitHub();
         renderApp();
-        return;
-      }
-      if (action === 'sync-student-github') {
-        syncStudentFileToGitHub(false);
-        return;
-      }
-      if (action === 'student-tab') {
-        APP.activeQuiz = null;
-        APP.studentTab = btn.getAttribute('data-tab');
-        renderApp();
-        return;
-      }
-      if (action === 'switch-subject') {
-        APP.state.selectedSubject = btn.getAttribute('data-subject');
-        saveStudentToLocal();
-        renderApp();
-        return;
-      }
-      if (action === 'practice-subtab') {
-        APP.practiceSubTab = btn.getAttribute('data-sub');
-        renderApp();
-        return;
-      }
-      if (action === 'start-lesson') {
-        const curr = getMergedCurriculum();
-        const lessonId = btn.getAttribute('data-lesson');
-        const title = btn.getAttribute('data-title');
-        let qs = curr.questions.filter((q) => q.lesson === lessonId);
-        if (qs.length === 0) qs = curr.questions.filter((q) => q.subject === APP.state.selectedSubject).slice(0, 5);
-        startQuizSession(title, qs, lessonId);
-        return;
-      }
-      if (action === 'start-dynamic-geo') {
-        const curr = getMergedCurriculum();
-        startQuizSession('Thực hành Hình chữ nhật Tương tác SVG', [
-          curr.questions.find((q) => q.id === 'q-m-10'),
-          generateDynamicRectangleQuestion()
-        ]);
-        return;
-      }
-      if (action === 'start-mistake-review') {
-        const activeMistakes = Object.values(APP.state.mistakes || {})
-          .filter((m) => !m.mastered)
-          .map((m) => m.question);
-        if (activeMistakes.length > 0) startQuizSession('Ôn tập các câu làm sai', activeMistakes);
         return;
       }
 
-      // Quiz Actions
-      if (action === 'quiz-exit') {
-        APP.activeQuiz = null;
+      // Student Actions
+      if (action === 'stu-subject') {
+        APP.student.subject = btn.getAttribute('data-subject');
         renderApp();
         return;
       }
-      if (action === 'quiz-select-opt') {
-        if (APP.activeQuiz && !APP.activeQuiz.answered) {
-          APP.activeQuiz.selectedOption = btn.getAttribute('data-opt');
+      if (action === 'stu-tab') {
+        APP.student.activeTab = btn.getAttribute('data-tab');
+        renderApp();
+        return;
+      }
+      if (action === 'stu-start-topic') {
+        const topic = btn.getAttribute('data-topic');
+        const qs = APP.curriculum.items.filter(
+          (x) => x.subject === APP.student.subject && x.category === APP.student.activeTab && (x.topicTitle || 'Bài học chung') === topic
+        );
+        if (qs.length > 0) {
+          APP.quizSession = {
+            topicTitle: topic,
+            questions: qs,
+            index: 0,
+            userAnswer: '',
+            showHint: false,
+            answered: false,
+            isCorrect: false,
+            correctCount: 0,
+            finished: false
+          };
           renderApp();
         }
         return;
       }
-      if (action === 'quiz-add-word') {
-        if (APP.activeQuiz && !APP.activeQuiz.answered) {
-          APP.activeQuiz.orderedWords.push(btn.getAttribute('data-word'));
+      if (action === 'stu-quit-quiz') {
+        APP.quizSession = null;
+        renderApp();
+        return;
+      }
+      if (action === 'quiz-toggle-hint') {
+        if (APP.quizSession) {
+          APP.quizSession.showHint = !APP.quizSession.showHint;
           renderApp();
         }
         return;
       }
-      if (action === 'quiz-remove-word') {
-        if (APP.activeQuiz && !APP.activeQuiz.answered) {
-          APP.activeQuiz.orderedWords.splice(Number(btn.getAttribute('data-idx')), 1);
+      if (action === 'quiz-pick-opt') {
+        if (APP.quizSession && !APP.quizSession.answered) {
+          APP.quizSession.userAnswer = btn.getAttribute('data-opt');
           renderApp();
         }
         return;
       }
-      if (action === 'quiz-submit') {
-        evaluateCurrentQuizQuestion();
+      if (action === 'quiz-check-answer') {
+        const qs = APP.quizSession;
+        if (!qs || qs.answered) return;
+        const q = qs.questions[qs.index];
+        const ok = String(qs.userAnswer || '').trim().toLowerCase() === String(q.correctAnswer || '').trim().toLowerCase();
+        qs.answered = true;
+        qs.isCorrect = ok;
+        if (ok) {
+          qs.correctCount += 1;
+          APP.student.score += 10;
+        }
+        renderApp();
         return;
       }
-      if (action === 'quiz-next') {
-        const qz = APP.activeQuiz;
-        if (!qz) return;
-        if (qz.currentIndex + 1 < qz.questions.length) {
-          qz.currentIndex += 1;
-          qz.selectedOption = '';
-          qz.inputVal = '';
-          qz.orderedWords = [];
-          qz.answered = false;
-          qz.isCorrect = null;
-          qz.geoState = createInitialGeoState();
+      if (action === 'quiz-next-question') {
+        const qs = APP.quizSession;
+        if (!qs) return;
+        if (qs.index + 1 < qs.questions.length) {
+          qs.index += 1;
+          qs.userAnswer = '';
+          qs.showHint = false;
+          qs.answered = false;
+          qs.isCorrect = false;
         } else {
-          const accuracy = Math.round((qz.correctCount / qz.questions.length) * 100);
-          if (qz.lessonId) {
-            const curr = getMergedCurriculum();
-            APP.state.progress[qz.lessonId] = {
-              lessonId: qz.lessonId,
-              status: accuracy === 100 ? 'perfect' : 'completed',
-              highScore: Math.max(APP.state.progress[qz.lessonId]?.highScore || 0, accuracy)
-            };
-            curr.chapters.forEach((ch) => {
-              const idx = ch.lessons.findIndex((l) => l.id === qz.lessonId);
-              if (idx !== -1 && idx + 1 < ch.lessons.length) {
-                const nextId = ch.lessons[idx + 1].id;
-                if (!APP.state.progress[nextId] || APP.state.progress[nextId].status === 'locked') {
-                  APP.state.progress[nextId] = { lessonId: nextId, status: 'available', highScore: 0 };
-                }
-              }
-            });
-            saveStudentToLocal();
-            syncStudentFileToGitHub(true);
-          }
-          qz.finished = true;
+          const pct = Math.round((qs.correctCount / qs.questions.length) * 100);
+          APP.student.history[qs.topicTitle] = Math.max(APP.student.history[qs.topicTitle] || 0, pct);
+          saveStudentResultToGitHub();
+          qs.finished = true;
         }
         renderApp();
         return;
       }
 
-      // Geometry
-      if (action === 'geo-select-label') {
-        if (APP.activeQuiz) {
-          APP.activeQuiz.geoState.selectedTouchLabel = btn.getAttribute('data-label');
+      // Teacher Actions
+      if (action === 'tea-subtab') {
+        APP.teacher.subTab = btn.getAttribute('data-sub');
+        APP.teacher.statusMsg = '';
+        renderApp();
+        return;
+      }
+      if (action === 'tea-ai-generate-questions') {
+        generateQuestionsWithAI();
+        return;
+      }
+      if (action === 'tea-confirm-save-questions') {
+        APP.curriculum.items.push(...APP.teacher.previewQuestions);
+        APP.teacher.previewQuestions = [];
+        const res = await pushCurriculumToGitHub();
+        APP.teacher.statusType = res.ok ? 'success' : 'info';
+        APP.teacher.statusMsg = res.msg;
+        renderApp();
+        return;
+      }
+      if (action === 'tea-ai-build-geo') {
+        buildOrRefineInteractiveGeometryWithAI();
+        return;
+      }
+      if (action === 'tea-save-geo-item') {
+        if (APP.teacher.geoGeneratedItem) {
+          APP.curriculum.items.push(APP.teacher.geoGeneratedItem);
+          APP.teacher.geoGeneratedItem = null;
+          const res = await pushCurriculumToGitHub();
+          APP.teacher.statusType = res.ok ? 'success' : 'info';
+          APP.teacher.statusMsg = res.msg;
           renderApp();
         }
         return;
       }
-      if (action === 'geo-click-side') {
-        handleGeometrySideClick(btn.getAttribute('data-side'));
-        return;
-      }
-      if (action === 'geo-submit-calc') {
-        if (APP.activeQuiz && String(APP.activeQuiz.geoState.calcInput).trim() !== '') {
-          evaluateCurrentQuizQuestion(Number(APP.activeQuiz.geoState.calcInput));
-        }
-        return;
-      }
-
-      // Mental Math & Word Form
-      if (action === 'mm-set-diff') {
-        APP.mentalSession.difficulty = Number(btn.getAttribute('data-diff'));
-        APP.mentalSession.question = generateMentalMathQuestion(APP.mentalSession.difficulty);
+      if (action === 'tea-push-github') {
+        const res = await pushCurriculumToGitHub();
+        APP.teacher.statusType = res.ok ? 'success' : 'info';
+        APP.teacher.statusMsg = res.msg;
         renderApp();
         return;
       }
-      if (action === 'mm-submit') {
-        const el = document.getElementById('mm-input');
-        if (el) submitMentalMath(el.value);
-        return;
-      }
-      if (action === 'wf-check') {
-        const wf = APP.wordFormSession;
-        if (!wf.inputVal.trim()) return;
-        const fam = WORD_FAMILIES[wf.familyIdx];
-        const q = fam.questions[wf.questionIdx];
-        const ok = wf.inputVal.trim().toLowerCase() === q.answer.toLowerCase();
-        if (ok) { APP.state.xp += 15; saveStudentToLocal(); }
-        wf.result = { ok, explanation: q.explanation };
+      if (action === 'tea-delete-item') {
+        const idx = Number(btn.getAttribute('data-idx'));
+        APP.curriculum.items.splice(idx, 1);
+        saveCurriculumLocal();
         renderApp();
         return;
       }
-      if (action === 'wf-next') {
-        const wf = APP.wordFormSession;
-        wf.inputVal = '';
-        wf.result = null;
-        wf.familyIdx = (wf.familyIdx + 1) % WORD_FAMILIES.length;
-        wf.questionIdx = 0;
-        renderApp();
-        return;
-      }
-
-      // Flashcards
-      if (action === 'fc-speak') {
-        e.stopPropagation();
-        const word = btn.getAttribute('data-word');
-        if ('speechSynthesis' in window) {
-          const u = new SpeechSynthesisUtterance(word);
-          u.lang = 'en-GB';
-          window.speechSynthesis.speak(u);
-        }
-        return;
-      }
-      if (action === 'fc-flip') {
-        APP.flashcardSession.flipped = !APP.flashcardSession.flipped;
-        renderApp();
-        return;
-      }
-      if (action === 'fc-rate') {
-        const curr = getMergedCurriculum();
-        const vocabList = curr.vocabulary;
-        const card = vocabList[APP.flashcardSession.index % vocabList.length];
-        const isLearned = btn.getAttribute('data-learned') === '1';
-        APP.state.flashcardSRS[card.id] = { learned: isLearned };
-        if (isLearned) APP.state.xp += 5;
-        saveStudentToLocal();
-        APP.flashcardSession.flipped = false;
-        APP.flashcardSession.index = (APP.flashcardSession.index + 1) % vocabList.length;
-        renderApp();
-        return;
-      }
-
-      // Teacher Portal Actions
-      if (action === 'ai-generate') {
-        runGeminiCurriculumGenerator();
-        return;
-      }
-      if (action === 'ai-publish-curriculum') {
-        publishGeneratedCurriculum();
-        return;
-      }
-      if (action === 'save-cloud-config') {
-        const o = document.getElementById('cfg-gh-owner');
-        const r = document.getElementById('cfg-gh-repo');
-        const t = document.getElementById('cfg-gh-token');
-        const g = document.getElementById('cfg-gemini-key');
-        const p = document.getElementById('cfg-teacher-pwd');
-        if (o) APP.cloudConfig.githubOwner = o.value.trim();
-        if (r) APP.cloudConfig.githubRepo = r.value.trim();
-        if (t) APP.cloudConfig.githubToken = t.value.trim();
-        if (g) APP.cloudConfig.geminiApiKey = g.value.trim();
-        if (p && p.value.trim()) APP.cloudConfig.teacherPassword = p.value.trim();
-        saveCloudConfig();
-        APP.aiStudio.statusType = 'success';
-        APP.aiStudio.statusMsg = '✅ Đã lưu cấu hình GitHub, Gemini API Key và Mật khẩu Giáo viên!';
-        renderApp();
-        return;
-      }
-      if (action === 'load-class-roster') {
-        const cfg = APP.cloudConfig;
-        if (!cfg.githubOwner || !cfg.githubRepo) {
-          APP.aiStudio.statusType = 'error';
-          APP.aiStudio.statusMsg = '❌ Vui lòng nhập GitHub Username và Repository Name!';
+      if (action === 'tea-clear-all') {
+        if (confirm('Bạn có chắc chắn muốn xóa toàn bộ câu hỏi trong kho hiện tại?')) {
+          APP.curriculum.items = [];
+          saveCurriculumLocal();
           renderApp();
-          return;
         }
-        const apiUrl = `https://api.github.com/repos/${cfg.githubOwner}/${cfg.githubRepo}/contents/students?ref=${encodeURIComponent(cfg.githubBranch || 'main')}`;
-        const headers = { 'Accept': 'application/vnd.github+json' };
-        if (cfg.githubToken) headers['Authorization'] = `Bearer ${cfg.githubToken}`;
-        try {
-          const res = await fetch(apiUrl, { headers });
-          if (res.ok) {
-            const list = await res.json();
-            APP.aiStudio.classRoster = Array.isArray(list) ? list.filter((x) => x.name.endsWith('.json')) : [];
-            APP.aiStudio.statusType = 'success';
-            APP.aiStudio.statusMsg = `✅ Tìm thấy ${APP.aiStudio.classRoster.length} file kết quả học sinh trên GitHub!`;
-          } else {
-            APP.aiStudio.classRoster = [];
-            APP.aiStudio.statusType = 'info';
-            APP.aiStudio.statusMsg = 'ℹ️ Chưa có thư mục students/ trên GitHub (Sẽ tự tạo khi học sinh đầu tiên lưu kết quả).';
-          }
-        } catch (err) {
-          APP.aiStudio.statusType = 'error';
-          APP.aiStudio.statusMsg = '❌ Lỗi tải danh sách: ' + err.message;
-        }
+        return;
+      }
+      if (action === 'tea-export-json') {
+        const blob = new Blob([JSON.stringify(APP.curriculum, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'curriculum.json';
+        a.click();
+        URL.revokeObjectURL(url);
+        return;
+      }
+      if (action === 'tea-save-config') {
+        const o = document.getElementById('cfg-owner');
+        const r = document.getElementById('cfg-repo');
+        const b = document.getElementById('cfg-branch');
+        const t = document.getElementById('cfg-token');
+        const g = document.getElementById('cfg-gemini');
+        const p = document.getElementById('cfg-pwd');
+        if (o) APP.config.githubOwner = o.value.trim();
+        if (r) APP.config.githubRepo = r.value.trim();
+        if (b) APP.config.githubBranch = b.value.trim() || 'main';
+        if (t) APP.config.githubToken = t.value.trim();
+        if (g) APP.config.geminiApiKey = g.value.trim();
+        if (p && p.value.trim()) APP.config.teacherPassword = p.value.trim();
+        saveConfig();
+        APP.teacher.statusType = 'success';
+        APP.teacher.statusMsg = `✅ Đã lưu cấu hình! Đang kết nối nhánh "${APP.config.githubBranch}".`;
+        fetchCurriculumFromGitHub();
         renderApp();
       }
     });
 
-    fetchRemoteCustomCurriculum();
+    fetchCurriculumFromGitHub();
     renderApp();
   </script>
 </body>
