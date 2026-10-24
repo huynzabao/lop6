@@ -1,0 +1,2927 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QuestLearn 6 — Học Toán & Tiếng Anh Lớp 6 (Bản Chạy Ngay Không Cần Cài Đặt)</title>
+  <style>
+    :root {
+      --bg: #f1f5f9;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --primary-light: #eef2ff;
+      --success: #16a34a;
+      --success-light: #f0fdf4;
+      --danger: #dc2626;
+      --danger-light: #fef2f2;
+      --warning: #d97706;
+      --warning-light: #fffbeb;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      background: none;
+      transition: all 0.18s ease;
+    }
+    button:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+    input {
+      font-family: inherit;
+    }
+
+    /* Layout */
+    .app-shell {
+      display: flex;
+      min-height: 100vh;
+      padding-bottom: 76px;
+    }
+    .sidebar {
+      display: none;
+      width: 260px;
+      background: var(--card);
+      border-right: 1px solid var(--border);
+      padding: 22px 18px;
+      flex-direction: column;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--card);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      padding: 8px 6px;
+      z-index: 50;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.04);
+    }
+    @media (min-width: 768px) {
+      .app-shell {
+        padding-bottom: 0;
+      }
+      .sidebar {
+        display: flex;
+      }
+      .bottom-nav {
+        display: none;
+      }
+    }
+    .main-area {
+      flex: 1;
+      max-width: 980px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 20px 16px 40px 16px;
+    }
+    @media (min-width: 640px) {
+      .main-area {
+        padding: 28px 28px 48px 28px;
+      }
+    }
+
+    /* Branding & Nav */
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 4px 8px 20px 8px;
+    }
+    .brand-logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 900;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 10px rgba(79,70,229,0.25);
+    }
+    .nav-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 16px;
+      border-radius: 16px;
+      font-weight: 800;
+      font-size: 15px;
+      color: #475569;
+      margin-bottom: 6px;
+      text-align: left;
+    }
+    .nav-btn:hover {
+      background: #f8fafc;
+    }
+    .nav-btn.active {
+      background: var(--primary-light);
+      color: var(--primary);
+      border: 2px solid #c7d2fe;
+    }
+    .bnav-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      padding: 6px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 800;
+      color: #64748b;
+    }
+    .bnav-btn.active {
+      color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    /* Top Header */
+    .top-bar {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 14px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 22px;
+      box-shadow: 0 2px 6px rgba(15,23,42,0.03);
+    }
+    .level-pill {
+      background: var(--primary);
+      color: #fff;
+      font-weight: 900;
+      padding: 7px 14px;
+      border-radius: 14px;
+      font-size: 14px;
+    }
+    .progress-track {
+      height: 10px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--primary);
+      border-radius: 999px;
+      transition: width 0.3s ease;
+    }
+    .progress-fill.green {
+      background: var(--success);
+    }
+    .stat-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: 14px;
+      font-weight: 800;
+      font-size: 14px;
+    }
+    .stat-streak {
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      color: #c2410c;
+    }
+    .stat-hearts {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #dc2626;
+    }
+
+    /* Cards & Grids */
+    .card {
+      background: var(--card);
+      border: 2px solid var(--border);
+      border-radius: 24px;
+      padding: 22px;
+      margin-bottom: 18px;
+      box-shadow: 0 2px 8px rgba(15,23,42,0.03);
+    }
+    .hero-card {
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+      color: #fff;
+      border: none;
+      border-radius: 24px;
+      padding: 26px;
+      box-shadow: 0 10px 25px rgba(79,70,229,0.22);
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    @media (min-width: 640px) {
+      .grid-2 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .grid-4 {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+    @media (min-width: 900px) {
+      .grid-3 {
+        grid-template-columns: 2fr 1fr;
+      }
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 22px;
+      border-radius: 16px;
+      font-weight: 800;
+      font-size: 15px;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(79,70,229,0.22);
+    }
+    .btn-primary:hover:not(:disabled) {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+    .btn-amber {
+      background: #fbbf24;
+      color: #0f172a;
+    }
+    .btn-amber:hover:not(:disabled) {
+      background: #f59e0b;
+    }
+    .btn-success {
+      background: var(--success);
+      color: #fff;
+    }
+    .btn-danger {
+      background: var(--danger);
+      color: #fff;
+    }
+    .btn-outline {
+      background: #fff;
+      border: 2px solid var(--border);
+      color: var(--text);
+    }
+    .btn-outline:hover:not(:disabled) {
+      border-color: var(--primary);
+      background: #f8fafc;
+    }
+
+    /* Quiz Options & Inputs */
+    .option-btn {
+      width: 100%;
+      padding: 16px 18px;
+      border-radius: 18px;
+      border: 2px solid var(--border);
+      background: #fff;
+      font-weight: 800;
+      font-size: 16px;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--text);
+    }
+    .option-btn:hover:not(:disabled) {
+      border-color: #818cf8;
+      background: #f8fafc;
+    }
+    .option-btn.selected {
+      border-color: var(--primary);
+      background: var(--primary-light);
+      color: #312e81;
+    }
+    .input-box {
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 16px;
+      border: 2px solid #cbd5e1;
+      font-size: 18px;
+      font-weight: 800;
+      outline: none;
+    }
+    .input-box:focus {
+      border-color: var(--primary);
+    }
+
+    /* Node Item on Roadmap */
+    .lesson-node {
+      padding: 18px;
+      border-radius: 20px;
+      border: 2px solid var(--border);
+      background: #fff;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 12px;
+    }
+    .lesson-node.available {
+      border-color: #a5b4fc;
+    }
+    .lesson-node.completed, .lesson-node.perfect {
+      border-color: #86efac;
+      background: #f0fdf4;
+    }
+    .lesson-node.locked {
+      background: #f8fafc;
+      opacity: 0.68;
+    }
+    .node-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    /* Interactive Geometry */
+    .drag-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 22px;
+      border-radius: 14px;
+      font-weight: 900;
+      font-size: 18px;
+      border: 2px solid var(--primary);
+      background: #fff;
+      color: var(--text);
+      cursor: pointer;
+      user-select: none;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    }
+    .drag-chip.selected {
+      background: #f59e0b;
+      color: #fff;
+      border-color: #d97706;
+      transform: scale(1.06);
+    }
+    .drag-chip.done {
+      background: #dcfce7;
+      border-color: #22c55e;
+      color: #15803d;
+      opacity: 0.65;
+      cursor: default;
+    }
+
+    /* Flashcard */
+    .flashcard-box {
+      background: #fff;
+      border: 3px solid #c7d2fe;
+      border-radius: 28px;
+      min-height: 270px;
+      padding: 32px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      cursor: pointer;
+      user-select: none;
+      box-shadow: 0 8px 20px rgba(79,70,229,0.08);
+      transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+    .flashcard-box:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    /* Animations */
+    @keyframes shakeAnim {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-8px); }
+      40% { transform: translateX(8px); }
+      60% { transform: translateX(-6px); }
+      80% { transform: translateX(6px); }
+    }
+    .shake {
+      animation: shakeAnim 0.4s ease-in-out;
+    }
+    .pill-tag {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script>
+    // ==========================================================================
+    // 1. NGÂN HÀNG DỮ LIỆU MẪU (TOÁN 6 & TIẾNG ANH 6 - BỘ KẾT NỐI TRI THỨC)
+    // ==========================================================================
+    const CHAPTERS = [
+      {
+        id: 'math-ch1',
+        subject: 'math',
+        title: 'Chương 1: Tập hợp các số tự nhiên',
+        subtitle: 'Tập hợp, Hệ thập phân, Số La Mã, Luỹ thừa & Thứ tự thực hiện phép tính',
+        lessons: [
+          { id: 'm-c1-l1', title: 'Bài 1: Tập hợp, Số tự nhiên & Số La Mã', type: 'lesson', description: 'Tập hợp, giá trị chữ số trong hệ thập phân và cách đọc viết số La Mã' },
+          { id: 'm-c1-l2', title: 'Bài 2: Luỹ thừa & Thứ tự thực hiện các phép tính', type: 'lesson', description: 'Nhân chia hai luỹ thừa cùng cơ số & Quy tắc dấu ngoặc ( ) → [ ] → { }' },
+          { id: 'm-c1-rev1', title: 'Revision 1: Ôn tập Chương 1', type: 'revision', description: 'Tổng hợp kiến thức Số tự nhiên, Tính nhẩm & Tìm x' }
+        ]
+      },
+      {
+        id: 'math-ch2',
+        subject: 'math',
+        title: 'Chương 2: Tính chia hết, Số nguyên & Hình học trực quan',
+        subtitle: 'Dấu hiệu chia hết, ƯCLN - BCNN, Hình chữ nhật - Hình thoi - Lục giác đều',
+        lessons: [
+          { id: 'm-c2-l1', title: 'Bài 1: Quan hệ chia hết, ƯCLN & BCNN', type: 'lesson', description: 'Dấu hiệu chia hết cho 2, 3, 5, 9 và bài toán thực tế ƯCLN, BCNN' },
+          { id: 'm-c2-l2', title: 'Bài 2: Hình chữ nhật tương tác SVG, Hình thoi & Lục giác đều', type: 'lesson', description: 'Kéo thả trực tiếp trên cạnh hình học SVG, tính chu vi và diện tích' },
+          { id: 'm-c2-test', title: 'Chapter Test: Kiểm tra Tổng hợp Toán 6', type: 'test', description: 'Đánh giá toàn diện Số học & Hình học trực quan lớp 6' }
+        ]
+      },
+      {
+        id: 'eng-u1',
+        subject: 'english',
+        title: 'Unit 1: My New School',
+        subtitle: 'School things, Present simple & Adverbs of frequency',
+        lessons: [
+          { id: 'e-u1-vocab', title: 'Lesson 1: Vocabulary - School Things', type: 'lesson', description: 'Từ vựng đồ dùng học tập & Collocations (play, do, have, study)' },
+          { id: 'e-u1-gram', title: 'Lesson 2: Grammar & Sentence Building', type: 'lesson', description: 'Thì hiện tại đơn & Trạng từ chỉ tần suất (always, usually, rarely...)' },
+          { id: 'e-u1-read', title: 'Lesson 3: Reading & Word Form', type: 'lesson', description: 'Đọc hiểu về trường học và biến đổi từ loại (Noun, Verb, Adj, Adv)' },
+          { id: 'e-u1-rev', title: 'Revision 1: Ôn tập Unit 1', type: 'revision', description: 'Ôn tập tổng hợp từ vựng, ngữ pháp và cấu trúc câu Unit 1' }
+        ]
+      },
+      {
+        id: 'eng-u2',
+        subject: 'english',
+        title: 'Unit 2: My House & My Neighbourhood',
+        subtitle: 'Rooms, Furniture, Possessive case & Giving directions/suggestions',
+        lessons: [
+          { id: 'e-u2-vocab', title: 'Lesson 1: Vocabulary - Rooms & Neighbourhood', type: 'lesson', description: 'Các loại nhà, phòng trong nhà và địa điểm trong khu phố' },
+          { id: 'e-u2-gram', title: 'Lesson 2: Grammar - Possessive & Suggestions', type: 'lesson', description: "Sở hữu cách ('s) và cấu trúc gợi ý Let's + V / How about + V-ing" },
+          { id: 'e-u2-test', title: 'Unit 2 Test: Kiểm tra cuối Unit', type: 'test', description: 'Bài kiểm tra tổng hợp Tiếng Anh 6' }
+        ]
+      }
+    ];
+
+    const SEED_QUESTIONS = [
+      // TOÁN CHƯƠNG 1 - BÀI 1
+      {
+        id: 'q-m-1',
+        subject: 'math',
+        lesson: 'm-c1-l1',
+        topicTag: 'Giá trị chữ số trong hệ thập phân',
+        type: 'multiple_choice',
+        prompt: 'Trong số tự nhiên 27 501 (Bài 1.6 SGK trang 12), chữ số 7 có giá trị bằng bao nhiêu?',
+        options: ['7', '700', '7 000', '70 000'],
+        correctAnswer: '7 000',
+        explanation: 'Trong số 27 501, chữ số 7 đứng ở hàng nghìn nên giá trị của nó là 7 × 1 000 = 7 000.',
+        hint: 'Đếm từ phải sang trái: hàng đơn vị (1), chục (0), trăm (5), nghìn (7).',
+        xp: 10
+      },
+      {
+        id: 'q-m-2',
+        subject: 'math',
+        lesson: 'm-c1-l1',
+        topicTag: 'Số La Mã',
+        type: 'number_input',
+        prompt: 'Số La Mã XXIV biểu diễn số tự nhiên nào trong hệ thập phân?',
+        correctAnswer: 24,
+        explanation: 'Số XXIV gồm X (10) + X (10) + IV (4) = 24.',
+        hint: 'X = 10, cụm IV = 4.',
+        xp: 10
+      },
+      {
+        id: 'q-m-3',
+        subject: 'math',
+        lesson: 'm-c1-l1',
+        topicTag: 'Toán thực tế hệ thập phân',
+        type: 'number_input',
+        prompt: 'Trong một cửa hàng bánh kẹo (Bài 1.12 SGK trang 12): mỗi gói có 10 cái kẹo, mỗi hộp có 10 gói, mỗi thùng có 10 hộp. Một người mua 9 thùng, 9 hộp và 9 gói kẹo. Hỏi người đó đã mua tất cả bao nhiêu cái kẹo?',
+        correctAnswer: 9990,
+        explanation: '1 gói = 10 cái; 1 hộp = 100 cái; 1 thùng = 1 000 cái. Vậy 9 thùng + 9 hộp + 9 gói = 9 × 1 000 + 9 × 100 + 9 × 10 = 9 990 (cái kẹo).',
+        hint: 'Quy đổi số kẹo của 1 thùng, 1 hộp và 1 gói ra số tự nhiên.',
+        xp: 15
+      },
+      {
+        id: 'q-m-4',
+        subject: 'math',
+        lesson: 'm-c1-l1',
+        topicTag: 'Tập hợp và phần tử',
+        type: 'multiple_choice',
+        prompt: 'Cho tập hợp M = {4; 1; 9; 8} (Hình 1.3 SGK trang 6). Khẳng định nào sau đây là ĐÚNG?',
+        options: ['4 ∈ M và 7 ∉ M', '7 ∈ M', '1 ∉ M', '9 ∉ M'],
+        correctAnswer: '4 ∈ M và 7 ∉ M',
+        explanation: 'Các số 4; 1; 9; 8 là phần tử của tập hợp M nên 4 ∈ M. Số 7 không nằm trong tập hợp M nên 7 ∉ M.',
+        hint: 'Kí hiệu ∈ đọc là "thuộc", ∉ đọc là "không thuộc".',
+        xp: 10
+      },
+      // TOÁN CHƯƠNG 1 - BÀI 2
+      {
+        id: 'q-m-5',
+        subject: 'math',
+        lesson: 'm-c1-l2',
+        topicTag: 'Thứ tự thực hiện các phép tính',
+        type: 'number_input',
+        prompt: 'Tính giá trị của biểu thức (Ví dụ 1 SGK trang 27): 120 + [55 - (11 - 3 × 2)²] + 2³',
+        correctAnswer: 158,
+        explanation: 'Trong ngoặc tròn trước: 11 - 3×2 = 11 - 6 = 5. Trong ngoặc vuông: 55 - 5² = 55 - 25 = 30. Cuối cùng: 120 + 30 + 2³ = 150 + 8 = 158.',
+        hint: 'Thực hiện ngoặc tròn ( ) → ngoặc vuông [ ] → luỹ thừa 2³ = 8.',
+        xp: 20
+      },
+      {
+        id: 'q-m-6',
+        subject: 'math',
+        lesson: 'm-c1-l2',
+        topicTag: 'Chia hai luỹ thừa cùng cơ số',
+        type: 'multiple_choice',
+        prompt: 'Kết quả của phép chia hai luỹ thừa 7⁶ : 7⁴ (SGK trang 24) viết dưới dạng một luỹ thừa là:',
+        options: ['7²', '7¹⁰', '7²⁴', '1²'],
+        correctAnswer: '7²',
+        explanation: 'Khi chia hai luỹ thừa cùng cơ số (khác 0), ta giữ nguyên cơ số và lấy số mũ của số bị chia trừ đi số mũ của số chia: 7⁶ : 7⁴ = 7⁶⁻⁴ = 7².',
+        hint: 'Giữ nguyên cơ số 7, lấy 6 trừ 4.',
+        xp: 15
+      },
+      {
+        id: 'q-m-7',
+        subject: 'math',
+        lesson: 'm-c1-l2',
+        topicTag: 'Tìm x cơ bản',
+        type: 'number_input',
+        prompt: 'Tìm số tự nhiên x, biết: 3x + 7 = 28',
+        correctAnswer: 7,
+        explanation: 'Ta có 3x = 28 - 7 = 21. Suy ra x = 21 : 3 = 7.',
+        hint: 'Tìm 3x trước bằng cách lấy 28 trừ 7.',
+        xp: 15
+      },
+      {
+        id: 'q-m-8',
+        subject: 'math',
+        lesson: 'm-c1-l2',
+        topicTag: 'Tính nhanh phân phối',
+        type: 'number_input',
+        prompt: 'Tính nhẩm nhanh biểu thức: 25 × 16',
+        correctAnswer: 400,
+        explanation: 'Ta tách 16 = 4 × 4 để ghép với 25 tạo thành 100: 25 × 16 = (25 × 4) × 4 = 100 × 4 = 400.',
+        hint: 'Nhận xét: 25 × 4 = 100.',
+        xp: 15
+      },
+      // TOÁN CHƯƠNG 2 - CHIA HẾT & HÌNH HỌC
+      {
+        id: 'q-m-9',
+        subject: 'math',
+        lesson: 'm-c2-l1',
+        topicTag: 'Dấu hiệu chia hết cho 9 và 3',
+        type: 'number_input',
+        prompt: 'Thay dấu * bởi một chữ số thích hợp để số 12* chia hết cho 9 (Luyện tập 2 SGK trang 35).',
+        correctAnswer: 6,
+        explanation: 'Các số có tổng các chữ số chia hết cho 9 thì chia hết cho 9. Ta có 1 + 2 + * = 3 + *. Để chia hết cho 9 thì * = 6 (vì 3 + 6 = 9 chia hết cho 9).',
+        hint: 'Tính tổng 1 + 2 + * sao cho tổng đó chia hết cho 9.',
+        xp: 15
+      },
+      {
+        id: 'q-m-10',
+        subject: 'math',
+        lesson: 'm-c2-l1',
+        topicTag: 'Bội chung nhỏ nhất (BCNN)',
+        type: 'number_input',
+        prompt: 'Có hai chiếc máy A và B (Vận dụng SGK trang 50). Lịch bảo dưỡng định kì đối với máy A là 6 tháng và đối với máy B là 9 tháng. Hai máy vừa cùng được bảo dưỡng vào tháng 5. Hỏi sau ít nhất bao nhiêu tháng nữa thì hai máy lại được bảo dưỡng trong cùng một tháng?',
+        correctAnswer: 18,
+        explanation: 'Số tháng ít nhất để hai máy cùng bảo dưỡng trở lại là BCNN(6, 9). Ta có 6 = 2 × 3; 9 = 3² nên BCNN(6, 9) = 2 × 3² = 18 (tháng).',
+        hint: 'Tìm Bội chung nhỏ nhất của 6 và 9.',
+        xp: 20
+      },
+      {
+        id: 'q-m-11',
+        subject: 'math',
+        lesson: 'm-c2-l2',
+        topicTag: 'Diện tích hình chữ nhật',
+        type: 'geometry_interaction',
+        prompt: 'Tương tác trực tiếp trên hình chữ nhật ABCD để khám phá bản chất công thức diện tích S = a × b và tính diện tích khi a = 8 cm, b = 5 cm.',
+        correctAnswer: 40,
+        explanation: 'Trong hình chữ nhật ABCD, hai cạnh đối AB = CD = a = 8 cm (chiều dài) và BC = DA = b = 5 cm (chiều rộng). Diện tích S = a × b = 8 × 5 = 40 cm².',
+        hint: 'Kéo hoặc chạm nhãn [a] vào cạnh dài ngang, nhãn [b] vào cạnh rộng dọc.',
+        xp: 30,
+        geometryConfig: {
+          shape: 'rectangle',
+          vertices: ['A', 'B', 'C', 'D'],
+          sides: { AB: 'a', BC: 'b', CD: 'a', DA: 'b' },
+          lengthA: 8,
+          widthB: 5
+        }
+      },
+      {
+        id: 'q-m-12',
+        subject: 'math',
+        lesson: 'm-c2-l2',
+        topicTag: 'Hình lục giác đều',
+        type: 'multiple_choice',
+        prompt: 'Theo Nhận xét SGK Toán 6 trang 80, mỗi góc của hình lục giác đều ABCDEF bằng bao nhiêu độ?',
+        options: ['60°', '90°', '120°', '180°'],
+        correctAnswer: '120°',
+        explanation: 'Hình lục giác đều được ghép từ 6 tam giác đều chung đỉnh ở tâm, có 6 cạnh bằng nhau và 6 góc bằng nhau, mỗi góc bằng 120°.',
+        hint: 'Tam giác đều có góc 60°, hai góc tam giác đều ghép lại ở đỉnh lục giác đều là 60° + 60°.',
+        xp: 10
+      },
+      {
+        id: 'q-m-13',
+        subject: 'math',
+        lesson: 'm-c2-l2',
+        topicTag: 'Diện tích hình thoi',
+        type: 'number_input',
+        prompt: 'Tính diện tích hình thoi ABCD có độ dài hai đường chéo AC = 8 cm và BD = 6 cm (Ví dụ 6 SGK trang 94, đơn vị: cm²).',
+        correctAnswer: 24,
+        explanation: 'Diện tích hình thoi bằng nửa tích độ dài hai đường chéo: S = (1/2) × AC × BD = (8 × 6) : 2 = 24 (cm²).',
+        hint: 'Áp dụng công thức S = (AC × BD) : 2.',
+        xp: 15
+      },
+
+      // TIẾNG ANH UNIT 1 & 2
+      {
+        id: 'q-e-1',
+        subject: 'english',
+        lesson: 'e-u1-vocab',
+        topicTag: 'Vocabulary: School things',
+        type: 'multiple_choice',
+        prompt: 'Chọn dụng cụ học tập dùng để vẽ đường tròn: "We use a ______ to draw circles in Maths class."',
+        options: ['compass', 'calculator', 'pencil sharpener', 'rubber'],
+        correctAnswer: 'compass',
+        explanation: '"compass" là cái com-pa dùng để vẽ đường tròn. "calculator" là máy tính bỏ túi, "pencil sharpener" là gọt bút chì, "rubber" là cục tẩy.',
+        hint: 'Từ này bắt đầu bằng chữ "c".',
+        xp: 10
+      },
+      {
+        id: 'q-e-2',
+        subject: 'english',
+        lesson: 'e-u1-vocab',
+        topicTag: 'Vocabulary: Collocations',
+        type: 'multiple_choice',
+        prompt: 'Chọn động từ đúng điền vào chỗ trống: "Students ______ their uniforms on Mondays."',
+        options: ['wear', 'study', 'play', 'do'],
+        correctAnswer: 'wear',
+        explanation: 'Cụm từ "wear uniforms" có nghĩa là mặc đồng phục.',
+        hint: 'Đồng phục (uniforms) đi với động từ chỉ việc mặc.',
+        xp: 10
+      },
+      {
+        id: 'q-e-3',
+        subject: 'english',
+        lesson: 'e-u1-gram',
+        topicTag: 'Grammar: Adverbs of frequency',
+        type: 'multiple_choice',
+        prompt: 'Chọn đáp án đúng theo vị trí của trạng từ chỉ tần suất: "My mum ______ to work late."',
+        options: ['rarely goes', 'goes rarely', 'rarely go', 'is rarely go'],
+        correctAnswer: 'rarely goes',
+        explanation: 'Trạng từ chỉ tần suất (always, usually, often, sometimes, rarely, never) đứng TRƯỚC động từ thường. Chủ ngữ "My mum" là ngôi thứ 3 số ít nên động từ "go" thêm "-es" thành "goes".',
+        hint: 'Trạng từ tần suất đứng trước động từ chính.',
+        xp: 15
+      },
+      {
+        id: 'q-e-4',
+        subject: 'english',
+        lesson: 'e-u1-gram',
+        topicTag: 'Sentence Building: Adverbs of frequency',
+        type: 'ordering',
+        prompt: 'Sắp xếp các từ sau thành câu hoàn chỉnh:',
+        options: ['usually', 'I', 'school', 'walk', 'to'],
+        correctAnswer: ['I', 'usually', 'walk', 'to', 'school'],
+        explanation: 'Cấu trúc: Chủ ngữ (I) + Trạng từ tần suất (usually) + Động từ thường (walk) + Cụm chỉ hướng (to school).',
+        hint: 'Bắt đầu bằng chủ ngữ "I", theo sau là trạng từ "usually".',
+        xp: 20
+      },
+      {
+        id: 'q-e-5',
+        subject: 'english',
+        lesson: 'e-u1-read',
+        topicTag: 'Reading: Boarding school',
+        type: 'multiple_choice',
+        prompt: 'Đọc câu sau: "Sunrise is a boarding school in Sydney. Students study and live there. They only go home at weekends." Hỏi: "boarding school" nghĩa là gì?',
+        options: ['Trường nội trú', 'Trường quốc tế', 'Trường tiểu học', 'Trường nghệ thuật'],
+        correctAnswer: 'Trường nội trú',
+        explanation: 'Vì học sinh học tập và sinh sống ngay tại trường ("study and live there") và chỉ về nhà vào cuối tuần nên "boarding school" là trường nội trú.',
+        hint: 'Chú ý cụm "study and live there".',
+        xp: 15
+      },
+      {
+        id: 'q-e-6',
+        subject: 'english',
+        lesson: 'e-u1-read',
+        topicTag: 'Word Form: Adjective & Adverb',
+        type: 'text_input',
+        prompt: 'Điền dạng đúng của từ trong ngoặc (Word Form): "On New Year\'s Day, we dress ______ (beauty) and go to our grandparents\' houses."',
+        correctAnswer: 'beautifully',
+        explanation: 'Sau động từ thường "dress" (ăn mặc) cần một trạng từ (adverb) chỉ cách thức → "beautifully".',
+        hint: 'Biến đổi danh từ beauty → tính từ beautiful → trạng từ thêm đuôi -ly.',
+        xp: 15
+      },
+      {
+        id: 'q-e-7',
+        subject: 'english',
+        lesson: 'e-u2-vocab',
+        topicTag: 'Vocabulary: Giving directions',
+        type: 'multiple_choice',
+        prompt: 'Khi chỉ đường trên bản đồ khu phố (Unit 4 SGK trang 39), cụm từ "go straight" có nghĩa là gì?',
+        options: ['Đi thẳng', 'Rẽ phải', 'Rẽ trái', 'Băng qua đường'],
+        correctAnswer: 'Đi thẳng',
+        explanation: '"go straight" nghĩa là đi thẳng; "turn right" là rẽ phải; "turn left" là rẽ trái; "cross the road" là băng qua đường.',
+        hint: 'Straight nghĩa là thẳng.',
+        xp: 10
+      },
+      {
+        id: 'q-e-8',
+        subject: 'english',
+        lesson: 'e-u2-gram',
+        topicTag: 'Grammar: Possessive case',
+        type: 'multiple_choice',
+        prompt: 'Chọn đáp án đúng sử dụng sở hữu cách: "Elena is ______ sister."',
+        options: ["Nick's", 'Nicks', "Nick'", 'of Nick'],
+        correctAnswer: "Nick's",
+        explanation: 'Sở hữu cách với tên riêng/danh từ số ít ("Nick") được tạo bằng cách thêm dấu lược và chữ s (\'s) → "Nick\'s sister".',
+        hint: 'Tên riêng + \'s.',
+        xp: 15
+      },
+      {
+        id: 'q-e-9',
+        subject: 'english',
+        lesson: 'e-u2-gram',
+        topicTag: 'Grammar: Making suggestions',
+        type: 'multiple_choice',
+        prompt: 'Hoàn thành câu gợi ý (Unit 4 SGK trang 39): "______ go to Chua Cau in Hoi An!"',
+        options: ["Let's", 'How about', 'What about', 'Shall'],
+        correctAnswer: "Let's",
+        explanation: 'Theo mục Remember! SGK trang 39: Ta dùng "Let\'s + V nguyên thể" (hoặc "Shall we + V nguyên thể") để đưa ra lời đề nghị.',
+        hint: 'Example trong sách: Let\'s go to Chua Cau.',
+        xp: 15
+      }
+    ];
+
+    const VOCABULARY_CARDS = [
+      { id: 'v-1', word: 'boarding school', phonetic: '/ˈbɔːdɪŋ skuːl/', pos: 'noun', meaningVi: 'trường nội trú', example: 'Sunrise is a boarding school in Sydney.' },
+      { id: 'v-2', word: 'compass', phonetic: '/ˈkʌmpəs/', pos: 'noun', meaningVi: 'com-pa, la bàn', example: 'Bring your compass to the maths class.' },
+      { id: 'v-3', word: 'calculator', phonetic: '/ˈkælkjuleɪtə(r)/', pos: 'noun', meaningVi: 'máy tính bỏ túi', example: 'I have a new calculator in my school bag.' },
+      { id: 'v-4', word: 'pencil sharpener', phonetic: '/ˈpensl ˌʃɑːpnə(r)/', pos: 'noun', meaningVi: 'cái gọt bút chì', example: 'Can I borrow your pencil sharpener?' },
+      { id: 'v-5', word: 'uniform', phonetic: '/ˈjuːnɪfɔːm/', pos: 'noun', meaningVi: 'đồng phục', example: 'We always look smart in our uniforms.' },
+      { id: 'v-6', word: 'smart', phonetic: '/smɑːt/', pos: 'adjective', meaningVi: 'bảnh bao, gọn gàng, thông minh', example: 'You look smart in your new uniform!' },
+      { id: 'v-7', word: 'town house', phonetic: '/ˈtaʊn haʊs/', pos: 'noun', meaningVi: 'nhà phố', example: 'Nick lives in a town house with his family.' },
+      { id: 'v-8', word: 'country house', phonetic: '/ˌkʌntri ˈhaʊs/', pos: 'noun', meaningVi: 'nhà ở vùng quê', example: 'My grandparents live in a quiet country house.' },
+      { id: 'v-9', word: 'flat', phonetic: '/flæt/', pos: 'noun', meaningVi: 'căn hộ chung cư', example: 'Mi’s new flat has three bedrooms.' },
+      { id: 'v-10', word: 'living room', phonetic: '/ˈlɪvɪŋ ruːm/', pos: 'noun', meaningVi: 'phòng khách', example: 'My father is in the living room.' },
+      { id: 'v-11', word: 'confident', phonetic: '/ˈkɒnfɪdənt/', pos: 'adjective', meaningVi: 'tự tin', example: 'She is very confident when speaking English.' },
+      { id: 'v-12', word: 'hard-working', phonetic: '/ˌhɑːd ˈwɜːkɪŋ/', pos: 'adjective', meaningVi: 'chăm chỉ', example: 'Most students at my school are hard-working and kind.' },
+      { id: 'v-13', word: 'caring', phonetic: '/ˈkeərɪŋ/', pos: 'adjective', meaningVi: 'chu đáo, biết quan tâm', example: 'He is a caring person. He cares about everybody.' },
+      { id: 'v-14', word: 'creative', phonetic: '/kriˈeɪtɪv/', pos: 'adjective', meaningVi: 'sáng tạo', example: 'Mi likes drawing and writing stories. She is creative.' },
+      { id: 'v-15', word: 'go straight', phonetic: '/ɡəʊ streɪt/', pos: 'phrase', meaningVi: 'đi thẳng', example: 'Go straight. Take the second turning on the left.' },
+      { id: 'v-16', word: 'railway station', phonetic: '/ˈreɪlweɪ ˈsteɪʃn/', pos: 'noun', meaningVi: 'nhà ga tàu hỏa', example: 'Turn left to see the railway station.' },
+      { id: 'v-17', word: 'natural wonder', phonetic: '/ˌnætʃrəl ˈwʌndə(r)/', pos: 'noun', meaningVi: 'kì quan thiên nhiên', example: 'Ha Long Bay is a famous natural wonder of Viet Nam.' },
+      { id: 'v-18', word: 'waterfall', phonetic: '/ˈwɔːtəfɔːl/', pos: 'noun', meaningVi: 'thác nước', example: 'We took photos near a beautiful waterfall.' },
+      { id: 'v-19', word: 'fireworks', phonetic: '/ˈfaɪəwɜːks/', pos: 'noun', meaningVi: 'pháo hoa', example: 'Colourful fireworks light up the sky at midnight.' },
+      { id: 'v-20', word: 'lucky money', phonetic: '/ˈlʌki ˈmʌni/', pos: 'noun', meaningVi: 'tiền lì xì', example: 'Children get lucky money from their grandparents at Tet.' }
+    ];
+
+    const WORD_FAMILIES = [
+      {
+        rootWord: 'beauty',
+        noun: 'beauty',
+        verb: 'beautify',
+        adjective: 'beautiful',
+        adverb: 'beautifully',
+        questions: [
+          {
+            sentence: 'Phu Quoc is a very ______ island in Viet Nam.',
+            targetPos: 'adjective (tính từ)',
+            answer: 'beautiful',
+            explanation: 'Trước danh từ "island" cần một tính từ (Adjective) bổ nghĩa → "beautiful".'
+          },
+          {
+            sentence: 'On New Year\'s Day, we dress ______ and go to our grandparents\' houses.',
+            targetPos: 'adverb (trạng từ)',
+            answer: 'beautifully',
+            explanation: 'Sau động từ thường "dress" (ăn mặc) cần một trạng từ (Adverb) chỉ cách thức → "beautifully".'
+          }
+        ]
+      },
+      {
+        rootWord: 'care',
+        noun: 'care, carefulness',
+        verb: 'care',
+        adjective: 'careful, careless, caring',
+        adverb: 'carefully, carelessly',
+        questions: [
+          {
+            sentence: 'Please listen to the conversation ______ and fill the blanks.',
+            targetPos: 'adverb (trạng từ)',
+            answer: 'carefully',
+            explanation: 'Bổ nghĩa cho động từ "listen" cần trạng từ chỉ cách thức → "carefully" (một cách cẩn thận).'
+          },
+          {
+            sentence: 'My best friend is very ______; he always helps his classmates.',
+            targetPos: 'adjective (tính từ)',
+            answer: 'caring',
+            explanation: 'Sau động từ "is" và trạng từ "very" cần tính từ chỉ tính cách biết quan tâm → "caring".'
+          }
+        ]
+      },
+      {
+        rootWord: 'create',
+        noun: 'creation, creativity',
+        verb: 'create',
+        adjective: 'creative',
+        adverb: 'creatively',
+        questions: [
+          {
+            sentence: 'Jimmy likes taking photos and drawing. He is clever and ______.',
+            targetPos: 'adjective (tính từ)',
+            answer: 'creative',
+            explanation: 'Đi song song với tính từ "clever" sau động từ to-be "is" cần một tính từ → "creative".'
+          }
+        ]
+      },
+      {
+        rootWord: 'quick',
+        noun: 'quickness',
+        verb: 'quicken',
+        adjective: 'quick',
+        adverb: 'quickly',
+        questions: [
+          {
+            sentence: 'He runs very ______ in the school sports club.',
+            targetPos: 'adverb (trạng từ)',
+            answer: 'quickly',
+            explanation: 'Bổ nghĩa cho động từ thường "runs" cần một trạng từ (Adverb) → thêm đuôi "-ly" thành "quickly".'
+          }
+        ]
+      }
+    ];
+
+    // ==========================================================================
+    // 2. HÀM SINH CÂU HỎI ĐỘNG & TÍNH LEVEL
+    // ==========================================================================
+    function randInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function generateMentalMathQuestion(difficulty) {
+      const id = 'mm-' + Date.now() + '-' + randInt(100, 999);
+      if (difficulty === 1) {
+        const mode = ['add', 'sub', 'mul'][randInt(0, 2)];
+        if (mode === 'add') {
+          const a = randInt(15, 65);
+          const b = [8, 9, 18, 19, 28, 29][randInt(0, 5)];
+          const roundB = Math.ceil(b / 10) * 10;
+          const diff = roundB - b;
+          const ans = a + b;
+          return {
+            id, subject: 'math', topicTag: 'Cộng nhẩm tròn chục', type: 'number_input',
+            prompt: `${a} + ${b} = ?`,
+            correctAnswer: ans,
+            explanation: `Mẹo tính nhẩm: ${a} + ${b} = ${a} + ${roundB} - ${diff} = ${a + roundB} - ${diff} = ${ans}.`,
+            hint: `Làm tròn ${b} thành ${roundB} rồi trừ đi ${diff}.`,
+            xp: 10
+          };
+        }
+        if (mode === 'sub') {
+          const a = randInt(45, 99);
+          const b = [9, 18, 19, 28, 29][randInt(0, 4)];
+          const roundB = Math.ceil(b / 10) * 10;
+          const diff = roundB - b;
+          const ans = a - b;
+          return {
+            id, subject: 'math', topicTag: 'Trừ nhẩm bù tròn chục', type: 'number_input',
+            prompt: `${a} - ${b} = ?`,
+            correctAnswer: ans,
+            explanation: `Mẹo tính nhẩm: ${a} - ${b} = ${a} - ${roundB} + ${diff} = ${a - roundB} + ${diff} = ${ans}.`,
+            hint: `Lấy ${a} trừ ${roundB} trước, sau đó cộng lại ${diff}.`,
+            xp: 10
+          };
+        }
+        const a = randInt(4, 12);
+        const b = randInt(4, 12);
+        return {
+          id, subject: 'math', topicTag: 'Nhân nhẩm cơ bản', type: 'number_input',
+          prompt: `${a} × ${b} = ?`,
+          correctAnswer: a * b,
+          explanation: `Tích của ${a} × ${b} = ${a * b}.`,
+          xp: 10
+        };
+      }
+
+      if (difficulty === 2) {
+        const mode = ['smart_mul', 'order_ops', 'div'][randInt(0, 2)];
+        if (mode === 'smart_mul') {
+          const pairs = [
+            { a: 25, b: 16, factor: 4, rest: 4, base: 100 },
+            { a: 25, b: 24, factor: 4, rest: 6, base: 100 },
+            { a: 50, b: 24, factor: 2, rest: 12, base: 100 },
+            { a: 125, b: 16, factor: 8, rest: 2, base: 1000 }
+          ];
+          const pick = pairs[randInt(0, pairs.length - 1)];
+          const ans = pick.a * pick.b;
+          return {
+            id, subject: 'math', topicTag: 'Tính nhanh tách thừa số', type: 'number_input',
+            prompt: `Tính nhanh: ${pick.a} × ${pick.b} = ?`,
+            correctAnswer: ans,
+            explanation: `Nhận xét ${pick.a} × ${pick.factor} = ${pick.base}. Do đó: ${pick.a} × ${pick.b} = (${pick.a} × ${pick.factor}) × ${pick.rest} = ${pick.base} × ${pick.rest} = ${ans}.`,
+            hint: `Tách ${pick.b} = ${pick.factor} × ${pick.rest} để ghép với ${pick.a}.`,
+            xp: 15
+          };
+        }
+        if (mode === 'order_ops') {
+          const a = randInt(12, 40);
+          const b = randInt(3, 9);
+          const c = randInt(4, 9);
+          const ans = a + b * c;
+          return {
+            id, subject: 'math', topicTag: 'Thứ tự thực hiện các phép tính', type: 'number_input',
+            prompt: `${a} + ${b} × ${c} = ?`,
+            correctAnswer: ans,
+            explanation: `Thực hiện phép nhân trước: ${b} × ${c} = ${b * c}. Sau đó cộng: ${a} + ${b * c} = ${ans}.`,
+            hint: 'Nhân chia trước, cộng trừ sau.',
+            xp: 15
+          };
+        }
+        const divisor = randInt(6, 15);
+        const quotient = randInt(7, 15);
+        const dividend = divisor * quotient;
+        return {
+          id, subject: 'math', topicTag: 'Chia nhẩm', type: 'number_input',
+          prompt: `${dividend} ÷ ${divisor} = ?`,
+          correctAnswer: quotient,
+          explanation: `Vì ${divisor} × ${quotient} = ${dividend} nên ${dividend} ÷ ${divisor} = ${quotient}.`,
+          xp: 15
+        };
+      }
+
+      const a = randInt(55, 95);
+      const b = randInt(4, 8);
+      const c = randInt(5, 8);
+      const d = randInt(5, 20);
+      const ans = a - b * c + d;
+      return {
+        id, subject: 'math', topicTag: 'Biểu thức nhiều phép tính', type: 'number_input',
+        prompt: `${a} - ${b} × ${c} + ${d} = ?`,
+        correctAnswer: ans,
+        explanation: `Bước 1 (Nhân trước): ${b} × ${c} = ${b * c}. Bước 2 (Trái sang phải): ${a} - ${b * c} + ${d} = ${a - b * c} + ${d} = ${ans}.`,
+        hint: 'Tính tích trước, sau đó thực hiện trừ rồi cộng từ trái sang phải.',
+        xp: 20
+      };
+    }
+
+    function generateDynamicRectangleQuestion() {
+      const lengthA = randInt(6, 15);
+      const widthB = randInt(2, Math.min(10, lengthA - 1));
+      return {
+        id: 'geo-rect-' + Date.now(),
+        subject: 'math',
+        lesson: 'm-c2-l2',
+        topicTag: 'Diện tích hình chữ nhật',
+        type: 'geometry_interaction',
+        prompt: `Hình chữ nhật ABCD có chiều dài a = ${lengthA} cm và chiều rộng b = ${widthB} cm. Hãy tương tác trên hình và tính diện tích S.`,
+        correctAnswer: lengthA * widthB,
+        explanation: `Diện tích hình chữ nhật ABCD là S = a × b = ${lengthA} × ${widthB} = ${lengthA * widthB} cm².`,
+        xp: 30,
+        geometryConfig: {
+          shape: 'rectangle',
+          vertices: ['A', 'B', 'C', 'D'],
+          sides: { AB: 'a', BC: 'b', CD: 'a', DA: 'b' },
+          lengthA,
+          widthB
+        }
+      };
+    }
+
+    function calculateLevelFromXP(xp) {
+      if (xp < 200) return { level: 1, currentLevelXP: xp, nextLevelXP: 200 };
+      if (xp < 500) return { level: 2, currentLevelXP: xp - 200, nextLevelXP: 300 };
+      if (xp < 1000) return { level: 3, currentLevelXP: xp - 500, nextLevelXP: 500 };
+      const extraLevel = Math.floor((xp - 1000) / 500) + 4;
+      return { level: extraLevel, currentLevelXP: (xp - 1000) % 500, nextLevelXP: 500 };
+    }
+
+    // ==========================================================================
+    // 3. QUẢN LÝ TRẠNG THÁI (STATE STORE + LOCALSTORAGE AN TOÀN)
+    // ==========================================================================
+    const STORAGE_KEY = 'questlearn_grade6_pure_v2';
+
+    function createDefaultState() {
+      const progress = {};
+      CHAPTERS.forEach((ch) => {
+        ch.lessons.forEach((l, idx) => {
+          progress[l.id] = {
+            lessonId: l.id,
+            status: idx === 0 ? 'available' : 'locked',
+            stars: 0,
+            highScore: 0
+          };
+        });
+      });
+
+      const flashcardSRS = {};
+      VOCABULARY_CARDS.forEach((c) => {
+        flashcardSRS[c.id] = { learned: false, repetitions: 0 };
+      });
+
+      return {
+        studentName: 'Học sinh Lớp 6',
+        selectedSubject: 'math',
+        xp: 140,
+        streak: 7,
+        bestStreak: 7,
+        lastStudyDate: new Date().toISOString().slice(0, 10),
+        hearts: 5,
+        heartsEnabled: true,
+        dailyGoalMinutes: 10,
+        minutesToday: 6,
+        progress,
+        mistakes: {},
+        weakTopics: {},
+        flashcardSRS,
+        achievements: ['First Lesson', '7 Day Streak'],
+        subjectAccuracy: { mathCorrect: 18, mathTotal: 21, englishCorrect: 15, englishTotal: 19 },
+        mentalMathStats: { bestScore: 140, avgResponseMs: 3800, bestStreak: 9 }
+      };
+    }
+
+    function loadState() {
+      try {
+        const raw = window.localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          return Object.assign(createDefaultState(), parsed);
+        }
+      } catch (e) {}
+      return createDefaultState();
+    }
+
+    function saveState() {
+      try {
+        window.localStorage.setItem(STORAGE_KEY, JSON.stringify(APP.state));
+      } catch (e) {}
+    }
+
+    const APP = {
+      state: loadState(),
+      activeTab: 'home',         // 'home' | 'learn' | 'practice' | 'flashcards' | 'profile'
+      practiceSubTab: 'mental',  // 'mental' | 'geometry' | 'wordform'
+      activeQuiz: null,          // null hoặc object quản lý phiên Quiz hiện tại
+      mentalSession: {
+        started: false,
+        finished: false,
+        difficulty: 1,
+        mode: '10q',
+        question: generateMentalMathQuestion(1),
+        score: 0,
+        totalAnswered: 0,
+        correctCount: 0,
+        streak: 0,
+        bestStreak: 0,
+        timeLeft: 60,
+        questionStartMs: Date.now(),
+        totalResponseMs: 0,
+        feedback: null,
+        timerId: null
+      },
+      flashcardSession: {
+        index: 0,
+        flipped: false
+      },
+      wordFormSession: {
+        familyIdx: 0,
+        questionIdx: 0,
+        inputVal: '',
+        result: null
+      }
+    };
+
+    // ==========================================================================
+    // 4. LOGIC CẬP NHẬT ĐIỂM, TIẾN ĐỘ & QUIZ
+    // ==========================================================================
+    function addXP(amount) {
+      APP.state.xp += amount;
+      saveState();
+    }
+
+    function recordQuestionResult(question, isCorrect) {
+      const acc = APP.state.subjectAccuracy;
+      if (question.subject === 'math') {
+        acc.mathTotal += 1;
+        if (isCorrect) acc.mathCorrect += 1;
+      } else {
+        acc.englishTotal += 1;
+        if (isCorrect) acc.englishCorrect += 1;
+      }
+
+      if (!isCorrect) {
+        if (APP.state.heartsEnabled && APP.state.hearts > 0) {
+          APP.state.hearts -= 1;
+        }
+        const prevM = APP.state.mistakes[question.id];
+        APP.state.mistakes[question.id] = {
+          question,
+          wrongCount: (prevM ? prevM.wrongCount : 0) + 1,
+          consecutiveCorrect: 0,
+          mastered: false
+        };
+        const prevT = APP.state.weakTopics[question.topicTag];
+        APP.state.weakTopics[question.topicTag] = {
+          topicTag: question.topicTag,
+          subject: question.subject,
+          errorCount: (prevT ? prevT.errorCount : 0) + 1
+        };
+      } else if (APP.state.mistakes[question.id]) {
+        const nextConsec = APP.state.mistakes[question.id].consecutiveCorrect + 1;
+        APP.state.mistakes[question.id].consecutiveCorrect = nextConsec;
+        if (nextConsec >= 3) {
+          APP.state.mistakes[question.id].mastered = true;
+        }
+      }
+      saveState();
+    }
+
+    function completeLesson(lessonId, accuracy, earnedXP, durationSec) {
+      const today = new Date().toISOString().slice(0, 10);
+      if (APP.state.lastStudyDate !== today) {
+        APP.state.streak += 1;
+        APP.state.lastStudyDate = today;
+      }
+      APP.state.bestStreak = Math.max(APP.state.bestStreak, APP.state.streak);
+      APP.state.minutesToday += Math.max(1, Math.round(durationSec / 60));
+
+      const stars = accuracy === 100 ? 3 : accuracy >= 80 ? 2 : 1;
+      const status = accuracy === 100 ? 'perfect' : 'completed';
+      const prevProg = APP.state.progress[lessonId] || { stars: 0, highScore: 0 };
+
+      APP.state.progress[lessonId] = {
+        lessonId,
+        status,
+        stars: Math.max(prevProg.stars, stars),
+        highScore: Math.max(prevProg.highScore, accuracy)
+      };
+
+      // Mở khóa bài học tiếp theo trong chương
+      CHAPTERS.forEach((ch) => {
+        const idx = ch.lessons.findIndex((l) => l.id === lessonId);
+        if (idx !== -1 && idx + 1 < ch.lessons.length) {
+          const nextId = ch.lessons[idx + 1].id;
+          if (!APP.state.progress[nextId] || APP.state.progress[nextId].status === 'locked') {
+            APP.state.progress[nextId] = {
+              lessonId: nextId,
+              status: 'available',
+              stars: 0,
+              highScore: 0
+            };
+          }
+        }
+      });
+
+      if (accuracy === 100 && !APP.state.achievements.includes('Perfect Chapter')) {
+        APP.state.achievements.push('Perfect Chapter');
+      }
+      if (APP.state.xp >= 300 && !APP.state.achievements.includes('Math Master')) {
+        APP.state.achievements.push('Math Master');
+      }
+      saveState();
+    }
+
+    function startQuizSession(title, questions, lessonId) {
+      APP.activeQuiz = {
+        title,
+        questions,
+        lessonId: lessonId || null,
+        currentIndex: 0,
+        selectedOption: '',
+        inputVal: '',
+        orderedWords: [],
+        showHint: false,
+        answered: false,
+        isCorrect: null,
+        correctCount: 0,
+        sessionStreak: 0,
+        bestSessionStreak: 0,
+        earnedXP: 0,
+        wrongQuestions: [],
+        startTime: Date.now(),
+        finished: false,
+        geoState: createInitialGeoState()
+      };
+      renderApp();
+    }
+
+    function createInitialGeoState() {
+      return {
+        phase: 'drag_labels', // 'drag_labels' | 'click_sides_a' | 'click_sides_b' | 'calculate'
+        assignedA: false,
+        assignedB: false,
+        selectedTouchLabel: null,
+        clickedSidesA: [],
+        clickedSidesB: [],
+        feedbackType: 'info',
+        feedbackMsg: 'Bước 1/4: Trong công thức S = a × b, hãy KÉO THẢ ký hiệu [a] vào cạnh dài và [b] vào cạnh rộng (hoặc chạm nhãn rồi chạm cạnh).',
+        shake: false,
+        calcInput: ''
+      };
+    }
+
+    // ==========================================================================
+    // 5. HÀM RENDER GIAO DIỆN CHÍNH
+    // ==========================================================================
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function renderApp() {
+      const root = document.getElementById('app');
+      if (!root) return;
+
+      const st = APP.state;
+      const lvlInfo = calculateLevelFromXP(st.xp);
+      const lvlPct = Math.min(100, Math.round((lvlInfo.currentLevelXP / lvlInfo.nextLevelXP) * 100));
+
+      const navItems = [
+        { id: 'home', label: 'Home', icon: '🏠' },
+        { id: 'learn', label: 'Learn', icon: '🗺️' },
+        { id: 'practice', label: 'Practice', icon: '⚡' },
+        { id: 'flashcards', label: 'Flashcards', icon: '🗂️' },
+        { id: 'profile', label: 'Profile', icon: '👤' }
+      ];
+
+      const sidebarNavHtml = navItems
+        .map(
+          (item) => `
+          <button class="nav-btn ${APP.activeTab === item.id && !APP.activeQuiz ? 'active' : ''}" data-action="nav" data-tab="${item.id}">
+            <span style="font-size:20px">${item.icon}</span>
+            <span>${item.label}</span>
+          </button>`
+        )
+        .join('');
+
+      const bottomNavHtml = navItems
+        .map(
+          (item) => `
+          <button class="bnav-btn ${APP.activeTab === item.id && !APP.activeQuiz ? 'active' : ''}" data-action="nav" data-tab="${item.id}">
+            <span style="font-size:18px">${item.icon}</span>
+            <span>${item.label}</span>
+          </button>`
+        )
+        .join('');
+
+      let mainContentHtml = '';
+      if (APP.activeQuiz) {
+        mainContentHtml = renderQuizView();
+      } else if (APP.activeTab === 'home') {
+        mainContentHtml = renderHomeView();
+      } else if (APP.activeTab === 'learn') {
+        mainContentHtml = renderLearnView();
+      } else if (APP.activeTab === 'practice') {
+        mainContentHtml = renderPracticeView();
+      } else if (APP.activeTab === 'flashcards') {
+        mainContentHtml = renderFlashcardsView();
+      } else if (APP.activeTab === 'profile') {
+        mainContentHtml = renderProfileView();
+      }
+
+      root.innerHTML = `
+        <div class="app-shell">
+          <aside class="sidebar">
+            <div>
+              <div class="brand">
+                <div class="brand-logo">G6</div>
+                <div>
+                  <div style="font-weight:900; font-size:18px; color:#0f172a">QuestLearn 6</div>
+                  <div style="font-size:12px; font-weight:700; color:#64748b">Toán & Tiếng Anh THCS</div>
+                </div>
+              </div>
+              <nav>${sidebarNavHtml}</nav>
+            </div>
+            <div style="padding:14px; border-radius:16px; background:#f8fafc; border:1px solid #e2e8f0; font-size:12px; color:#64748b">
+              <div style="font-weight:800; color:#334155">Chương trình SGK Lớp 6</div>
+              <div>Tự động lưu tiến độ trên máy</div>
+            </div>
+          </aside>
+
+          <nav class="bottom-nav">${bottomNavHtml}</nav>
+
+          <main class="main-area">
+            <header class="top-bar">
+              <div style="display:flex; align-items:center; gap:12px">
+                <div class="level-pill">Level ${lvlInfo.level}</div>
+                <div>
+                  <div style="font-size:12px; font-weight:800; color:#64748b">
+                    ⭐ ${st.xp} Total XP (${lvlInfo.currentLevelXP}/${lvlInfo.nextLevelXP} XP lên cấp)
+                  </div>
+                  <div class="progress-track" style="width:150px; margin-top:4px">
+                    <div class="progress-fill" style="width:${lvlPct}%"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="display:flex; align-items:center; gap:10px">
+                <div class="stat-badge stat-streak">🔥 ${st.streak} day streak</div>
+                ${
+                  st.heartsEnabled
+                    ? `<div class="stat-badge stat-hearts">
+                        <span>❤️ ${st.hearts}</span>
+                        ${
+                          st.hearts < 5
+                            ? `<button data-action="refill-hearts" style="margin-left:6px; font-size:12px; font-weight:800; text-decoration:underline; color:#b91c1c">Hồi đầy</button>`
+                            : ''
+                        }
+                      </div>`
+                    : ''
+                }
+              </div>
+            </header>
+
+            ${mainContentHtml}
+          </main>
+        </div>
+      `;
+
+      attachDynamicInputListeners();
+    }
+
+    // ==========================================================================
+    // 6. CÁC MÀN HÌNH CHI TIẾT (HOME, LEARN, PRACTICE, FLASHCARDS, PROFILE, QUIZ)
+    // ==========================================================================
+    function renderHomeView() {
+      const st = APP.state;
+      const mathAcc = st.subjectAccuracy.mathTotal > 0
+        ? Math.round((st.subjectAccuracy.mathCorrect / st.subjectAccuracy.mathTotal) * 100)
+        : 86;
+      const engAcc = st.subjectAccuracy.englishTotal > 0
+        ? Math.round((st.subjectAccuracy.englishCorrect / st.subjectAccuracy.englishTotal) * 100)
+        : 79;
+      const avgSec = (st.mentalMathStats.avgResponseMs / 1000).toFixed(1);
+      const activeMistakes = Object.values(st.mistakes || {}).filter((m) => !m.mastered);
+      const weakTopicList = Object.values(st.weakTopics || {});
+
+      return `
+        <div class="grid-3" style="margin-bottom:18px">
+          <div class="hero-card" style="display:flex; flex-direction:column; justify-content:space-between; gap:18px">
+            <div>
+              <span class="pill-tag" style="background:rgba(255,255,255,0.2); color:#fff; margin-bottom:10px">
+                Nhiệm vụ hằng ngày • Daily Goal: ${st.minutesToday}/${st.dailyGoalMinutes} phút
+              </span>
+              <h1 style="font-size:24px; font-weight:900; margin-bottom:8px">
+                Chào ${escapeHtml(st.studentName)}! Sẵn sàng nối dài chuỗi 🔥 ${st.streak} ngày học?
+              </h1>
+              <p style="font-size:14px; opacity:0.92">
+                Hoàn thành bài Daily Practice tổng hợp Toán tư duy, Hình học tương tác SVG và Từ vựng Tiếng Anh 6 để nhận +50 Bonus XP!
+              </p>
+            </div>
+            <div style="display:flex; flex-wrap:wrap; gap:10px">
+              <button class="btn btn-amber" data-action="start-daily-practice">
+                ✨ DAILY PRACTICE (+50 XP)
+              </button>
+              <button class="btn" style="background:rgba(255,255,255,0.18); color:#fff" data-action="nav" data-tab="learn">
+                Vào Lộ trình Học (Learning Path) →
+              </button>
+            </div>
+          </div>
+
+          <div class="card" style="margin-bottom:0; display:flex; flex-direction:column; justify-content:space-between">
+            <h2 style="font-size:16px; font-weight:900; margin-bottom:12px">📊 Phân tích Học tập</h2>
+            <div style="display:flex; flex-direction:column; gap:14px; font-size:14px">
+              <div>
+                <div style="display:flex; justify-content:space-between; font-weight:800; margin-bottom:4px">
+                  <span>Toán 6 Accuracy</span>
+                  <span style="color:var(--success)">${mathAcc}%</span>
+                </div>
+                <div class="progress-track"><div class="progress-fill green" style="width:${mathAcc}%"></div></div>
+              </div>
+              <div>
+                <div style="display:flex; justify-content:space-between; font-weight:800; margin-bottom:4px">
+                  <span>Tiếng Anh 6 Accuracy</span>
+                  <span style="color:var(--primary)">${engAcc}%</span>
+                </div>
+                <div class="progress-track"><div class="progress-fill" style="width:${engAcc}%"></div></div>
+              </div>
+              <div style="padding-top:10px; border-top:1px solid var(--border); display:flex; justify-content:space-between; font-size:13px; font-weight:800; color:#475569">
+                <span>Mental Math Avg Time:</span>
+                <span style="color:var(--warning)">${avgSec} sec/question</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-bottom:18px">
+          <button class="card" style="margin-bottom:0; text-align:left; display:flex; align-items:center; justify-content:space-between; gap:14px" data-action="select-subject-learn" data-subject="math">
+            <div>
+              <span class="pill-tag" style="background:#dcfce7; color:#166534; margin-bottom:8px">SGK Toán 6 + Toán Tư Duy</span>
+              <h3 style="font-size:20px; font-weight:900; color:#0f172a">📐 MÔN TOÁN LỚP 6</h3>
+              <p style="font-size:13px; color:#64748b; margin-top:4px">
+                Số tự nhiên, Số La Mã, Thứ tự phép tính, ƯCLN-BCNN & Hình học SVG tương tác
+              </p>
+            </div>
+            <span style="font-size:38px">🧮</span>
+          </button>
+
+          <button class="card" style="margin-bottom:0; text-align:left; display:flex; align-items:center; justify-content:space-between; gap:14px" data-action="select-subject-learn" data-subject="english">
+            <div>
+              <span class="pill-tag" style="background:#e0e7ff; color:#3730a3; margin-bottom:8px">SGK Global Success 6</span>
+              <h3 style="font-size:20px; font-weight:900; color:#0f172a">🇬🇧 TIẾNG ANH LỚP 6</h3>
+              <p style="font-size:13px; color:#64748b; margin-top:4px">
+                Vocabulary, Grammar, Reading, Sentence Building, Word Form & Flashcards
+              </p>
+            </div>
+            <span style="font-size:38px">📚</span>
+          </button>
+        </div>
+
+        <div class="grid-2">
+          <div class="card" style="margin-bottom:0">
+            <h3 style="font-size:16px; font-weight:900; margin-bottom:12px">🎯 Weak Topics (Chủ đề cần luyện thêm)</h3>
+            ${
+              weakTopicList.length === 0
+                ? `<div style="display:flex; flex-direction:column; gap:8px; font-size:14px; font-weight:700">
+                    <div style="padding:10px 14px; border-radius:14px; background:#fef2f2; color:#991b1b; display:flex; justify-content:space-between">
+                      <span>🔴 Thứ tự thực hiện các phép tính</span>
+                      <span>Ưu tiên</span>
+                    </div>
+                    <div style="padding:10px 14px; border-radius:14px; background:#fffbeb; color:#92400e; display:flex; justify-content:space-between">
+                      <span>🟠 Diện tích hình chữ nhật (S = a × b)</span>
+                      <span>Cần ôn</span>
+                    </div>
+                    <div style="padding:10px 14px; border-radius:14px; background:#fefce8; color:#854d0e; display:flex; justify-content:space-between">
+                      <span>🟡 Word Form (Adjective vs Adverb)</span>
+                      <span>Luyện thêm</span>
+                    </div>
+                  </div>`
+                : `<div style="display:flex; flex-direction:column; gap:8px; font-size:14px; font-weight:700">
+                    ${weakTopicList
+                      .map(
+                        (wt) => `
+                        <div style="padding:10px 14px; border-radius:14px; background:#fef2f2; color:#991b1b; display:flex; justify-content:space-between">
+                          <span>🔴 ${escapeHtml(wt.topicTag)}</span>
+                          <span>Sai ${wt.errorCount} lần</span>
+                        </div>`
+                      )
+                      .join('')}
+                  </div>`
+            }
+          </div>
+
+          <div class="card" style="margin-bottom:0; display:flex; flex-direction:column; justify-content:space-between; gap:14px">
+            <div>
+              <h3 style="font-size:16px; font-weight:900; margin-bottom:6px">🔄 Mistake Review (Ôn tập câu làm sai)</h3>
+              <p style="font-size:13px; color:#64748b">
+                Hệ thống tự động lưu các câu trả lời sai. Khi bạn làm đúng liên tiếp 3 lần, câu hỏi sẽ được đánh dấu Mastered!
+              </p>
+            </div>
+            <div style="padding:14px 16px; border-radius:18px; background:#f8fafc; border:1px solid var(--border); display:flex; align-items:center; justify-content:space-between">
+              <div>
+                <div style="font-size:22px; font-weight:900">${activeMistakes.length} câu hỏi</div>
+                <div style="font-size:12px; color:#64748b; font-weight:700">Đang chờ ôn tập lại</div>
+              </div>
+              <button class="btn btn-primary" data-action="start-mistake-review" ${activeMistakes.length === 0 ? 'disabled' : ''}>
+                Luyện ngay
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderLearnView() {
+      const st = APP.state;
+      const chapters = CHAPTERS.filter((c) => c.subject === st.selectedSubject);
+
+      const chaptersHtml = chapters
+        .map((ch) => {
+          const completedCount = ch.lessons.filter((l) => {
+            const stNode = st.progress[l.id]?.status;
+            return stNode === 'completed' || stNode === 'perfect';
+          }).length;
+          const pct = Math.round((completedCount / ch.lessons.length) * 100);
+
+          const lessonsHtml = ch.lessons
+            .map((lesson, idx) => {
+              const prog = st.progress[lesson.id] || {
+                status: idx === 0 ? 'available' : 'locked',
+                stars: 0,
+                highScore: 0
+              };
+              const isLocked = prog.status === 'locked';
+              const iconBg = isLocked
+                ? '#e2e8f0; color:#64748b'
+                : prog.status === 'completed' || prog.status === 'perfect'
+                ? '#16a34a; color:#fff'
+                : '#4f46e5; color:#fff';
+              const iconChar = isLocked ? '🔒' : prog.status === 'completed' || prog.status === 'perfect' ? '✓' : '▶';
+              const starsStr = [1, 2, 3]
+                .map((s) => `<span style="color:${s <= prog.stars ? '#f59e0b' : '#cbd5e1'}">★</span>`)
+                .join('');
+
+              return `
+                <div class="lesson-node ${prog.status}">
+                  <div style="display:flex; align-items:flex-start; gap:14px">
+                    <div class="node-icon" style="background:${iconBg}">${iconChar}</div>
+                    <div>
+                      <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap">
+                        <span style="font-weight:900; font-size:16px">${escapeHtml(lesson.title)}</span>
+                        <span class="pill-tag" style="background:#f1f5f9; color:#475569; text-transform:uppercase">${lesson.type}</span>
+                      </div>
+                      <p style="font-size:13px; color:#64748b; margin-top:2px">${escapeHtml(lesson.description)}</p>
+                      <div style="display:flex; align-items:center; gap:14px; margin-top:6px; font-size:13px; font-weight:800">
+                        <span>${starsStr}</span>
+                        <span style="color:#64748b">Điểm cao nhất: ${prog.highScore}%</span>
+                      </div>
+                    </div>
+                  </div>
+                  <button class="btn ${isLocked ? 'btn-outline' : 'btn-primary'}" data-action="start-lesson" data-lesson="${lesson.id}" data-title="${escapeHtml(lesson.title)}" data-type="${lesson.type}" ${isLocked ? 'disabled' : ''}>
+                    ${isLocked ? 'Đang khóa' : prog.highScore > 0 ? 'Luyện lại' : 'Bắt đầu học'}
+                  </button>
+                </div>
+              `;
+            })
+            .join('');
+
+          return `
+            <div class="card">
+              <div style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; padding-bottom:14px; margin-bottom:16px; border-bottom:1px solid var(--border)">
+                <div>
+                  <h2 style="font-size:20px; font-weight:900">${escapeHtml(ch.title)}</h2>
+                  <p style="font-size:13px; color:#64748b">${escapeHtml(ch.subtitle)}</p>
+                </div>
+                <div>
+                  <div style="font-size:12px; font-weight:800; color:#64748b">Tiến độ chương: ${pct}%</div>
+                  <div class="progress-track" style="width:160px; margin-top:4px">
+                    <div class="progress-fill green" style="width:${pct}%"></div>
+                  </div>
+                </div>
+              </div>
+              <div>${lessonsHtml}</div>
+            </div>
+          `;
+        })
+        .join('');
+
+      return `
+        <div style="display:flex; gap:10px; margin-bottom:18px">
+          <button class="btn ${st.selectedSubject === 'math' ? 'btn-success' : 'btn-outline'}" data-action="switch-subject" data-subject="math">
+            📐 TOÁN LỚP 6
+          </button>
+          <button class="btn ${st.selectedSubject === 'english' ? 'btn-primary' : 'btn-outline'}" data-action="switch-subject" data-subject="english">
+            🇬🇧 TIẾNG ANH LỚP 6
+          </button>
+        </div>
+        ${chaptersHtml}
+      `;
+    }
+
+    function renderPracticeView() {
+      const sub = APP.practiceSubTab;
+      const tabsHtml = `
+        <div style="display:flex; flex-wrap:wrap; gap:10px; margin-bottom:18px">
+          <button class="btn ${sub === 'mental' ? 'btn-primary' : 'btn-outline'}" data-action="practice-subtab" data-sub="mental">
+            ⚡ Mental Math (Tính nhẩm)
+          </button>
+          <button class="btn ${sub === 'geometry' ? 'btn-primary' : 'btn-outline'}" data-action="practice-subtab" data-sub="geometry">
+            📐 Hình học Tương tác SVG
+          </button>
+          <button class="btn ${sub === 'wordform' ? 'btn-primary' : 'btn-outline'}" data-action="practice-subtab" data-sub="wordform">
+            🔤 Word Form (Cấu tạo từ)
+          </button>
+        </div>
+      `;
+
+      if (sub === 'mental') {
+        return tabsHtml + renderMentalMathArena();
+      }
+      if (sub === 'wordform') {
+        return tabsHtml + renderWordFormArena();
+      }
+      return `
+        ${tabsHtml}
+        <div class="card">
+          <div style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; margin-bottom:14px">
+            <div>
+              <h2 style="font-size:20px; font-weight:900">📐 Phòng thí nghiệm Hình chữ nhật Tương tác (SVG Drag & Drop)</h2>
+              <p style="font-size:13px; color:#64748b">
+                Kéo thả nhãn [a], [b] trực tiếp vào cạnh hình chữ nhật ABCD, click chọn các cạnh bằng nhau và tính diện tích S = a × b.
+              </p>
+            </div>
+            <button class="btn btn-success" data-action="start-dynamic-geo">
+              🎲 Mở bài thực hành Hình chữ nhật Động
+            </button>
+          </div>
+          <div style="padding:16px; border-radius:18px; background:#f8fafc; border:1px solid var(--border); font-size:14px">
+            Nhấn nút <strong>"🎲 Mở bài thực hành Hình chữ nhật Động"</strong> phía trên để bắt đầu bài tương tác trực tiếp với số đo ngẫu nhiên (luôn đảm bảo chiều dài a &gt; chiều rộng b).
+          </div>
+        </div>
+      `;
+    }
+
+    function renderMentalMathArena() {
+      const ms = APP.mentalSession;
+      const acc = ms.totalAnswered > 0 ? Math.round((ms.correctCount / ms.totalAnswered) * 100) : 100;
+      const avgSec = ms.totalAnswered > 0 ? (ms.totalResponseMs / ms.totalAnswered / 1000).toFixed(1) : '0.0';
+
+      if (!ms.started) {
+        return `
+          <div class="card">
+            <h2 style="font-size:20px; font-weight:900; margin-bottom:4px">⚡ Mental Math Arena (Luyện Tính Nhẩm Siêu Tốc)</h2>
+            <p style="font-size:13px; color:#64748b; margin-bottom:18px">
+              Cộng trừ nhẩm tròn chục (52 - 19 = 52 - 20 + 1), nhân chia nhẩm, thứ tự phép tính & tách thừa số tính nhanh (25 × 16 = 25 × 4 × 4 = 400).
+            </p>
+
+            <div class="grid-2" style="margin-bottom:18px">
+              <div style="padding:16px; border-radius:18px; background:#f8fafc; border:1px solid var(--border)">
+                <div style="font-size:12px; font-weight:800; color:#64748b; text-transform:uppercase; margin-bottom:10px">Chọn Độ khó</div>
+                <div style="display:flex; gap:8px">
+                  ${[
+                    { id: 1, label: 'Easy (Dễ)' },
+                    { id: 2, label: 'Medium (Vừa)' },
+                    { id: 3, label: 'Hard (Khó)' }
+                  ]
+                    .map(
+                      (d) => `
+                      <button class="btn ${ms.difficulty === d.id ? 'btn-primary' : 'btn-outline'}" style="flex:1; padding:10px" data-action="mm-set-diff" data-diff="${d.id}">
+                        ${d.label}
+                      </button>`
+                    )
+                    .join('')}
+                </div>
+              </div>
+
+              <div style="padding:16px; border-radius:18px; background:#f8fafc; border:1px solid var(--border)">
+                <div style="font-size:12px; font-weight:800; color:#64748b; text-transform:uppercase; margin-bottom:10px">Chế độ Thử thách</div>
+                <div style="display:flex; gap:8px">
+                  ${[
+                    { id: '60s', label: '60s Challenge' },
+                    { id: '10q', label: '10 Câu hỏi' },
+                    { id: 'accuracy', label: 'Accuracy Mode' }
+                  ]
+                    .map(
+                      (m) => `
+                      <button class="btn ${ms.mode === m.id ? 'btn-amber' : 'btn-outline'}" style="flex:1; padding:10px; font-size:13px" data-action="mm-set-mode" data-mode="${m.id}">
+                        ${m.label}
+                      </button>`
+                    )
+                    .join('')}
+                </div>
+              </div>
+            </div>
+
+            <button class="btn btn-primary" style="width:100%; padding:16px; font-size:16px" data-action="mm-start">
+              🚀 Bắt đầu Thử thách Tính nhẩm
+            </button>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="card">
+          <div class="grid-4" style="margin-bottom:18px; text-align:center">
+            <div style="padding:12px; border-radius:16px; background:#f8fafc; border:1px solid var(--border)">
+              <div style="font-size:12px; font-weight:800; color:#64748b">Score</div>
+              <div style="font-size:22px; font-weight:900">${ms.score}</div>
+            </div>
+            <div style="padding:12px; border-radius:16px; background:#f8fafc; border:1px solid var(--border)">
+              <div style="font-size:12px; font-weight:800; color:#64748b">Accuracy</div>
+              <div style="font-size:22px; font-weight:900; color:var(--success)">${acc}%</div>
+            </div>
+            <div style="padding:12px; border-radius:16px; background:#f8fafc; border:1px solid var(--border)">
+              <div style="font-size:12px; font-weight:800; color:#64748b">Avg Time</div>
+              <div style="font-size:22px; font-weight:900; color:var(--primary)">${avgSec}s</div>
+            </div>
+            <div style="padding:12px; border-radius:16px; background:#f8fafc; border:1px solid var(--border)">
+              <div style="font-size:12px; font-weight:800; color:#64748b">${ms.mode === '60s' ? 'Time Left' : 'Best Streak'}</div>
+              <div style="font-size:22px; font-weight:900; color:var(--warning)">
+                ${ms.mode === '60s' ? `⏱️ ${ms.timeLeft}s` : `🔥 ${ms.bestStreak}`}
+              </div>
+            </div>
+          </div>
+
+          ${
+            !ms.finished
+              ? `<div style="padding:26px; border-radius:20px; background:var(--primary-light); border:2px solid #c7d2fe; text-align:center; margin-bottom:16px">
+                  <div style="font-size:12px; font-weight:800; color:var(--primary); text-transform:uppercase">${escapeHtml(ms.question.topicTag)}</div>
+                  <div style="font-size:32px; font-weight:900; margin-top:6px">${escapeHtml(ms.question.prompt)}</div>
+                </div>
+                <div style="display:flex; gap:10px; margin-bottom:14px">
+                  <input id="mm-input" type="number" class="input-box" style="text-align:center" placeholder="Nhập nhanh kết quả rồi nhấn Enter..." autofocus />
+                  <button class="btn btn-primary" data-action="mm-submit">Trả lời</button>
+                </div>`
+              : `<div style="padding:24px; border-radius:20px; background:var(--success-light); border:2px solid #86efac; text-align:center; margin-bottom:16px">
+                  <h3 style="font-size:22px; font-weight:900; color:#14532d; margin-bottom:6px">🎉 Hoàn thành phiên luyện tập!</h3>
+                  <p style="font-size:14px; font-weight:700; color:#166534; margin-bottom:16px">
+                    Điểm số: ${ms.score} • Độ chính xác: ${acc}% • Phản xạ trung bình: ${avgSec} giây/câu • Chuỗi đúng cao nhất: ${ms.bestStreak}
+                  </p>
+                  <div style="display:flex; justify-content:center; gap:10px">
+                    <button class="btn btn-success" data-action="mm-start">🔄 Chơi lại</button>
+                    <button class="btn btn-outline" data-action="mm-reset">Đổi chế độ</button>
+                  </div>
+                </div>`
+          }
+
+          ${
+            ms.feedback
+              ? `<div style="padding:14px 16px; border-radius:16px; font-size:14px; font-weight:700; background:${
+                  ms.feedback.ok ? '#f0fdf4' : '#fef2f2'
+                }; border:1px solid ${ms.feedback.ok ? '#86efac' : '#fecaca'}; color:${
+                  ms.feedback.ok ? '#14532d' : '#991b1b'
+                }">
+                  ${escapeHtml(ms.feedback.text)}
+                </div>`
+              : ''
+          }
+        </div>
+      `;
+    }
+
+    function renderWordFormArena() {
+      const wf = APP.wordFormSession;
+      const fam = WORD_FAMILIES[wf.familyIdx];
+      const q = fam.questions[wf.questionIdx];
+
+      return `
+        <div class="card">
+          <h2 style="font-size:20px; font-weight:900; margin-bottom:4px">🔤 Word Form Practice (Cấu tạo từ Tiếng Anh 6)</h2>
+          <p style="font-size:13px; color:#64748b; margin-bottom:16px">
+            Quan sát bảng họ từ (Word Family) và điền đúng dạng Noun / Verb / Adjective / Adverb vào chỗ trống.
+          </p>
+
+          <div class="grid-4" style="margin-bottom:18px">
+            <div style="padding:12px; border-radius:16px; background:#f0f9ff; border:1px solid #bae6fd">
+              <div style="font-size:11px; font-weight:800; color:#0369a1; text-transform:uppercase">Noun (Danh từ)</div>
+              <div style="font-weight:900; margin-top:4px">${escapeHtml(fam.noun)}</div>
+            </div>
+            <div style="padding:12px; border-radius:16px; background:#f0fdf4; border:1px solid #bbf7d0">
+              <div style="font-size:11px; font-weight:800; color:#15803d; text-transform:uppercase">Verb (Động từ)</div>
+              <div style="font-weight:900; margin-top:4px">${escapeHtml(fam.verb)}</div>
+            </div>
+            <div style="padding:12px; border-radius:16px; background:#fffbeb; border:1px solid #fde68a">
+              <div style="font-size:11px; font-weight:800; color:#b45309; text-transform:uppercase">Adjective (Tính từ)</div>
+              <div style="font-weight:900; margin-top:4px">${escapeHtml(fam.adjective)}</div>
+            </div>
+            <div style="padding:12px; border-radius:16px; background:#faf5ff; border:1px solid #e9d5ff">
+              <div style="font-size:11px; font-weight:800; color:#7e22ce; text-transform:uppercase">Adverb (Trạng từ)</div>
+              <div style="font-weight:900; margin-top:4px">${escapeHtml(fam.adverb)}</div>
+            </div>
+          </div>
+
+          <div style="padding:18px; border-radius:18px; background:#f8fafc; border:1px solid var(--border); margin-bottom:14px">
+            <div style="font-size:12px; font-weight:800; color:var(--primary); text-transform:uppercase; margin-bottom:6px">
+              Root word: <u>${escapeHtml(fam.rootWord)}</u> • Cần điền: ${escapeHtml(q.targetPos)}
+            </div>
+            <div style="font-size:18px; font-weight:900">${escapeHtml(q.sentence)}</div>
+          </div>
+
+          <div style="display:flex; gap:10px; margin-bottom:14px">
+            <input id="wf-input" type="text" class="input-box" value="${escapeHtml(wf.inputVal)}" placeholder="Nhập từ đã biến đổi..." ${wf.result ? 'disabled' : ''} />
+            ${
+              !wf.result
+                ? `<button class="btn btn-primary" data-action="wf-check">Kiểm tra</button>`
+                : `<button class="btn btn-success" data-action="wf-next">Câu tiếp →</button>`
+            }
+          </div>
+
+          ${
+            wf.result
+              ? `<div style="padding:14px 16px; border-radius:16px; font-size:14px; font-weight:700; background:${
+                  wf.result.ok ? '#f0fdf4' : '#fef2f2'
+                }; border:1px solid ${wf.result.ok ? '#86efac' : '#fecaca'}; color:${
+                  wf.result.ok ? '#14532d' : '#991b1b'
+                }">
+                  <div style="font-weight:900; margin-bottom:4px">
+                    ${wf.result.ok ? '✓ Chính xác! (+15 XP)' : `✕ Chưa đúng. Đáp án đúng là "${escapeHtml(q.answer)}"`}
+                  </div>
+                  <div>${escapeHtml(wf.result.explanation)}</div>
+                </div>`
+              : ''
+          }
+        </div>
+      `;
+    }
+
+    function renderFlashcardsView() {
+      const fc = APP.flashcardSession;
+      const card = VOCABULARY_CARDS[fc.index];
+      const learnedCount = Object.values(APP.state.flashcardSRS || {}).filter((x) => x.learned).length;
+      const pct = Math.round((learnedCount / VOCABULARY_CARDS.length) * 100);
+
+      return `
+        <div style="max-width:620px; margin:0 auto">
+          <div class="card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px">
+              <span style="font-weight:900">🗂️ Vocabulary Flashcards (SGK Tiếng Anh 6)</span>
+              <span style="font-size:14px; font-weight:900; color:var(--primary)">${learnedCount} / ${VOCABULARY_CARDS.length} words learned</span>
+            </div>
+            <div class="progress-track"><div class="progress-fill green" style="width:${pct}%"></div></div>
+          </div>
+
+          <div class="flashcard-box" data-action="fc-flip" style="margin-bottom:18px">
+            ${
+              !fc.flipped
+                ? `<span class="pill-tag" style="background:var(--primary-light); color:var(--primary); margin-bottom:14px">
+                    MẶT TRƯỚC • Chạm vào thẻ để lật xem nghĩa
+                  </span>
+                  <h3 style="font-size:36px; font-weight:900; margin-bottom:16px">${escapeHtml(card.word)}</h3>
+                  <button class="btn btn-outline" style="padding:8px 16px; font-size:13px" data-action="fc-speak" data-word="${escapeHtml(card.word)}">
+                    🔊 Nghe phát âm
+                  </button>`
+                : `<div style="display:flex; align-items:center; gap:8px; margin-bottom:10px">
+                    <span style="font-family:monospace; font-size:16px; color:#64748b">${escapeHtml(card.phonetic)}</span>
+                    <span class="pill-tag" style="background:#fef3c7; color:#92400e">${escapeHtml(card.pos)}</span>
+                  </div>
+                  <div style="font-size:28px; font-weight:900; color:var(--success); margin-bottom:14px">${escapeHtml(card.meaningVi)}</div>
+                  <div style="padding:12px 16px; border-radius:14px; background:#f8fafc; border:1px solid var(--border); font-size:14px; font-style:italic; color:#334155">
+                    “${escapeHtml(card.example)}”
+                  </div>`
+            }
+          </div>
+
+          <div class="grid-4" style="margin-bottom:12px">
+            <button class="btn" style="background:#fef2f2; border:2px solid #fca5a5; color:#b91c1c; flex-direction:column; padding:12px" data-action="fc-rate" data-rating="Again">
+              <span>Again</span>
+              <span style="font-size:11px; opacity:0.8">Xem lại sớm</span>
+            </button>
+            <button class="btn" style="background:#fffbeb; border:2px solid #fcd34d; color:#b45309; flex-direction:column; padding:12px" data-action="fc-rate" data-rating="Hard">
+              <span>Hard</span>
+              <span style="font-size:11px; opacity:0.8">Sau vài câu</span>
+            </button>
+            <button class="btn" style="background:#f0fdf4; border:2px solid #86efac; color:#15803d; flex-direction:column; padding:12px" data-action="fc-rate" data-rating="Good">
+              <span>Good</span>
+              <span style="font-size:11px; opacity:0.8">Tăng interval</span>
+            </button>
+            <button class="btn" style="background:#f0f9ff; border:2px solid #7dd3fc; color:#0369a1; flex-direction:column; padding:12px" data-action="fc-rate" data-rating="Easy">
+              <span>Easy</span>
+              <span style="font-size:11px; opacity:0.8">Đã thuộc kỹ</span>
+            </button>
+          </div>
+          <div style="text-align:center; font-size:12px; font-weight:800; color:#94a3b8">
+            Thẻ ${fc.index + 1} / ${VOCABULARY_CARDS.length}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderProfileView() {
+      const st = APP.state;
+      const badges = [
+        'First Lesson',
+        '10 Questions Correct',
+        '7 Day Streak',
+        'Math Master',
+        'Vocabulary Master',
+        'Perfect Chapter'
+      ];
+
+      return `
+        <div class="grid-2">
+          <div class="card">
+            <h2 style="font-size:18px; font-weight:900; margin-bottom:6px">🏅 Thành tích & Danh hiệu (Achievements)</h2>
+            <p style="font-size:13px; color:#64748b; font-weight:700; margin-bottom:14px">
+              Chuỗi kỷ lục: 🔥 ${st.bestStreak} ngày liên tiếp • Tổng điểm: ${st.xp} XP
+            </p>
+            <div class="grid-2">
+              ${badges
+                .map((b) => {
+                  const unlocked = st.achievements.includes(b);
+                  return `
+                    <div style="padding:12px 14px; border-radius:16px; border:1px solid ${
+                      unlocked ? '#fcd34d' : '#e2e8f0'
+                    }; background:${unlocked ? '#fffbeb' : '#f8fafc'}; color:${
+                      unlocked ? '#92400e' : '#94a3b8'
+                    }; font-weight:800; font-size:14px; display:flex; align-items:center; gap:8px">
+                      <span>${unlocked ? '🏅' : '🔒'}</span>
+                      <span>${escapeHtml(b)}</span>
+                    </div>
+                  `;
+                })
+                .join('')}
+            </div>
+          </div>
+
+          <div class="card">
+            <h2 style="font-size:18px; font-weight:900; margin-bottom:14px">⚙️ Cài đặt Học tập (Settings)</h2>
+
+            <div style="padding:14px 16px; border-radius:16px; background:#f8fafc; border:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:18px">
+              <div>
+                <div style="font-weight:800; font-size:15px">Chế độ Năng lượng (Hearts ❤️)</div>
+                <div style="font-size:12px; color:#64748b">
+                  Có thể tắt chế độ mất tim khi làm sai để học sinh nhỏ tuổi thoải mái thử nghiệm.
+                </div>
+              </div>
+              <button class="btn ${st.heartsEnabled ? 'btn-danger' : 'btn-outline'}" style="padding:8px 14px; font-size:13px" data-action="toggle-hearts">
+                ${st.heartsEnabled ? 'Đang BẬT' : 'Đang TẮT'}
+              </button>
+            </div>
+
+            <div style="margin-bottom:18px">
+              <div style="font-weight:800; font-size:14px; margin-bottom:8px">Mục tiêu mỗi ngày (Daily Goal)</div>
+              <div class="grid-4">
+                ${[5, 10, 15, 20]
+                  .map(
+                    (mins) => `
+                    <button class="btn ${st.dailyGoalMinutes === mins ? 'btn-primary' : 'btn-outline'}" style="padding:10px" data-action="set-goal" data-mins="${mins}">
+                      ${mins} phút
+                    </button>`
+                  )
+                  .join('')}
+              </div>
+            </div>
+
+            <div style="padding-top:14px; border-top:1px solid var(--border)">
+              <button data-action="reset-all" style="font-size:13px; font-weight:800; color:var(--danger); text-decoration:underline">
+                🔄 Đặt lại toàn bộ tiến độ về mặc định
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // ==========================================================================
+    // 7. RENDER QUIZ & HÌNH HỌC TƯƠNG TÁC SVG
+    // ==========================================================================
+    function renderQuizView() {
+      const qz = APP.activeQuiz;
+      if (!qz) return '';
+
+      if (qz.finished) {
+        const durationSec = Math.max(1, Math.round((Date.now() - qz.startTime) / 1000));
+        const mins = Math.floor(durationSec / 60);
+        const secs = durationSec % 60;
+        const accuracy = Math.round((qz.correctCount / qz.questions.length) * 100);
+        const weakConcept = qz.wrongQuestions[0]?.topicTag || 'Không có — Bạn đã nắm vững tất cả!';
+
+        return `
+          <div class="card" style="max-width:580px; margin:0 auto; text-align:center; padding:28px">
+            <div style="font-size:48px; margin-bottom:8px">🏆</div>
+            <h2 style="font-size:26px; font-weight:900; margin-bottom:4px">Lesson Complete!</h2>
+            <p style="font-size:14px; color:#64748b; font-weight:700; margin-bottom:20px">${escapeHtml(qz.title)}</p>
+
+            <div class="grid-4" style="margin-bottom:18px">
+              <div style="padding:12px; border-radius:16px; background:#fffbeb; border:1px solid #fde68a">
+                <div style="font-size:11px; font-weight:800; color:#b45309">XP EARNED</div>
+                <div style="font-size:22px; font-weight:900; color:#78350f">+${qz.earnedXP}</div>
+              </div>
+              <div style="padding:12px; border-radius:16px; background:#f0fdf4; border:1px solid #bbf7d0">
+                <div style="font-size:11px; font-weight:800; color:#15803d">ACCURACY</div>
+                <div style="font-size:22px; font-weight:900; color:#14532d">${accuracy}%</div>
+              </div>
+              <div style="padding:12px; border-radius:16px; background:#eef2ff; border:1px solid #c7d2fe">
+                <div style="font-size:11px; font-weight:800; color:#4338ca">CORRECT</div>
+                <div style="font-size:22px; font-weight:900; color:#312e81">${qz.correctCount}/${qz.questions.length}</div>
+              </div>
+              <div style="padding:12px; border-radius:16px; background:#f0f9ff; border:1px solid #bae6fd">
+                <div style="font-size:11px; font-weight:800; color:#0369a1">TIME & STREAK</div>
+                <div style="font-size:16px; font-weight:900; color:#0c4a6e">${mins}m ${secs}s • 🔥${qz.bestSessionStreak}</div>
+              </div>
+            </div>
+
+            <div style="padding:14px; border-radius:16px; background:#f8fafc; border:1px solid var(--border); text-align:left; font-size:14px; margin-bottom:20px">
+              <strong>🎯 Chủ đề cần lưu ý (Weak concept):</strong> ${escapeHtml(weakConcept)}
+            </div>
+
+            <div style="display:flex; flex-wrap:wrap; gap:10px">
+              ${
+                qz.wrongQuestions.length > 0
+                  ? `<button class="btn btn-outline" style="flex:1; border-color:var(--danger); color:var(--danger)" data-action="quiz-practice-mistakes">
+                      🔄 Practice Mistakes (${qz.wrongQuestions.length})
+                    </button>`
+                  : ''
+              }
+              <button class="btn btn-primary" style="flex:1" data-action="quiz-exit">
+                Continue →
+              </button>
+            </div>
+          </div>
+        `;
+      }
+
+      const currentQ = qz.questions[qz.currentIndex];
+      const pct = Math.round(((qz.currentIndex + (qz.answered ? 1 : 0)) / qz.questions.length) * 100);
+
+      let questionBodyHtml = '';
+      if (currentQ.type === 'multiple_choice' || currentQ.type === 'true_false') {
+        questionBodyHtml = `
+          <div class="grid-2" style="margin-top:14px">
+            ${(currentQ.options || [])
+              .map(
+                (opt) => `
+                <button class="option-btn ${qz.selectedOption === opt ? 'selected' : ''}" data-action="quiz-select-opt" data-opt="${escapeHtml(opt)}" ${qz.answered ? 'disabled' : ''}>
+                  <span>${escapeHtml(opt)}</span>
+                  <span>${qz.selectedOption === opt ? '●' : '○'}</span>
+                </button>`
+              )
+              .join('')}
+          </div>
+        `;
+      } else if (currentQ.type === 'number_input' || currentQ.type === 'text_input') {
+        questionBodyHtml = `
+          <div style="margin-top:14px">
+            <input id="quiz-input" type="${currentQ.type === 'number_input' ? 'number' : 'text'}" class="input-box" value="${escapeHtml(qz.inputVal)}" placeholder="${
+              currentQ.type === 'number_input' ? 'Nhập số đáp án...' : 'Nhập câu trả lời tiếng Anh...'
+            }" ${qz.answered ? 'disabled' : ''} autofocus />
+          </div>
+        `;
+      } else if (currentQ.type === 'ordering') {
+        const chosenHtml =
+          qz.orderedWords.length === 0
+            ? `<span style="color:#94a3b8; font-size:14px; font-weight:700">👆 Chạm vào các từ bên dưới theo đúng thứ tự câu...</span>`
+            : qz.orderedWords
+                .map(
+                  (w, idx) => `
+                  <button class="btn btn-primary" style="padding:8px 14px; font-size:14px" data-action="quiz-remove-word" data-idx="${idx}" ${qz.answered ? 'disabled' : ''}>
+                    ${escapeHtml(w)}
+                  </button>`
+                )
+                .join('');
+
+        const poolHtml = (currentQ.options || [])
+          .map((w) => {
+            const usedCount = qz.orderedWords.filter((x) => x === w).length;
+            const totalCount = currentQ.options.filter((x) => x === w).length;
+            const isUsed = usedCount >= totalCount;
+            return `
+              <button class="btn btn-outline" style="padding:8px 14px; font-size:14px" data-action="quiz-add-word" data-word="${escapeHtml(w)}" ${qz.answered || isUsed ? 'disabled' : ''}>
+                ${escapeHtml(w)}
+              </button>
+            `;
+          })
+          .join('');
+
+        questionBodyHtml = `
+          <div style="margin-top:14px">
+            <div style="min-height:60px; padding:12px; border-radius:16px; background:#f8fafc; border:2px dashed #cbd5e1; display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:12px">
+              ${chosenHtml}
+            </div>
+            <div style="display:flex; flex-wrap:wrap; gap:8px">${poolHtml}</div>
+          </div>
+        `;
+      } else if (currentQ.type === 'geometry_interaction' && currentQ.geometryConfig) {
+        questionBodyHtml = renderInteractiveGeometrySvg(currentQ.geometryConfig, qz.geoState, qz.answered);
+      }
+
+      const canSubmit =
+        !qz.answered &&
+        currentQ.type !== 'geometry_interaction' &&
+        (((currentQ.type === 'multiple_choice' || currentQ.type === 'true_false') && qz.selectedOption) ||
+          ((currentQ.type === 'number_input' || currentQ.type === 'text_input') && String(qz.inputVal).trim() !== '') ||
+          (currentQ.type === 'ordering' && qz.orderedWords.length > 0));
+
+      return `
+        <div style="max-width:680px; margin:0 auto">
+          <div class="card" style="padding:14px 18px; display:flex; align-items:center; gap:14px">
+            <button class="btn btn-outline" style="padding:6px 12px; font-size:13px" data-action="quiz-exit">✕ Thoát</button>
+            <div style="flex:1">
+              <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
+              <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:800; color:#64748b; margin-top:4px">
+                <span>Câu ${qz.currentIndex + 1} / ${qz.questions.length}</span>
+                <span>${escapeHtml(currentQ.topicTag)}</span>
+              </div>
+            </div>
+            <div class="stat-badge stat-streak">🔥 ${qz.sessionStreak}</div>
+          </div>
+
+          <div class="card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px">
+              <span class="pill-tag" style="background:var(--primary-light); color:var(--primary)">+${currentQ.xp} XP</span>
+              ${
+                currentQ.hint
+                  ? `<button data-action="quiz-toggle-hint" style="font-size:13px; font-weight:800; color:var(--warning)">💡 Gợi ý (Hint)</button>`
+                  : ''
+              }
+            </div>
+
+            <h3 style="font-size:20px; font-weight:900; line-height:1.4">${escapeHtml(currentQ.prompt)}</h3>
+
+            ${
+              qz.showHint && currentQ.hint
+                ? `<div style="margin-top:10px; padding:12px 14px; border-radius:14px; background:#fffbeb; border:1px solid #fde68a; color:#92400e; font-size:14px; font-weight:700">
+                    💡 <strong>Gợi ý:</strong> ${escapeHtml(currentQ.hint)}
+                  </div>`
+                : ''
+            }
+
+            ${questionBodyHtml}
+
+            ${
+              !qz.answered && currentQ.type !== 'geometry_interaction'
+                ? `<button id="quiz-submit-btn" class="btn btn-primary" style="width:100%; margin-top:18px; padding:15px; font-size:16px" data-action="quiz-submit" ${canSubmit ? '' : 'disabled'}>
+                    Kiểm tra đáp án
+                  </button>`
+                : ''
+            }
+          </div>
+
+          ${
+            qz.answered
+              ? `<div class="card" style="background:${qz.isCorrect ? '#f0fdf4' : '#fef2f2'}; border-color:${
+                  qz.isCorrect ? '#4ade80' : '#f87171'
+                }">
+                  <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px">
+                    <div style="font-size:18px; font-weight:900; color:${qz.isCorrect ? '#14532d' : '#991b1b'}">
+                      ${qz.isCorrect ? `✓ Chính xác! +${currentQ.xp} XP` : '✕ Chưa đúng — Xem giải thích cách làm bên dưới nhé!'}
+                    </div>
+                    ${
+                      !qz.isCorrect
+                        ? `<button class="btn btn-outline" style="padding:6px 12px; font-size:12px; color:#b91c1c; border-color:#fca5a5" data-action="quiz-retry">
+                            🔄 Thử lại câu này
+                          </button>`
+                        : ''
+                    }
+                  </div>
+                  <div style="padding:14px; border-radius:16px; background:rgba(255,255,255,0.85); font-size:14px; font-weight:700; margin-bottom:14px">
+                    <div style="font-weight:900; margin-bottom:4px">💡 Giải thích cách làm:</div>
+                    <div>${escapeHtml(currentQ.explanation)}</div>
+                  </div>
+                  <button class="btn ${qz.isCorrect ? 'btn-success' : 'btn-danger'}" style="width:100%; padding:14px; font-size:16px" data-action="quiz-next">
+                    Câu tiếp theo →
+                  </button>
+                </div>`
+              : ''
+          }
+        </div>
+      `;
+    }
+
+    function renderInteractiveGeometrySvg(cfg, gs, disabled) {
+      const getStroke = (sideId) => {
+        const role = cfg.sides[sideId];
+        if (gs.phase === 'calculate') return role === 'a' ? '#16a34a' : '#2563eb';
+        if (gs.phase === 'click_sides_a' && gs.clickedSidesA.includes(sideId)) return '#16a34a';
+        if (gs.phase === 'click_sides_b' && (gs.clickedSidesB.includes(sideId) || gs.clickedSidesA.includes(sideId))) {
+          return role === 'a' ? '#16a34a' : '#2563eb';
+        }
+        if (gs.phase === 'drag_labels') {
+          if (role === 'a' && gs.assignedA) return '#16a34a';
+          if (role === 'b' && gs.assignedB) return '#2563eb';
+        }
+        return '#334155';
+      };
+
+      const bannerBg =
+        gs.feedbackType === 'success'
+          ? 'background:#f0fdf4; border:1px solid #86efac; color:#14532d'
+          : gs.feedbackType === 'error'
+          ? 'background:#fef2f2; border:1px solid #fca5a5; color:#991b1b'
+          : 'background:#f0f9ff; border:1px solid #bae6fd; color:#0c4a6e';
+
+      return `
+        <div style="margin-top:16px">
+          <div style="padding:12px 16px; border-radius:16px; font-size:14px; font-weight:800; margin-bottom:12px; ${bannerBg}">
+            ${escapeHtml(gs.feedbackMsg)}
+          </div>
+
+          ${
+            gs.phase === 'drag_labels'
+              ? `<div style="padding:12px; border-radius:16px; background:#f8fafc; border:1px solid var(--border); display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:14px; margin-bottom:12px">
+                  <span style="font-size:12px; font-weight:800; color:#64748b">✋ Kéo thả nhãn vào cạnh (hoặc Chạm nhãn rồi Chạm cạnh):</span>
+                  <div draggable="${!gs.assignedA && !disabled}" data-drag-label="a" data-action="geo-select-label" data-label="a" class="drag-chip ${gs.assignedA ? 'done' : gs.selectedTouchLabel === 'a' ? 'selected' : ''}">
+                    [a] ${gs.assignedA ? '✓' : ''}
+                  </div>
+                  <div draggable="${!gs.assignedB && !disabled}" data-drag-label="b" data-action="geo-select-label" data-label="b" class="drag-chip ${gs.assignedB ? 'done' : gs.selectedTouchLabel === 'b' ? 'selected' : ''}">
+                    [b] ${gs.assignedB ? '✓' : ''}
+                  </div>
+                </div>`
+              : ''
+          }
+
+          <div class="${gs.shake ? 'shake' : ''}" style="background:#fff; border:2px solid var(--border); border-radius:22px; padding:14px; display:flex; justify-content:center">
+            <svg viewBox="0 0 480 270" style="width:100%; max-width:460px; height:auto; user-select:none">
+              <rect x="90" y="55" width="300" height="160" fill="${gs.phase === 'calculate' ? 'rgba(22,163,74,0.08)' : 'rgba(241,245,249,0.75)'}" />
+              <polyline points="90,73 108,73 108,55" fill="none" stroke="#94a3b8" stroke-width="2" />
+              <polyline points="372,55 372,73 390,73" fill="none" stroke="#94a3b8" stroke-width="2" />
+              <polyline points="390,197 372,197 372,215" fill="none" stroke="#94a3b8" stroke-width="2" />
+              <polyline points="108,215 108,197 90,197" fill="none" stroke="#94a3b8" stroke-width="2" />
+
+              <!-- Cạnh AB -->
+              <g data-side-drop="AB" data-action="geo-click-side" data-side="AB" style="cursor:pointer">
+                <line x1="90" y1="55" x2="390" y2="55" stroke="transparent" stroke-width="30" />
+                <line x1="90" y1="55" x2="390" y2="55" stroke="${getStroke('AB')}" stroke-width="7" stroke-linecap="round" />
+              </g>
+              <!-- Cạnh BC -->
+              <g data-side-drop="BC" data-action="geo-click-side" data-side="BC" style="cursor:pointer">
+                <line x1="390" y1="55" x2="390" y2="215" stroke="transparent" stroke-width="30" />
+                <line x1="390" y1="55" x2="390" y2="215" stroke="${getStroke('BC')}" stroke-width="7" stroke-linecap="round" />
+              </g>
+              <!-- Cạnh CD -->
+              <g data-side-drop="CD" data-action="geo-click-side" data-side="CD" style="cursor:pointer">
+                <line x1="390" y1="215" x2="90" y2="215" stroke="transparent" stroke-width="30" />
+                <line x1="390" y1="215" x2="90" y2="215" stroke="${getStroke('CD')}" stroke-width="7" stroke-linecap="round" />
+              </g>
+              <!-- Cạnh DA -->
+              <g data-side-drop="DA" data-action="geo-click-side" data-side="DA" style="cursor:pointer">
+                <line x1="90" y1="215" x2="90" y2="55" stroke="transparent" stroke-width="30" />
+                <line x1="90" y1="215" x2="90" y2="55" stroke="${getStroke('DA')}" stroke-width="7" stroke-linecap="round" />
+              </g>
+
+              <text x="68" y="48" font-weight="900" font-size="18" fill="#0f172a">A</text>
+              <text x="398" y="48" font-weight="900" font-size="18" fill="#0f172a">B</text>
+              <text x="398" y="236" font-weight="900" font-size="18" fill="#0f172a">C</text>
+              <text x="68" y="236" font-weight="900" font-size="18" fill="#0f172a">D</text>
+
+              ${
+                gs.assignedA
+                  ? `<text x="240" y="38" text-anchor="middle" font-weight="900" font-size="16" fill="#15803d">
+                      ${gs.phase === 'calculate' ? `a = ${cfg.lengthA} cm` : 'a (chiều dài)'}
+                    </text>
+                    <text x="240" y="244" text-anchor="middle" font-weight="900" font-size="16" fill="#15803d">
+                      ${gs.phase === 'calculate' ? `a = ${cfg.lengthA} cm` : 'a'}
+                    </text>`
+                  : ''
+              }
+              ${
+                gs.assignedB
+                  ? `<text x="436" y="140" text-anchor="middle" font-weight="900" font-size="16" fill="#1d4ed8">
+                      ${gs.phase === 'calculate' ? `b = ${cfg.widthB} cm` : 'b (rộng)'}
+                    </text>
+                    <text x="44" y="140" text-anchor="middle" font-weight="900" font-size="16" fill="#1d4ed8">
+                      ${gs.phase === 'calculate' ? `${cfg.widthB} cm` : 'b'}
+                    </text>`
+                  : ''
+              }
+              <text x="240" y="142" text-anchor="middle" font-weight="900" font-size="22" fill="#334155">S = a × b</text>
+            </svg>
+          </div>
+
+          ${
+            gs.phase === 'calculate'
+              ? `<div style="margin-top:14px; padding:16px; border-radius:18px; background:var(--primary-light); border:2px solid #c7d2fe; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px">
+                  <div>
+                    <div style="font-size:12px; font-weight:800; color:var(--primary); text-transform:uppercase">✨ Bước 4: Tính diện tích S</div>
+                    <div style="font-weight:800">Cho <span style="color:#15803d">a = ${cfg.lengthA} cm</span> và <span style="color:#1d4ed8">b = ${cfg.widthB} cm</span>. Diện tích S bằng bao nhiêu cm²?</div>
+                  </div>
+                  <div style="display:flex; align-items:center; gap:8px">
+                    <input id="geo-calc-input" type="number" class="input-box" style="width:110px; text-align:center" value="${escapeHtml(gs.calcInput)}" placeholder="S = ?" ${disabled ? 'disabled' : ''} />
+                    <span style="font-weight:900">cm²</span>
+                    <button class="btn btn-primary" data-action="geo-submit-calc" ${disabled ? 'disabled' : ''}>Chốt đáp án</button>
+                  </div>
+                </div>`
+              : ''
+          }
+        </div>
+      `;
+    }
+
+    // ==========================================================================
+    // 8. XỬ LÝ SỰ KIỆN TƯƠNG TÁC (CLICK, KEYBOARD, DRAG & DROP)
+    // ==========================================================================
+    function handleGeometryAssign(sideId, label) {
+      const qz = APP.activeQuiz;
+      if (!qz || qz.answered) return;
+      const currentQ = qz.questions[qz.currentIndex];
+      const cfg = currentQ.geometryConfig;
+      const gs = qz.geoState;
+      if (!cfg || gs.phase !== 'drag_labels') return;
+
+      if (cfg.sides[sideId] === label) {
+        if (label === 'a') gs.assignedA = true;
+        if (label === 'b') gs.assignedB = true;
+        gs.selectedTouchLabel = null;
+        gs.feedbackType = 'success';
+        gs.shake = false;
+
+        if (gs.assignedA && gs.assignedB) {
+          gs.phase = 'click_sides_a';
+          gs.feedbackMsg = 'Chính xác! a = chiều dài (AB, CD) và b = chiều rộng (BC, DA). Bước 2/4: Hãy CLICK vào cả HAI cạnh có độ dài bằng a.';
+        } else {
+          gs.feedbackMsg =
+            label === 'a'
+              ? 'Đúng rồi! a = chiều dài. Bây giờ hãy kéo hoặc chạm nhãn [b] vào đúng cạnh chiều rộng.'
+              : 'Đúng rồi! b = chiều rộng. Bây giờ hãy kéo hoặc chạm nhãn [a] vào đúng cạnh chiều dài.';
+        }
+      } else {
+        gs.feedbackType = 'error';
+        gs.shake = true;
+        gs.feedbackMsg =
+          label === 'a'
+            ? 'Chưa đúng! Gợi ý nhẹ: Ký hiệu [a] đại diện cho chiều dài (cạnh ngang dài hơn AB hoặc CD).'
+            : 'Chưa đúng! Gợi ý nhẹ: Ký hiệu [b] đại diện cho chiều rộng (cạnh dọc ngắn hơn BC hoặc DA).';
+      }
+      renderApp();
+    }
+
+    function handleGeometrySideClick(sideId) {
+      const qz = APP.activeQuiz;
+      if (!qz || qz.answered) return;
+      const currentQ = qz.questions[qz.currentIndex];
+      const cfg = currentQ.geometryConfig;
+      const gs = qz.geoState;
+      if (!cfg) return;
+
+      if (gs.phase === 'drag_labels' && gs.selectedTouchLabel) {
+        handleGeometryAssign(sideId, gs.selectedTouchLabel);
+        return;
+      }
+
+      if (gs.phase === 'click_sides_a') {
+        if (cfg.sides[sideId] === 'a') {
+          if (!gs.clickedSidesA.includes(sideId)) {
+            gs.clickedSidesA.push(sideId);
+          }
+          gs.feedbackType = 'success';
+          gs.shake = false;
+          if (gs.clickedSidesA.length >= 2) {
+            gs.phase = 'click_sides_b';
+            gs.feedbackMsg = 'Tuyệt vời! Hai cạnh đối AB và CD bằng nhau và bằng a. Bước 3/4: Hãy CLICK vào cả HAI cạnh có độ dài bằng b.';
+          } else {
+            gs.feedbackMsg = 'Đã chọn 1 cạnh dài! Hãy click thêm cạnh đối diện có độ dài bằng a.';
+          }
+        } else {
+          gs.feedbackType = 'error';
+          gs.shake = true;
+          gs.feedbackMsg = 'Đó là cạnh rộng b. Hãy click vào hai cạnh dài nằm ngang (AB và CD).';
+        }
+        renderApp();
+        return;
+      }
+
+      if (gs.phase === 'click_sides_b') {
+        if (cfg.sides[sideId] === 'b') {
+          if (!gs.clickedSidesB.includes(sideId)) {
+            gs.clickedSidesB.push(sideId);
+          }
+          gs.feedbackType = 'success';
+          gs.shake = false;
+          if (gs.clickedSidesB.length >= 2) {
+            gs.phase = 'calculate';
+            gs.feedbackMsg = `Hoàn hảo! Bước 4/4: Cho a = ${cfg.lengthA} cm và b = ${cfg.widthB} cm. Hãy nhập diện tích S = a × b vào ô bên dưới.`;
+          } else {
+            gs.feedbackMsg = 'Đã chọn 1 cạnh rộng! Hãy click thêm cạnh đối diện có độ dài bằng b.';
+          }
+        } else {
+          gs.feedbackType = 'error';
+          gs.shake = true;
+          gs.feedbackMsg = 'Đó là cạnh dài a. Hãy click vào hai cạnh dọc (BC và DA).';
+        }
+        renderApp();
+      }
+    }
+
+    function evaluateCurrentQuizQuestion(customAnswer) {
+      const qz = APP.activeQuiz;
+      if (!qz || qz.answered) return;
+      const currentQ = qz.questions[qz.currentIndex];
+
+      let userAns = customAnswer;
+      if (userAns === undefined) {
+        if (currentQ.type === 'multiple_choice' || currentQ.type === 'true_false') {
+          userAns = qz.selectedOption;
+        } else if (currentQ.type === 'ordering') {
+          userAns = qz.orderedWords;
+        } else {
+          userAns = qz.inputVal;
+        }
+      }
+
+      let isOk = false;
+      if (currentQ.type === 'number_input' || currentQ.type === 'geometry_interaction') {
+        isOk = Number(String(userAns).trim()) === Number(currentQ.correctAnswer);
+      } else if (currentQ.type === 'ordering') {
+        isOk =
+          Array.isArray(userAns) &&
+          userAns.length === currentQ.correctAnswer.length &&
+          userAns.every((w, i) => w.toLowerCase() === currentQ.correctAnswer[i].toLowerCase());
+      } else {
+        isOk = String(userAns).trim().toLowerCase() === String(currentQ.correctAnswer).trim().toLowerCase();
+      }
+
+      qz.answered = true;
+      qz.isCorrect = isOk;
+      recordQuestionResult(currentQ, isOk);
+
+      if (isOk) {
+        qz.correctCount += 1;
+        qz.sessionStreak += 1;
+        qz.bestSessionStreak = Math.max(qz.bestSessionStreak, qz.sessionStreak);
+        const bonus = qz.sessionStreak >= 3 ? 5 : 0;
+        qz.earnedXP += currentQ.xp + bonus;
+        addXP(currentQ.xp + bonus);
+      } else {
+        qz.sessionStreak = 0;
+        if (!qz.wrongQuestions.some((x) => x.id === currentQ.id)) {
+          qz.wrongQuestions.push(currentQ);
+        }
+      }
+      renderApp();
+    }
+
+    function attachDynamicInputListeners() {
+      const quizInput = document.getElementById('quiz-input');
+      if (quizInput) {
+        quizInput.addEventListener('input', (e) => {
+          if (APP.activeQuiz) {
+            APP.activeQuiz.inputVal = e.target.value;
+            const btn = document.getElementById('quiz-submit-btn');
+            if (btn) btn.disabled = String(e.target.value).trim() === '';
+          }
+        });
+        quizInput.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' && APP.activeQuiz && String(APP.activeQuiz.inputVal).trim() !== '') {
+            evaluateCurrentQuizQuestion();
+          }
+        });
+      }
+
+      const geoInput = document.getElementById('geo-calc-input');
+      if (geoInput) {
+        geoInput.addEventListener('input', (e) => {
+          if (APP.activeQuiz) {
+            APP.activeQuiz.geoState.calcInput = e.target.value;
+          }
+        });
+        geoInput.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' && APP.activeQuiz && String(APP.activeQuiz.geoState.calcInput).trim() !== '') {
+            evaluateCurrentQuizQuestion(Number(APP.activeQuiz.geoState.calcInput));
+          }
+        });
+      }
+
+      const mmInput = document.getElementById('mm-input');
+      if (mmInput) {
+        mmInput.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            submitMentalMathAnswer(mmInput.value);
+          }
+        });
+      }
+
+      const wfInput = document.getElementById('wf-input');
+      if (wfInput) {
+        wfInput.addEventListener('input', (e) => {
+          APP.wordFormSession.inputVal = e.target.value;
+        });
+        wfInput.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            checkWordFormAnswer();
+          }
+        });
+      }
+
+      // Gắn sự kiện HTML5 Drag & Drop cho nhãn [a], [b] và 4 cạnh SVG
+      document.querySelectorAll('[data-drag-label]').forEach((el) => {
+        el.addEventListener('dragstart', (e) => {
+          e.dataTransfer.setData('text/plain', el.getAttribute('data-drag-label'));
+        });
+      });
+
+      document.querySelectorAll('[data-side-drop]').forEach((el) => {
+        el.addEventListener('dragover', (e) => e.preventDefault());
+        el.addEventListener('drop', (e) => {
+          e.preventDefault();
+          const label = e.dataTransfer.getData('text/plain');
+          const sideId = el.getAttribute('data-side-drop');
+          if (label === 'a' || label === 'b') {
+            handleGeometryAssign(sideId, label);
+          }
+        });
+      });
+    }
+
+    function startMentalMathTimer() {
+      if (APP.mentalSession.timerId) {
+        clearInterval(APP.mentalSession.timerId);
+        APP.mentalSession.timerId = null;
+      }
+      if (APP.mentalSession.mode === '60s') {
+        APP.mentalSession.timerId = setInterval(() => {
+          const ms = APP.mentalSession;
+          if (!ms.started || ms.finished) {
+            clearInterval(ms.timerId);
+            return;
+          }
+          ms.timeLeft -= 1;
+          if (ms.timeLeft <= 0) {
+            ms.timeLeft = 0;
+            ms.finished = true;
+            clearInterval(ms.timerId);
+          }
+          renderApp();
+        }, 1000);
+      }
+    }
+
+    function submitMentalMathAnswer(rawVal) {
+      const ms = APP.mentalSession;
+      if (!ms.started || ms.finished || String(rawVal).trim() === '') return;
+
+      const elapsed = Date.now() - ms.questionStartMs;
+      const isOk = Number(String(rawVal).trim()) === Number(ms.question.correctAnswer);
+      ms.totalAnswered += 1;
+      ms.totalResponseMs += elapsed;
+
+      if (isOk) {
+        ms.correctCount += 1;
+        ms.streak += 1;
+        ms.bestStreak = Math.max(ms.bestStreak, ms.streak);
+        ms.score += ms.difficulty * 10 + ms.streak * 2;
+        addXP(10);
+        ms.feedback = { ok: true, text: `✓ Chính xác! ${ms.question.explanation}` };
+      } else {
+        ms.streak = 0;
+        ms.feedback = { ok: false, text: `✕ Đáp án đúng là ${ms.question.correctAnswer}. ${ms.question.explanation}` };
+      }
+
+      if ((ms.mode === '10q' && ms.totalAnswered >= 10) || (ms.mode === 'accuracy' && !isOk)) {
+        ms.finished = true;
+        const avgMs = Math.round(ms.totalResponseMs / ms.totalAnswered);
+        APP.state.mentalMathStats = {
+          bestScore: Math.max(APP.state.mentalMathStats.bestScore, ms.score),
+          avgResponseMs: avgMs,
+          bestStreak: Math.max(APP.state.mentalMathStats.bestStreak, ms.bestStreak)
+        };
+        saveState();
+      } else {
+        ms.question = generateMentalMathQuestion(ms.difficulty);
+        ms.questionStartMs = Date.now();
+      }
+      renderApp();
+    }
+
+    function checkWordFormAnswer() {
+      const wf = APP.wordFormSession;
+      if (wf.result || !wf.inputVal.trim()) return;
+      const fam = WORD_FAMILIES[wf.familyIdx];
+      const q = fam.questions[wf.questionIdx];
+      const isOk = wf.inputVal.trim().toLowerCase() === q.answer.toLowerCase();
+      if (isOk) addXP(15);
+      wf.result = { ok: isOk, explanation: q.explanation };
+      renderApp();
+    }
+
+    // Event Delegation toàn cục cho tất cả các nút bấm
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-action]');
+      if (!btn || btn.disabled) return;
+      const action = btn.getAttribute('data-action');
+
+      if (action === 'nav') {
+        APP.activeQuiz = null;
+        APP.activeTab = btn.getAttribute('data-tab');
+        renderApp();
+        return;
+      }
+
+      if (action === 'refill-hearts') {
+        APP.state.hearts = 5;
+        saveState();
+        renderApp();
+        return;
+      }
+
+      if (action === 'select-subject-learn') {
+        APP.state.selectedSubject = btn.getAttribute('data-subject');
+        APP.activeTab = 'learn';
+        saveState();
+        renderApp();
+        return;
+      }
+
+      if (action === 'switch-subject') {
+        APP.state.selectedSubject = btn.getAttribute('data-subject');
+        saveState();
+        renderApp();
+        return;
+      }
+
+      if (action === 'start-daily-practice') {
+        const activeMistakes = Object.values(APP.state.mistakes || {})
+          .filter((m) => !m.mastered)
+          .slice(0, 2)
+          .map((m) => m.question);
+        const mentalQ = generateMentalMathQuestion(2);
+        const rectQ = generateDynamicRectangleQuestion();
+        const engQs = SEED_QUESTIONS.filter((q) => q.subject === 'english').slice(0, 2);
+        startQuizSession('Daily Practice (Luyện tập hằng ngày)', [...activeMistakes, mentalQ, rectQ, ...engQs]);
+        return;
+      }
+
+      if (action === 'start-mistake-review') {
+        const activeMistakes = Object.values(APP.state.mistakes || {})
+          .filter((m) => !m.mastered)
+          .map((m) => m.question);
+        if (activeMistakes.length > 0) {
+          startQuizSession('Mistake Review (Ôn tập các câu làm sai)', activeMistakes);
+        }
+        return;
+      }
+
+      if (action === 'start-lesson') {
+        const lessonId = btn.getAttribute('data-lesson');
+        const title = btn.getAttribute('data-title');
+        const type = btn.getAttribute('data-type');
+        let qs = SEED_QUESTIONS.filter((q) => q.lesson === lessonId);
+        if (type === 'revision' || type === 'test' || qs.length === 0) {
+          const pool = SEED_QUESTIONS.filter((q) => q.subject === APP.state.selectedSubject);
+          const extra =
+            APP.state.selectedSubject === 'math'
+              ? [generateMentalMathQuestion(2), generateDynamicRectangleQuestion()]
+              : [];
+          qs = [...pool.slice(0, 5), ...extra];
+        }
+        startQuizSession(title, qs, lessonId);
+        return;
+      }
+
+      if (action === 'practice-subtab') {
+        APP.practiceSubTab = btn.getAttribute('data-sub');
+        renderApp();
+        return;
+      }
+
+      if (action === 'start-dynamic-geo') {
+        startQuizSession('Thực hành Hình chữ nhật Tương tác SVG', [
+          SEED_QUESTIONS.find((q) => q.id === 'q-m-11'),
+          generateDynamicRectangleQuestion()
+        ]);
+        return;
+      }
+
+      // Quiz Actions
+      if (action === 'quiz-exit') {
+        APP.activeQuiz = null;
+        renderApp();
+        return;
+      }
+
+      if (action === 'quiz-toggle-hint') {
+        if (APP.activeQuiz) {
+          APP.activeQuiz.showHint = !APP.activeQuiz.showHint;
+          renderApp();
+        }
+        return;
+      }
+
+      if (action === 'quiz-select-opt') {
+        if (APP.activeQuiz && !APP.activeQuiz.answered) {
+          APP.activeQuiz.selectedOption = btn.getAttribute('data-opt');
+          renderApp();
+        }
+        return;
+      }
+
+      if (action === 'quiz-add-word') {
+        if (APP.activeQuiz && !APP.activeQuiz.answered) {
+          APP.activeQuiz.orderedWords.push(btn.getAttribute('data-word'));
+          renderApp();
+        }
+        return;
+      }
+
+      if (action === 'quiz-remove-word') {
+        if (APP.activeQuiz && !APP.activeQuiz.answered) {
+          const idx = Number(btn.getAttribute('data-idx'));
+          APP.activeQuiz.orderedWords.splice(idx, 1);
+          renderApp();
+        }
+        return;
+      }
+
+      if (action === 'quiz-submit') {
+        evaluateCurrentQuizQuestion();
+        return;
+      }
+
+      if (action === 'quiz-retry') {
+        if (APP.activeQuiz) {
+          APP.activeQuiz.answered = false;
+          APP.activeQuiz.isCorrect = null;
+          renderApp();
+        }
+        return;
+      }
+
+      if (action === 'quiz-next') {
+        const qz = APP.activeQuiz;
+        if (!qz) return;
+        if (qz.currentIndex + 1 < qz.questions.length) {
+          qz.currentIndex += 1;
+          qz.selectedOption = '';
+          qz.inputVal = '';
+          qz.orderedWords = [];
+          qz.showHint = false;
+          qz.answered = false;
+          qz.isCorrect = null;
+          qz.geoState = createInitialGeoState();
+        } else {
+          const durationSec = Math.max(1, Math.round((Date.now() - qz.startTime) / 1000));
+          const accuracy = Math.round((qz.correctCount / qz.questions.length) * 100);
+          if (accuracy === 100) {
+            qz.earnedXP += 50;
+            addXP(50);
+          }
+          if (qz.lessonId) {
+            completeLesson(qz.lessonId, accuracy, qz.earnedXP, durationSec);
+          }
+          qz.finished = true;
+        }
+        renderApp();
+        return;
+      }
+
+      if (action === 'quiz-practice-mistakes') {
+        if (APP.activeQuiz && APP.activeQuiz.wrongQuestions.length > 0) {
+          startQuizSession('Luyện lại các câu vừa làm sai', [...APP.activeQuiz.wrongQuestions]);
+        }
+        return;
+      }
+
+      // Geometry Actions
+      if (action === 'geo-select-label') {
+        const label = btn.getAttribute('data-label');
+        if (APP.activeQuiz) {
+          APP.activeQuiz.geoState.selectedTouchLabel = label;
+          renderApp();
+        }
+        return;
+      }
+
+      if (action === 'geo-click-side') {
+        const sideId = btn.getAttribute('data-side');
+        handleGeometrySideClick(sideId);
+        return;
+      }
+
+      if (action === 'geo-submit-calc') {
+        if (APP.activeQuiz && String(APP.activeQuiz.geoState.calcInput).trim() !== '') {
+          evaluateCurrentQuizQuestion(Number(APP.activeQuiz.geoState.calcInput));
+        }
+        return;
+      }
+
+      // Mental Math Actions
+      if (action === 'mm-set-diff') {
+        APP.mentalSession.difficulty = Number(btn.getAttribute('data-diff'));
+        renderApp();
+        return;
+      }
+
+      if (action === 'mm-set-mode') {
+        APP.mentalSession.mode = btn.getAttribute('data-mode');
+        renderApp();
+        return;
+      }
+
+      if (action === 'mm-start') {
+        const ms = APP.mentalSession;
+        ms.started = true;
+        ms.finished = false;
+        ms.score = 0;
+        ms.totalAnswered = 0;
+        ms.correctCount = 0;
+        ms.streak = 0;
+        ms.bestStreak = 0;
+        ms.timeLeft = 60;
+        ms.totalResponseMs = 0;
+        ms.feedback = null;
+        ms.question = generateMentalMathQuestion(ms.difficulty);
+        ms.questionStartMs = Date.now();
+        startMentalMathTimer();
+        renderApp();
+        return;
+      }
+
+      if (action === 'mm-reset') {
+        APP.mentalSession.started = false;
+        APP.mentalSession.finished = false;
+        renderApp();
+        return;
+      }
+
+      if (action === 'mm-submit') {
+        const el = document.getElementById('mm-input');
+        if (el) submitMentalMathAnswer(el.value);
+        return;
+      }
+
+      // Word Form Actions
+      if (action === 'wf-check') {
+        checkWordFormAnswer();
+        return;
+      }
+
+      if (action === 'wf-next') {
+        const wf = APP.wordFormSession;
+        const fam = WORD_FAMILIES[wf.familyIdx];
+        wf.inputVal = '';
+        wf.result = null;
+        if (wf.questionIdx + 1 < fam.questions.length) {
+          wf.questionIdx += 1;
+        } else {
+          wf.questionIdx = 0;
+          wf.familyIdx = (wf.familyIdx + 1) % WORD_FAMILIES.length;
+        }
+        renderApp();
+        return;
+      }
+
+      // Flashcards Actions
+      if (action === 'fc-speak') {
+        e.stopPropagation();
+        const word = btn.getAttribute('data-word');
+        if ('speechSynthesis' in window) {
+          const u = new SpeechSynthesisUtterance(word);
+          u.lang = 'en-GB';
+          window.speechSynthesis.speak(u);
+        }
+        return;
+      }
+
+      if (action === 'fc-flip') {
+        APP.flashcardSession.flipped = !APP.flashcardSession.flipped;
+        renderApp();
+        return;
+      }
+
+      if (action === 'fc-rate') {
+        const rating = btn.getAttribute('data-rating');
+        const card = VOCABULARY_CARDS[APP.flashcardSession.index];
+        const learned = rating === 'Good' || rating === 'Easy';
+        APP.state.flashcardSRS[card.id] = {
+          learned,
+          repetitions: (APP.state.flashcardSRS[card.id]?.repetitions || 0) + 1
+        };
+        addXP(5);
+        const learnedCount = Object.values(APP.state.flashcardSRS).filter((x) => x.learned).length;
+        if (learnedCount >= 10 && !APP.state.achievements.includes('Vocabulary Master')) {
+          APP.state.achievements.push('Vocabulary Master');
+        }
+        saveState();
+        APP.flashcardSession.flipped = false;
+        APP.flashcardSession.index = (APP.flashcardSession.index + 1) % VOCABULARY_CARDS.length;
+        renderApp();
+        return;
+      }
+
+      // Profile & Settings Actions
+      if (action === 'toggle-hearts') {
+        APP.state.heartsEnabled = !APP.state.heartsEnabled;
+        APP.state.hearts = 5;
+        saveState();
+        renderApp();
+        return;
+      }
+
+      if (action === 'set-goal') {
+        APP.state.dailyGoalMinutes = Number(btn.getAttribute('data-mins'));
+        saveState();
+        renderApp();
+        return;
+      }
+
+      if (action === 'reset-all') {
+        try {
+          window.localStorage.removeItem(STORAGE_KEY);
+        } catch (err) {}
+        APP.state = createDefaultState();
+        renderApp();
+      }
+    });
+
+    // Khởi chạy ngay lập tức khi mở file
+    renderApp();
+  </script>
+</body>
+</html>
